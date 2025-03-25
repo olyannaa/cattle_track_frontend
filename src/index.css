@@ -1,3 +1,7 @@
+:root {
+    --block-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
+}
+
 * {
     padding: 0px;
     margin: 0px;
@@ -103,4 +107,25 @@ legend {
 
 input[type='file'] {
     max-width: 100%;
+}
+.ant-menu-item.ant-menu-item-selected {
+    position: relative;
+}
+
+.ant-menu-item.ant-menu-item-selected::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--color-primary-border, #ff4218);
+}
+
+.ant-menu-item .anticon {
+    opacity: 0.5;
+}
+
+.ant-menu-item.ant-menu-item-selected .anticon {
+    opacity: 1;
 }
