@@ -1,12 +1,30 @@
-import { ConfigProvider, ThemeConfig } from 'antd';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { LayoutPage } from './global-components/Layout/Layout';
+import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
 import { Authorization } from './pages/Authorization/Authorization';
+import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { Main } from './pages/Main/Main';
 import { PrivateRoute } from './components/PrivateRoute';
-
+        
 function App() {
     const theme: ThemeConfig = {
         components: {
+            Menu: {
+                activeBarBorderWidth: 0,
+                itemBorderRadius: 0,
+                dangerItemColor: 'rgba(0, 0, 0, 0.85)',
+                colorPrimaryBorder: '#FF4218',
+                itemMarginInline: 0,
+                activeBarWidth: '4',
+                dropdownWidth: 200,
+            },
+            Button: {
+                borderRadius: 2,
+                defaultActiveBorderColor: '#FF4218',
+                defaultActiveColor: '#FF4218',
+                defaultHoverBorderColor: '#FF4218',
+                defaultHoverColor: '#FF4218',
+            },
             Input: {
                 borderRadius: 2,
                 borderRadiusLG: 2,
@@ -18,38 +36,13 @@ function App() {
                 hoverBorderColor: 'rgba(255, 75, 64, 1)',
                 controlHeight: 40,
             },
-            // Select: {
-            //     borderRadius: 2,
-            //     activeBorderColor: '#40A9FF',
-            //     hoverBorderColor: '#40A9FF',
-            //     controlHeight: 40,
-            // },
-            Button: {
-                borderRadius: 2,
-                colorBgSolid: 'rgba(255, 66, 24, 1)',
-                colorBgSolidHover: 'rgba(255, 66, 24, 0.7)',
-                colorBgSolidActive: 'rgba(255, 66, 24, 1)',
-                borderRadiusLG: 2,
-            },
-            // InputNumber: {
-            //     borderRadius: 2,
-            // },
-            // Radio: {
-            //     buttonBg: 'rgba(0, 0, 0, 0)',
-            //     buttonSolidCheckedActiveBg: '#FFFF',
-            //     buttonSolidCheckedBg: '#FFFF',
-            //     buttonSolidCheckedHoverBg: '#FFFF',
-            //     buttonSolidCheckedColor: '#262626',
-            //     colorText: '#262626',
-            //     buttonColor: '#262626',
-            // },
             Tabs: {
                 itemSelectedColor: 'rgba(255, 66, 24, 1)',
                 //itemColor: 'rgba(255, 66, 24, 1)',
                 inkBarColor: 'rgba(255, 66, 24, 1)',
                 itemHoverColor: 'rgba(255, 66, 24, 0,7)',
                 itemActiveColor: 'rgba(255, 66, 24, 0,7)',
-            },
+            }
         },
         token: {},
         cssVar: true,
