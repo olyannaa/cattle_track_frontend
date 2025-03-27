@@ -1,7 +1,7 @@
 import { Flex, Tabs, TabsProps, Typography } from 'antd';
 import styles from './Login.module.css';
 import { useState } from 'react';
-import { LoginForm } from '../forms/LoginForm/LoginForm';
+import { LoginForm } from '../LoginForm/LoginForm';
 
 const tabsLogin: TabsProps['items'] = [
     {

@@ -1,15 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { AppstoreFilled, LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Button, Layout } from 'antd';
-import { Outlet } from 'react-router-dom';
+import {
+    AppstoreFilled,
+    LeftOutlined,
+    RightOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
+import { Button, Flex, Layout } from 'antd';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { AppMenu } from './components/Menu/Menu';
 import styles from './Layout.module.css';
+import { useLogoutMutation } from '../../app-service/services/auth';
+import { IUser } from '../../utils/userType';
 
 const { Header, Sider, Content } = Layout;
 
 export const LayoutPage: React.FC = () => {
+    const user: IUser = JSON.parse(localStorage.getItem('user') || '');
+
+    if (!user) {
+        return <Navigate to='/' />;
+    }
+
     const [collapsed, setCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
+    const [logout] = useLogoutMutation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleResize = () => {
@@ -36,6 +51,14 @@ export const LayoutPage: React.FC = () => {
         display: isMobile && collapsed ? 'none' : 'block',
     };
 
+    const handlerLogout = async () => {
+        try {
+            await logout().unwrap();
+            localStorage.removeItem('user');
+            navigate('/');
+        } catch {}
+    };
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Header className={styles['layout__header']}>
@@ -60,7 +83,15 @@ export const LayoutPage: React.FC = () => {
                         )}
                         <div>LOGO</div>
                     </div>
-                    <Button>Выход</Button>
+                    <Flex gap={'4px'}>
+                        <Button type={'text'}>
+                            <UserOutlined />
+                            {user.organizationName}
+                        </Button>
+                        <Button onClick={handlerLogout} variant='link'>
+                            Выход
+                        </Button>
+                    </Flex>
                 </div>
             </Header>
             <Layout>
@@ -79,11 +110,7 @@ export const LayoutPage: React.FC = () => {
                             className={styles['trapezoid-button']}
                         >
                             <div className={styles['trapezoid-button__icon']}>
-                                {collapsed ? (
-                                    <RightOutlined />
-                                ) : (
-                                    <LeftOutlined />
-                                )}
+                                {collapsed ? <RightOutlined /> : <LeftOutlined />}
                             </div>
                         </div>
                     )}
