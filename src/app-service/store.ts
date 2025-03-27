@@ -1,5 +1,5 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { api } from './services/api';
+import { api } from '../app-service/services/api';
 
 export const store = configureStore({
     reducer: {

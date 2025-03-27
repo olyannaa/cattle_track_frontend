@@ -1,9 +1,0 @@
-.wrapper {
-    background-color: rgba(245, 245, 245, 1);
-    height: 100vh;
-    flex-direction: column;
-}
-
-.body {
-    height: 100%;
-}

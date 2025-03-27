@@ -1,8 +1,8 @@
 import { Button, Form, message } from 'antd';
-import { LoginInput } from '../../inputs/LoginInput/LoginInput';
+import { LoginInput } from '../LoginInput/LoginInput';
 import styles from './LoginForm.module.css';
-import { LoginData, useLoginMutation } from '../../../app/services/auth';
-import { redirect, useNavigate } from 'react-router-dom';
+import { LoginData, useLoginMutation } from '../../../../app-service/services/auth';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm = () => {
     const [messageApi, contextHolder] = message.useMessage();

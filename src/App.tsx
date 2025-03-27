@@ -1,11 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LayoutPage } from './global-components/Layout/Layout';
 import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
-import { Authorization } from './pages/Authorization/Authorization';
+import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
-import { Main } from './pages/Main/Main';
-import { PrivateRoute } from './components/PrivateRoute';
-        
+import { MainPage } from './app/main/MainPage';
+
 function App() {
     const theme: ThemeConfig = {
         components: {
@@ -24,6 +23,11 @@ function App() {
                 defaultActiveColor: '#FF4218',
                 defaultHoverBorderColor: '#FF4218',
                 defaultHoverColor: '#FF4218',
+                colorBgSolid: '#FF4218',
+                colorBgSolidHover: 'rgba(255, 66, 24, 0.7)',
+                colorBgSolidActive: 'rgba(255, 66, 24, 1)',
+                borderRadiusLG: 2,
+                textTextColor: 'rgba(255, 66, 24, 1)',
             },
             Input: {
                 borderRadius: 2,
@@ -38,11 +42,10 @@ function App() {
             },
             Tabs: {
                 itemSelectedColor: 'rgba(255, 66, 24, 1)',
-                //itemColor: 'rgba(255, 66, 24, 1)',
                 inkBarColor: 'rgba(255, 66, 24, 1)',
                 itemHoverColor: 'rgba(255, 66, 24, 0,7)',
                 itemActiveColor: 'rgba(255, 66, 24, 0,7)',
-            }
+            },
         },
         token: {},
         cssVar: true,
@@ -52,8 +55,9 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Authorization />} />
-                    <Route element={<PrivateRoute />}>
-                        <Route path='/main' element={<Main />} />
+                    <Route element={<LayoutPage />}>
+                        <Route path='/main' element={<MainPage />} />
+                        <Route path='/animals' element={<RegisterAnimalPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
