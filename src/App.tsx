@@ -1,7 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LayoutPage } from './global-components/Layout/Layout';
 import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
+import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
+import { MainPage } from './app/main/MainPage';
+
 function App() {
     const theme: ThemeConfig = {
         components: {
@@ -20,24 +23,41 @@ function App() {
                 defaultActiveColor: '#FF4218',
                 defaultHoverBorderColor: '#FF4218',
                 defaultHoverColor: '#FF4218',
+                colorBgSolid: '#FF4218',
+                colorBgSolidHover: 'rgba(255, 66, 24, 0.7)',
+                colorBgSolidActive: 'rgba(255, 66, 24, 1)',
+                borderRadiusLG: 2,
+                textTextColor: 'rgba(255, 66, 24, 1)',
+            },
+            Input: {
+                borderRadius: 2,
+                borderRadiusLG: 2,
+                borderRadiusSM: 2,
+                borderRadiusXS: 2,
+                fontSize: 16,
+                colorText: 'rgba(0, 0, 0, 0.85)',
+                activeBorderColor: 'rgba(255, 75, 64, 1)',
+                hoverBorderColor: 'rgba(255, 75, 64, 1)',
+                controlHeight: 40,
+            },
+            Tabs: {
+                itemSelectedColor: 'rgba(255, 66, 24, 1)',
+                inkBarColor: 'rgba(255, 66, 24, 1)',
+                itemHoverColor: 'rgba(255, 66, 24, 0,7)',
+                itemActiveColor: 'rgba(255, 66, 24, 0,7)',
             },
         },
         token: {},
         cssVar: true,
     };
-
     return (
         <ConfigProvider theme={theme}>
             <BrowserRouter>
                 <Routes>
+                    <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
-                        <Route path='/' element={<RegisterAnimalPage />} />
-                    </Route>
-                    <Route element={<LayoutPage />}>
-                        <Route
-                            path='/animals'
-                            element={<RegisterAnimalPage />}
-                        />
+                        <Route path='/main' element={<MainPage />} />
+                        <Route path='/animals' element={<RegisterAnimalPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
