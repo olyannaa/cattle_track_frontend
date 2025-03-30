@@ -1,11 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+@import url('./font-styles.css');
 :root {
     --block-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
+    --global-bg: #ffffff;
+    --grey-bg: #f5f5f5;
+    --grey-border: #d9d9d9;
+    --primary: #ff4218;
+    --base-border-radius: 8px;
+    --spacing-xs: 4px;
+    --spacing-s: 8px;
+    --spacing-m: 12px;
+    --spacing-l: 16px;
+    --spacing-2l: 20px;
+    --spacing-xl: 24px;
+    --max-input-width: 432px;
+    font-size: 16px;
 }
 
 body {
     font-family: 'Roboto', sans-serif;
     color: #000;
+}
+
+.radio-border {
+    border: 1px solid var(--grey-border);
+    border-radius: 2px;
+    padding: 7px var(--spacing-m);
+    max-width: 358px;
+    min-width: 142px;
+    flex: 1;
 }
 
 * {
@@ -39,16 +62,14 @@ main {
     display: block;
 }
 
-h1,
-h2,
-h3,
+/* h2,
 h4,
 h5,
 h6,
 p {
     font-size: inherit;
     font-weight: inherit;
-}
+} */
 
 ul,
 ul li {
@@ -139,4 +160,14 @@ input[type='file'] {
 
 .ant-tabs-top > .ant-tabs-nav::before {
     border-bottom: none;
+}
+
+/* Цвет иконки в драггере */
+.ant-upload-wrapper .ant-upload-drag p.ant-upload-drag-icon .anticon {
+    color: #ff4218;
+}
+
+.ant-upload-wrapper .ant-upload-drag {
+    border-radius: 2px;
+    border: var(--grey-border) solid 1px;
 }

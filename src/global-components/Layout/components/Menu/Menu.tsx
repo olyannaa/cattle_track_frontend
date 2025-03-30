@@ -23,7 +23,7 @@ export const AppMenu = () => {
         {
             key: '2',
             icon: <FolderOpenFilled />,
-            label: <Link to='/animals'>Учет животных</Link>,
+            label: <Link to='/animalregister'>Учет животных</Link>,
             danger: true,
         },
         {
@@ -65,6 +65,11 @@ export const AppMenu = () => {
     ];
 
     return (
-        <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />
+        <Menu
+            theme='light'
+            mode='inline'
+            defaultSelectedKeys={['1']}
+            items={menuItems}
+        />
     );
 };

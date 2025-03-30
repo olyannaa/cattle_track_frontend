@@ -1,6 +1,7 @@
-import { Form, List, Typography } from 'antd';
+import { Form, List } from 'antd';
 import Dragger from 'antd/es/upload/Dragger';
 import { InboxOutlined } from '@ant-design/icons';
+import styles from './ImportSelexForm.module.css';
 
 export const ImportSelexForm = () => {
     const data = [
@@ -24,10 +25,13 @@ export const ImportSelexForm = () => {
     ];
 
     return (
-        <div>
+        <div className={styles['import-selex']}>
             <Form>
                 <h2>Импорт животных из файла выгрузки СЕЛЭКС</h2>
-                <Form.Item>
+                <Form.Item
+                    className={styles['import-selex__dragger']}
+                    rules={[{ required: true, message: 'Обязательное поле' }]}
+                >
                     <Dragger>
                         <p className='ant-upload-drag-icon'>
                             <InboxOutlined />
@@ -36,16 +40,19 @@ export const ImportSelexForm = () => {
                             Выберите или перетащите файл
                         </p>
                         <p className='ant-upload-hint'>
-                            Максимальный размер изображения 200Mb. Формат
-                            JPG/JPEG/PNG
+                            Максимальный размер файла 200Mb. Формат SCV
                         </p>
                     </Dragger>
                 </Form.Item>
             </Form>
             <div>
-                <h3>Файл должен содержать следующие колонки:</h3>
-                <div>
-                    <h3>Дополнительные способы идентификации</h3>
+                <h3 className={styles['import-selex__additional-title']}>
+                    Файл должен содержать следующие колонки:
+                </h3>
+                <div className={styles['import-selex__additional-container']}>
+                    <h3 className={styles['import-selex__additional-subtitle']}>
+                        Дополнительные способы идентификации
+                    </h3>
                     <p>
                         Дополнительные способы идентификации: Вы можете добавить
                         любые дополнительные колонки для идентификации животных
@@ -55,6 +62,7 @@ export const ImportSelexForm = () => {
                     </p>
                 </div>
                 <List
+                    className={styles['import-selex__additional-list']}
                     header={<div>Header</div>}
                     footer={<div>Footer</div>}
                     bordered

@@ -1,11 +1,17 @@
-export const InputLabel = ({ label }: { label: string }) => {
+export const InputLabel = ({
+    label,
+    marginSize = '8px',
+}: {
+    label: string;
+    marginSize?: string;
+}) => {
     return (
         <div
             style={{
-                fontSize: '14px',
+                fontSize: '16px',
                 fontWeight: 'bold',
                 color: '#333',
-                marginBottom: '8px',
+                marginBottom: marginSize,
             }}
         >
             {label}

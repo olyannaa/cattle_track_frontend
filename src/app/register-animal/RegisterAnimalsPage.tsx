@@ -2,6 +2,7 @@ import { Tabs, TabsProps } from 'antd';
 import { ImportSelexForm } from './components/forms/import-selex-form/ImportSelexForm';
 import { ManualRegistrationForm } from './components/forms/manual-registration-form/ManualRegistrationForm';
 import { useState } from 'react';
+import styles from './RegisterAnimalPage.module.css';
 
 export const RegisterAnimalPage = () => {
     const [activeTab, setActiveTab] = useState('1');
@@ -21,11 +22,19 @@ export const RegisterAnimalPage = () => {
 
     return (
         <div>
-            <div>
+            <div className={styles['register-animals__header']}>
                 <h1>Регистрация нового животного</h1>
-                <Tabs defaultActiveKey='1' items={items} onChange={onChange} />
+                <Tabs
+                    style={{
+                        fontWeight: 400,
+                        lineHeight: '24px',
+                    }}
+                    defaultActiveKey='1'
+                    items={items}
+                    onChange={onChange}
+                />
             </div>
-            <div>
+            <div className={styles['register-animals__content']}>
                 {activeTab === '1' && <ManualRegistrationForm />}
                 {activeTab === '2' && <ImportSelexForm />}
             </div>

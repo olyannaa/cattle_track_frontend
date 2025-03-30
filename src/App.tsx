@@ -43,8 +43,30 @@ function App() {
             Tabs: {
                 itemSelectedColor: 'rgba(255, 66, 24, 1)',
                 inkBarColor: 'rgba(255, 66, 24, 1)',
-                itemHoverColor: 'rgba(255, 66, 24, 0,7)',
-                itemActiveColor: 'rgba(255, 66, 24, 0,7)',
+                itemHoverColor: 'rgba(255, 66, 24, 0.7)',
+                itemActiveColor: 'rgba(255, 66, 24, 0.7)',
+            },
+            Radio: {
+                colorPrimary: '#FF4218',
+                borderRadius: 2,
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+                colorPrimaryBorder: 'rgba(255, 66, 24, 0.7)',
+                colorPrimaryActive: 'rgba(255, 66, 24, 0.7)',
+                fontSize: 16,
+                controlHeight: 40,
+            },
+            Select: {
+                borderRadius: 2,
+                fontSize: 16,
+                controlHeight: 40,
+            },
+            Upload: {
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+            },
+            List: {
+                borderRadiusLG: 2,
+                colorBorder: 'rgba(0, 0, 0, 0.06)',
+                fontSize: 16,
             },
         },
         token: {},
@@ -57,7 +79,10 @@ function App() {
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        <Route path='/animals' element={<RegisterAnimalPage />} />
+                        <Route
+                            path='/animalregister'
+                            element={<RegisterAnimalPage />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>
