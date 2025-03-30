@@ -16,11 +16,6 @@ const { Header, Sider, Content } = Layout;
 
 export const LayoutPage: React.FC = () => {
     const user: IUser = JSON.parse(localStorage.getItem('user') || '');
-
-    if (!user) {
-        return <Navigate to='/' />;
-    }
-
     const [collapsed, setCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
     const [logout] = useLogoutMutation();
@@ -37,6 +32,10 @@ export const LayoutPage: React.FC = () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    if (!user) {
+        return <Navigate to='/' />;
+    }
 
     const siderStyle: React.CSSProperties = {
         position: 'sticky',
@@ -110,7 +109,11 @@ export const LayoutPage: React.FC = () => {
                             className={styles['trapezoid-button']}
                         >
                             <div className={styles['trapezoid-button__icon']}>
-                                {collapsed ? <RightOutlined /> : <LeftOutlined />}
+                                {collapsed ? (
+                                    <RightOutlined />
+                                ) : (
+                                    <LeftOutlined />
+                                )}
                             </div>
                         </div>
                     )}
