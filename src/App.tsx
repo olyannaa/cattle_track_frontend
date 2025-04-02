@@ -46,6 +46,9 @@ function App() {
                 itemHoverColor: 'rgba(255, 66, 24, 0,7)',
                 itemActiveColor: 'rgba(255, 66, 24, 0,7)',
             },
+            Table: {
+                headerBorderRadius:0,
+            }
         },
         token: {},
         cssVar: true,
