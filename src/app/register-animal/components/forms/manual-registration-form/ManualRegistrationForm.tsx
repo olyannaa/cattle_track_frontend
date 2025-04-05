@@ -24,21 +24,21 @@ export const ManualRegistrationForm = () => {
     return (
         <Form>
             <div>
-                <Form.Item rules={requiredRule}>
+                <Form.Item name='TagNumber' rules={requiredRule}>
                     <InputLabel label='Номер бирки/RFID' />
                     <Input
                         className={styles['manual-register__input']}
                         placeholder='Введите номер бирки'
                     ></Input>
                 </Form.Item>
-                <Form.Item>
+                <Form.Item name='Breed'>
                     <InputLabel label='Порода' />
                     <Input
                         className={styles['manual-register__input']}
                         placeholder='Укажите породу'
                     ></Input>
                 </Form.Item>
-                <Form.Item rules={requiredRule}>
+                <Form.Item name='Type' rules={requiredRule}>
                     <RadioGroupButton data={animalsOptions} />
                 </Form.Item>
             </div>
@@ -46,11 +46,12 @@ export const ManualRegistrationForm = () => {
                 <Form.Item
                     className={styles['manual-register__input']}
                     rules={requiredRule}
+                    name='BirthDate'
                 >
                     <InputLabel label='Дата рождения' />
                     <Input placeholder='xx.xx.xxxx'></Input>
                 </Form.Item>
-                <Form.Item>
+                <Form.Item name='Origin' rules={requiredRule}>
                     <InputLabel label='Происхождение' />
                     <Radio.Group>
                         <div className={styles['manual-register__origin']}>
@@ -68,16 +69,22 @@ export const ManualRegistrationForm = () => {
                 </Form.Item>
             </div>
             <div className={styles['manual-register__changed-form']}>
-                <Form.Item className={styles['manual-register__input']}>
+                <Form.Item
+                    className={styles['manual-register__input']}
+                    name='MotherTag'
+                >
                     <InputLabel label='ID матери' />
                     <Input placeholder='xxxxxx'></Input>
                 </Form.Item>
-                <Form.Item className={styles['manual-register__input']}>
+                <Form.Item
+                    name='FatherTag'
+                    className={styles['manual-register__input']}
+                >
                     <InputLabel label='ID отца' />
                     <Input placeholder='xxxxxx'></Input>
                 </Form.Item>
             </div>
-            <Form.Item rules={requiredRule}>
+            <Form.Item rules={requiredRule} name='GroupId'>
                 <InputLabel label='Группа содержания' />
                 <Select className={styles['manual-register__input']}></Select>
             </Form.Item>
@@ -101,7 +108,10 @@ export const ManualRegistrationForm = () => {
                     </Form.Item>
                 </div>
             </div>
-            <Form.Item className={styles['manual-register__input']}>
+            <Form.Item
+                name='Photo'
+                className={styles['manual-register__input']}
+            >
                 <InputLabel label='Фотография животного' />
                 <Dragger>
                     <p className='ant-upload-drag-icon'>

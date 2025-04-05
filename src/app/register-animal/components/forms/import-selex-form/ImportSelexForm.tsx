@@ -1,9 +1,15 @@
-import { Form, List } from 'antd';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Form, List } from 'antd';
 import Dragger from 'antd/es/upload/Dragger';
 import { InboxOutlined } from '@ant-design/icons';
 import styles from './ImportSelexForm.module.css';
+import { useRegistrationAnimalFromCSVMutation } from '../../../services/registration-animal';
 
 export const ImportSelexForm = () => {
+    const [registerAnimalFromCsv, { isLoading, isError, isSuccess }] =
+        useRegistrationAnimalFromCSVMutation();
+    const [registerAnimalCSVForm] = Form.useForm();
+
     const data = [
         'Инвентарный номер (обязательное поле, всегда первая колонка)',
         'Дата рождения',
@@ -24,15 +30,29 @@ export const ImportSelexForm = () => {
         'Гос-во рождения',
     ];
 
+    const registrationAnimalCsv = (dataForm: {
+        file: {
+            file: File;
+            fileList: any;
+        };
+    }) => {
+        const registerData: FormData = new FormData();
+        registerData.append('file', dataForm.file.fileList?.[0]?.originFileObj);
+        registerAnimalFromCsv(registerData);
+        /** Добавить обработку */
+        registerAnimalCSVForm.resetFields();
+    };
+
     return (
         <div className={styles['import-selex']}>
-            <Form>
+            <Form onFinish={registrationAnimalCsv} form={registerAnimalCSVForm}>
                 <h2>Импорт животных из файла выгрузки СЕЛЭКС</h2>
                 <Form.Item
+                    name='file'
                     className={styles['import-selex__dragger']}
                     rules={[{ required: true, message: 'Обязательное поле' }]}
                 >
-                    <Dragger>
+                    <Dragger beforeUpload={() => false}>
                         <p className='ant-upload-drag-icon'>
                             <InboxOutlined />
                         </p>
@@ -44,6 +64,9 @@ export const ImportSelexForm = () => {
                         </p>
                     </Dragger>
                 </Form.Item>
+                <Button htmlType='submit' loading={isLoading}>
+                    Импортирова данные
+                </Button>
             </Form>
             <div>
                 <h3 className={styles['import-selex__additional-title']}>
