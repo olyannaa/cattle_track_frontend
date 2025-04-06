@@ -1,5 +1,4 @@
 import { api } from '../../../app-service/services/api';
-import { AnimalForm } from '../data/interfaces/animal-form';
 
 export type IdentificationOrg = {
     organization_id: string;
@@ -10,38 +9,34 @@ export type SelectResponseType = {
     name: string;
 };
 
+const org_id: string = JSON.parse(
+    localStorage.getItem('user') ?? ''
+)?.organizationId;
+
 export const registrationAnimalApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getAnimalIdentifications: builder.mutation<SelectResponseType, void>({
+        getAnimalIdentifications: builder.query<SelectResponseType[], void>({
             query: () => ({
-                url: 'animal/identifications',
+                url: `animal/identifications?orgatization_id=${org_id}`,
                 method: 'GET',
-                body: {
-                    organization_id: 'e97a7dbf-7336-44b8-bb3f-407fc59ecf2b',
-                },
             }),
         }),
-        getAnimalGroups: builder.mutation<SelectResponseType, void>({
+        getAnimalGroups: builder.query<SelectResponseType[], void>({
             query: () => ({
-                url: 'animal/groups',
+                url: `animal/groups?orgatization_id=${org_id}`,
                 method: 'GET',
-                body: {
-                    organization_id: 'e97a7dbf-7336-44b8-bb3f-407fc59ecf2b',
-                },
             }),
         }),
-        registrationAnimal: builder.mutation<void, AnimalForm>({
-            query: () => ({
+        registrationAnimal: builder.mutation<void, FormData>({
+            query: (body) => ({
                 url: 'animal/registration',
                 method: 'POST',
-                body: {
-                    organization_id: 'e97a7dbf-7336-44b8-bb3f-407fc59ecf2b',
-                },
+                body: body,
             }),
         }),
         registrationAnimalFromCSV: builder.mutation<void, FormData>({
             query: (data) => ({
-                url: `animal/registration/import/csv?org_id=e97a7dbf-7336-44b8-bb3f-407fc59ecf2b`,
+                url: `animal/registration/import/csv?org_id=${org_id}`,
                 method: 'POST',
                 body: data,
             }),
@@ -50,8 +45,8 @@ export const registrationAnimalApi = api.injectEndpoints({
 });
 
 export const {
-    useGetAnimalGroupsMutation,
-    useGetAnimalIdentificationsMutation,
+    useGetAnimalIdentificationsQuery,
+    useGetAnimalGroupsQuery,
     useRegistrationAnimalMutation,
     useRegistrationAnimalFromCSVMutation,
 } = registrationAnimalApi;

@@ -23,13 +23,13 @@ export const AppMenu = () => {
         {
             key: '2',
             icon: <FolderOpenFilled />,
-            label: <Link to='/animalregister'>Учет животных</Link>,
+            label: 'Учет животных',
             danger: true,
         },
         {
             key: '3',
             icon: <IdcardFilled />,
-            label: 'Регистрация животных',
+            label: <Link to='/animalregister'>Регистрация животных</Link>,
             danger: true,
         },
         {

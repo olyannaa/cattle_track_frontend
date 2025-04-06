@@ -1,59 +1,84 @@
 import { Form, Input, Radio } from 'antd';
-import styles from '../ManualRegistration.module.css';
 import { InputLabel } from '../../../../../../global-components/custom-input/input-label/InputLabel';
 import TextArea from 'antd/es/input/TextArea';
+import styles from '../ManualRegistration.module.css';
+import netelStyles from './NetelForm.module.css';
 
 export const NetelFormRegister = () => {
     const requiredRule = [{ required: true, message: 'Обязательное поле' }];
 
     return (
-        <Form>
-            <div className={styles['manual-register__additional-form']}>
-                <Form.Item
-                    rules={requiredRule}
-                    className={styles['manual-register__input']}
-                >
+        <Form.Item className={styles['manual-register__additional-form']}>
+            <InputLabel label='Для регистрации нетеля необходимо заполнить данные об осеменении' />
+            <div className={styles['manual-register__changed-form']}>
+                <div className={styles['manual-register__changed-input']}>
                     <InputLabel label='Дата осеменения' />
-                    <Input placeholder='xx.xx.xxxx'></Input>
-                </Form.Item>
-                <Form.Item
-                    className={styles['manual-register__input']}
-                    rules={requiredRule}
-                >
+                    <Form.Item
+                        name='InseminationDate'
+                        rules={requiredRule}
+                        className={styles['manual-register__changed-input']}
+                    >
+                        <Input type='date' placeholder='xx.xx.xxxx'></Input>
+                    </Form.Item>
+                </div>
+                <div className={styles['manual-register__changed-input']}>
                     <InputLabel label='Ожидаемая дата отела' />
-                    <Input placeholder='xx.xx.xxxx'></Input>
-                </Form.Item>
+                    <Form.Item rules={requiredRule} name='ExpectedCalvingDate'>
+                        <Input type='date' placeholder='xx.xx.xxxx'></Input>
+                    </Form.Item>
+                </div>
             </div>
-            <Form.Item>
-                <InputLabel label='Тип осеменения' />
+            <InputLabel label='Тип осеменения' />
+            <Form.Item name='InseminationType' style={{ maxWidth: 412 }}>
                 <Radio.Group>
-                    <div className={styles['manual-register__origin']}>
-                        <div className='radio-border'>
-                            <Radio value='own'>Искусственное</Radio>
+                    <div
+                        className={styles['manual-register__origin']}
+                        style={{ maxWidth: 412 }}
+                    >
+                        <div
+                            className={`${netelStyles['netel-form__radio1']} radio-border`}
+                        >
+                            <Radio value='Искусственное'>Искусственное</Radio>
                         </div>
-                        <div className='radio-border'>
-                            <Radio value='buy'>Естественное</Radio>
+                        <div
+                            className={`${netelStyles['netel-form__radio2']} radio-border`}
+                        >
+                            <Radio value='Естественное'>Естественное</Radio>
                         </div>
-                        <div className='radio-border'>
-                            <Radio value='obmen'>Эмбрион</Radio>
+                        <div
+                            className={`${netelStyles['netel-form__radio3']} radio-border`}
+                        >
+                            <Radio value='Эмбрион'>Эмбрион</Radio>
                         </div>
                     </div>
                 </Radio.Group>
             </Form.Item>
+            <InputLabel label='Номер партии спермы' />
             <Form.Item
-                className={styles['manual-register__input']}
+                name='SpermBatch'
+                className={styles['manual-register__changed-input']}
                 rules={requiredRule}
             >
-                <InputLabel label='Номер партии спермы' />
                 <Input placeholder='xxxxxxxx'></Input>
             </Form.Item>
-            <Form.Item className={styles['manual-register__input']}>
-                <InputLabel label='Примечание к осеменению' />
+            <InputLabel label='Техник осеменения' />
+            <Form.Item
+                name='Technician'
+                className={styles['manual-register__changed-input']}
+                rules={requiredRule}
+            >
+                <Input placeholder='xxxxxxxx'></Input>
+            </Form.Item>
+            <InputLabel label='Примечание к осеменению' />
+            <Form.Item
+                name='Notes'
+                className={styles['manual-register__changed-input']}
+            >
                 <TextArea
                     rows={4}
                     placeholder='Дополнительная информация'
                 ></TextArea>
             </Form.Item>
-        </Form>
+        </Form.Item>
     );
 };

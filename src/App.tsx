@@ -28,6 +28,9 @@ function App() {
                 colorBgSolidActive: 'rgba(255, 66, 24, 1)',
                 borderRadiusLG: 2,
                 textTextColor: 'rgba(255, 66, 24, 1)',
+                colorPrimary: '#FF4218',
+                colorPrimaryActive: 'rgba(255, 66, 24, 0.7)',
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
             },
             Input: {
                 borderRadius: 2,
@@ -52,13 +55,15 @@ function App() {
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
                 colorPrimaryBorder: 'rgba(255, 66, 24, 0.7)',
                 colorPrimaryActive: 'rgba(255, 66, 24, 0.7)',
-                fontSize: 16,
+                fontSize: 14,
                 controlHeight: 40,
             },
             Select: {
                 borderRadius: 2,
                 fontSize: 16,
                 controlHeight: 40,
+                activeBorderColor: 'rgba(255, 75, 64, 1)',
+                hoverBorderColor: 'rgba(255, 75, 64, 1)',
             },
             Upload: {
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',

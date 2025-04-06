@@ -12,6 +12,6 @@
     background-color: var(--global-bg);
     box-shadow: var(--block-shadow);
     border-radius: var(--base-border-radius);
-    padding: var(--spacing-2l) var(--spacing-xl);
+    padding: var(--spacing-xl) var(--spacing-2l);
     max-width: 920px;
 }

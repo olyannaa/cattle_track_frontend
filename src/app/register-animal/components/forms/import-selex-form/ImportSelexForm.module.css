@@ -5,6 +5,7 @@
 }
 
 .import-selex__additional-title {
+    margin-top: var(--spacing-m);
     margin-bottom: var(--spacing-m);
 }
 

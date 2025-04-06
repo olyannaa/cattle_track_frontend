@@ -20,9 +20,12 @@
 }
 
 .manual-register__changed-form {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 0 24px;
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .manual-register__changed-input {
@@ -30,19 +33,22 @@
     max-width: 412px;
 }
 
+.manual-register__alert {
+    max-width: 432px;
+    margin-bottom: var(--spacing-xl);
+    border-radius: 2px;
+}
+
 @media (max-width: 768px) {
     .manual-register__changed-form {
         flex-direction: column;
     }
+}
 
+@media (max-width: 715px) {
     .manual-register__origin {
         flex-direction: column;
     }
-
-    .manual-register__origin {
-        flex-direction: column;
-    }
-
     .manual-register__origin div:not(:last-child) {
         margin-bottom: var(--spacing-xs);
         margin-right: 0;

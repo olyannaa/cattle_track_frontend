@@ -25,10 +25,15 @@ body {
 .radio-border {
     border: 1px solid var(--grey-border);
     border-radius: 2px;
-    padding: 7px var(--spacing-m);
-    max-width: 358px;
-    min-width: 142px;
+    padding: 9px var(--spacing-m);
     flex: 1;
+    background-color: #fff;
+}
+
+.alert {
+    max-width: 432px;
+    margin-bottom: var(--spacing-xl);
+    border-radius: 2px;
 }
 
 * {
@@ -170,4 +175,9 @@ input[type='file'] {
 .ant-upload-wrapper .ant-upload-drag {
     border-radius: 2px;
     border: var(--grey-border) solid 1px;
+}
+
+/** Чтобы не было нижнего отступа у табов */
+.ant-tabs-top > .ant-tabs-nav {
+    margin: 0;
 }

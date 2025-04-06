@@ -15,8 +15,8 @@ import { IUser } from '../../utils/userType';
 const { Header, Sider, Content } = Layout;
 
 export const LayoutPage: React.FC = () => {
-    // const user: IUser = JSON.parse(localStorage.getItem('user') || '');
-    const [collapsed, setCollapsed] = useState(false);
+    const user: IUser = JSON.parse(localStorage.getItem('user') || '');
+    const [collapsed, setCollapsed] = useState(true);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
@@ -46,9 +46,9 @@ export const LayoutPage: React.FC = () => {
         };
     }, []);
 
-    // if (!user) {
-    //     return <Navigate to='/' />;
-    // }
+    if (!user) {
+        return <Navigate to='/' />;
+    }
 
     const handlerLogout = async () => {
         try {
@@ -85,7 +85,7 @@ export const LayoutPage: React.FC = () => {
                     <Flex gap={'4px'}>
                         <Button type={'text'}>
                             <UserOutlined />
-                            {/* {user.organizationName} */}
+                            {user.organizationName}
                         </Button>
                         <Button onClick={handlerLogout} variant='link'>
                             Выход
