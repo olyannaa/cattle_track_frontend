@@ -1,6 +1,7 @@
 import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 import {
     BellFilled,
+    CarryOutFilled,
     ClockCircleFilled,
     DatabaseFilled,
     FolderOpenFilled,
@@ -34,10 +35,17 @@ export const AppMenu = () => {
         },
         {
             key: '4',
+            icon: <CarryOutFilled />,
+            label: <Link to='/infrastructure'>Инфраструктура</Link>,
+            danger: true,
+        },
+        {
+            key: '4',
             icon: <DatabaseFilled />,
             label: 'Ежедневные действия',
             danger: true,
         },
+
         {
             key: '5',
             icon: <SafetyCertificateFilled />,
@@ -65,6 +73,11 @@ export const AppMenu = () => {
     ];
 
     return (
-        <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />
+        <Menu
+            theme='light'
+            mode='inline'
+            defaultSelectedKeys={['1']}
+            items={menuItems}
+        />
     );
 };
