@@ -26,11 +26,7 @@ export const CustomTabs = ({
                     </Button>
                 )}
             </Flex>
-            <Tabs
-                items={items}
-                onChange={onChange}
-                style={{ marginBottom: '-16px' }}
-            />
+            <Tabs items={items} onChange={onChange} />
         </Flex>
     );
 };
