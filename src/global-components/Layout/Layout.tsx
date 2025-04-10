@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Flex, Layout } from 'antd';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { AppMenu } from './components/Menu/Menu';
+import { AppMenu } from './components/menu/Menu';
 import styles from './Layout.module.css';
 import { useLogoutMutation } from '../../app-service/services/auth';
 import { IUser } from '../../utils/userType';
@@ -16,10 +16,6 @@ const { Header, Sider, Content } = Layout;
 
 export const LayoutPage: React.FC = () => {
     const user: IUser = JSON.parse(localStorage.getItem('user') || '');
-
-    if (!user) {
-        return <Navigate to='/' />;
-    }
 
     const [collapsed, setCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
@@ -58,6 +54,10 @@ export const LayoutPage: React.FC = () => {
             navigate('/');
         } catch {}
     };
+
+    if (!user) {
+        return <Navigate to='/' />;
+    }
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -110,7 +110,11 @@ export const LayoutPage: React.FC = () => {
                             className={styles['trapezoid-button']}
                         >
                             <div className={styles['trapezoid-button__icon']}>
-                                {collapsed ? <RightOutlined /> : <LeftOutlined />}
+                                {collapsed ? (
+                                    <RightOutlined />
+                                ) : (
+                                    <LeftOutlined />
+                                )}
                             </div>
                         </div>
                     )}
