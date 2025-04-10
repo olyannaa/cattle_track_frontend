@@ -9,7 +9,7 @@ type Props = {
     onChange?: (activeKey: string) => void;
 };
 
-export const CustomTabs = ({
+export const HeaderContent = ({
     title,
     items,
     buttonText,

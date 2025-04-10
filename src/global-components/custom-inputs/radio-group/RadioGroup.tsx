@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Radio } from 'antd';
 import { CheckboxGroupProps } from 'antd/es/checkbox';
 
