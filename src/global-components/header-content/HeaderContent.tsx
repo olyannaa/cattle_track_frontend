@@ -1,5 +1,5 @@
 import { Button, Flex, Tabs, TabsProps, Typography } from 'antd';
-import styles from './CustomTabs.module.css';
+import styles from './HeaderContent.module.css';
 
 type Props = {
     title: string;
@@ -26,11 +26,7 @@ export const HeaderContent = ({
                     </Button>
                 )}
             </Flex>
-            <Tabs
-                items={items}
-                onChange={onChange}
-                style={{ marginBottom: '-16px' }}
-            />
+            <Tabs items={items} onChange={onChange} />
         </Flex>
     );
 };

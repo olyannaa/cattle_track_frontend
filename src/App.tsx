@@ -4,6 +4,7 @@ import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
 import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { MainPage } from './app/main/MainPage';
+import { DailyActivities } from './app/daily-activities/DailyActivities';
 
 function App() {
     const theme: ThemeConfig = {
@@ -73,6 +74,10 @@ function App() {
                 colorBorder: 'rgba(0, 0, 0, 0.06)',
                 fontSize: 16,
             },
+            Checkbox: {
+                colorPrimaryHover: '#FF4218',
+                colorPrimary: '#FF4218',
+            },
         },
         token: {},
         cssVar: true,
@@ -85,6 +90,7 @@ function App() {
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
                         <Route path='/animals' element={<RegisterAnimalPage />} />
+                        <Route path='/daily-activities' element={<DailyActivities />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
