@@ -16,10 +16,23 @@ const { Header, Sider, Content } = Layout;
 
 export const LayoutPage: React.FC = () => {
     const user: IUser = JSON.parse(localStorage.getItem('user') || '');
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
+
+    const siderStyle: React.CSSProperties = {
+        position: 'sticky',
+        insetInlineStart: 0,
+        top: 0,
+        bottom: 0,
+        scrollbarWidth: 'thin',
+        scrollbarGutter: 'stable',
+        boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.2)',
+        background: '#ffffff',
+        maxHeight: 696,
+        display: isMobile && collapsed ? 'none' : 'block',
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -36,19 +49,6 @@ export const LayoutPage: React.FC = () => {
     if (!user) {
         return <Navigate to='/' />;
     }
-
-    const siderStyle: React.CSSProperties = {
-        position: 'sticky',
-        insetInlineStart: 0,
-        top: 0,
-        bottom: 0,
-        scrollbarWidth: 'thin',
-        scrollbarGutter: 'stable',
-        boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.2)',
-        background: '#ffffff',
-        maxHeight: 696,
-        display: isMobile && collapsed ? 'none' : 'block',
-    };
 
     const handlerLogout = async () => {
         try {
