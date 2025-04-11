@@ -140,3 +140,7 @@ input[type='file'] {
 .ant-tabs-top > .ant-tabs-nav::before {
     border-bottom: none;
 }
+
+._select__status_ck601_75 .ant-select-selector {
+    padding: 0 3px !important;
+}

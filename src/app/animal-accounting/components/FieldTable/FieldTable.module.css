@@ -1,0 +1,93 @@
+.input__tagNumber {
+    width: 100%;
+    font-size: 14px;
+    height: 22px;
+    padding: 0 3px;
+    max-width: 60px;
+}
+
+.text-cell__tagNumber {
+    min-height: 20px;
+    width: 80px;
+}
+
+.input__birthDate {
+    width: 100%;
+    font-size: 14px;
+    height: 22px;
+    padding: 0 3px;
+    max-width: 83px;
+}
+
+.text-cell__birthDate {
+    min-height: 20px;
+    width: 77px;
+}
+
+.select__groupName {
+    width: 100%;
+    font-size: 14px;
+    height: 22px;
+    max-width: 200px;
+}
+
+.text-cell__groupName {
+    width: 200px;
+}
+
+.select__status {
+    width: 100%;
+    font-size: 14px;
+    height: 22px;
+    max-width: 96px;
+}
+
+.text-cell__groupName {
+    width: 200px;
+}
+
+@media (max-width: 1440px) {
+    .input__tagNumber {
+        max-width: 54px;
+    }
+
+    .text-cell__tagNumber {
+        width: 48px;
+    }
+
+    .input__birthDate {
+        max-width: 77px;
+    }
+
+    .text-cell__birthDate {
+        width: 72px;
+    }
+}
+
+/* .input__birthDate {
+    width: 80px;
+    font-size: 14px;
+    height: 22px;
+    padding: 0 3px;
+}
+
+.text-cell__birthDate {
+    min-height: 20px;
+    width: 80px;
+} */
+
+.select__status {
+    width: 100%;
+    font-size: 14px;
+    height: 22px;
+    min-width: 78px;
+    max-width: 100px;
+    padding: 0;
+}
+
+.text-cell__status {
+    min-height: 20px;
+    width: 100%;
+    min-width: 78px;
+    max-width: 100px;
+}
