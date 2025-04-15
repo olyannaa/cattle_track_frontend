@@ -27,10 +27,10 @@ export const AnimalAccountingPage = () => {
     const [getPageCountQuery, { isLoading: isLoadingPageCount }] =
         useLazyGetPaginationInfoQuery();
     const [getAnimalsQuery, { isLoading: isLoadingAnimals }] = useLazyGetAnimalsQuery();
-    const [updateAnimals, { isLoading: isLoadingUpdate }] = useUpdateAnimalsMutation();
+    const [updateAnimals] = useUpdateAnimalsMutation();
     useGetAnimalGroupsQuery();
 
-    const [messageApi] = message.useMessage();
+    const [messageApi, contextHolder] = message.useMessage();
 
     const success = () => {
         messageApi.open({
@@ -92,6 +92,7 @@ export const AnimalAccountingPage = () => {
 
     return (
         <Flex vertical gap={'16px'}>
+            {contextHolder}
             <HeaderContent
                 items={items}
                 title='Учет животных'

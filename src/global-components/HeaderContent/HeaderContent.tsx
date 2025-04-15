@@ -30,6 +30,7 @@ export const HeaderContent = ({ title, items, buttons, onChange }: Props) => {
                                     ]
                                 }
                                 size='large'
+                                key={i}
                             >
                                 {button.text}
                             </Button>

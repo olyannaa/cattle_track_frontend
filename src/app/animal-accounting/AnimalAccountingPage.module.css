@@ -6,8 +6,9 @@
 }
 
 .pagination {
+    width: auto;
     justify-self: end;
-    width: 305px;
+    min-width: 600px;
 }
 
 @media (max-width: 767px) {
@@ -18,5 +19,6 @@
     .pagination {
         justify-self: start;
         margin-left: 16px !important;
+        justify-content: flex-start !important;
     }
 }
