@@ -6,30 +6,39 @@
     width: 100%;
 }
 
-.title__button {
+.title__button_first {
     width: 264px;
+}
+
+.title__button_second {
+    width: 177px;
 }
 
 .tabs {
     overflow-x: auto;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 940px) {
     .title {
+        flex-direction: column;
+    }
+
+    .title__buttons {
+        margin-bottom: 12px;
+    }
+}
+@media (max-width: 767px) {
+    .title__buttons {
         flex-direction: column;
     }
 
     .title__text {
         font-size: 24px !important;
     }
-
-    .title__button {
-        margin-bottom: 12px;
-    }
 }
 
 @media (max-width: 375px) {
-    .title__button {
+    .title__button_first {
         width: 230px;
     }
 }

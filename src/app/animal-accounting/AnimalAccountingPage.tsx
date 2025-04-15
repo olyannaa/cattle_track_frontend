@@ -1,4 +1,4 @@
-import { Button, Flex, Pagination, Table } from 'antd';
+import { Button, Flex, message, Pagination, Table } from 'antd';
 import { HeaderContent } from '../../global-components/HeaderContent/HeaderContent';
 import styles from './AnimalAccountingPage.module.css';
 import { getColumns, IAnimalTable, items } from './data';
@@ -31,6 +31,22 @@ export const AnimalAccountingPage = () => {
     const [updateAnimals, { isLoading: isLoadingUpdate }] = useUpdateAnimalsMutation();
     useGetAnimalGroupsQuery();
 
+    const [messageApi] = message.useMessage();
+
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Данные успешно изменены',
+        });
+    };
+
+    const error = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'Ошибка при изменении данных',
+        });
+    };
+
     const getCountAnimals = async () => {
         const res = (await getPageCountQuery(typeAnimal)).data;
         setPaginationInfo(res);
@@ -51,13 +67,29 @@ export const AnimalAccountingPage = () => {
             return;
         }
         try {
-            const response = await updateAnimals(changedAnimals);
-        } catch {}
+            await updateAnimals(changedAnimals);
+            await getAnimals();
+            await getCountAnimals();
+            success();
+        } catch {
+            error();
+        }
     };
 
     const handlerExportCSV = async () => {
         await downloadScvAnimals({ page: 1, type: typeAnimal });
     };
+
+    const buttons = [
+        {
+            text: 'Экспортировать таблицу (SCV)',
+            buttonClick: handlerExportCSV,
+        },
+    ];
+
+    if (isEditTable) {
+        buttons.push({ text: 'Сохранить таблицу', buttonClick: handlerClickSaveChange });
+    }
 
     return (
         <Flex vertical gap={'16px'}>
@@ -65,8 +97,7 @@ export const AnimalAccountingPage = () => {
                 items={items}
                 title='Учет животных'
                 onChange={setTypeAnimal}
-                buttonText={'Экспортировать таблицу (SCV)'}
-                buttonClick={handlerExportCSV}
+                buttons={buttons}
             />
             <Flex className={styles['wrapper-table']} vertical>
                 <Table<IAnimalTable>
@@ -87,18 +118,6 @@ export const AnimalAccountingPage = () => {
                         className: styles['pagination'],
                     }}
                 />
-                {isEditTable && (
-                    <Button
-                        onClick={handlerClickSaveChange}
-                        type='primary'
-                        color='default'
-                        variant='solid'
-                        size='large'
-                        loading={isLoadingUpdate}
-                    >
-                        Сохранить изменения
-                    </Button>
-                )}
             </Flex>
         </Flex>
     );
