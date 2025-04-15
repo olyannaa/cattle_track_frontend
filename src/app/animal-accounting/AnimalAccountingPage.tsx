@@ -15,12 +15,11 @@ import { downloadScvAnimals } from '../../functions/fetchFiles';
 import { useAppSelector } from '../../app-service/hooks';
 import { selectChangedAnimals } from '../../features/animalsSlice';
 import { IUser } from '../../utils/userType';
+import { CheckPermissions, Permissions } from '../../utils/permissions';
 
 export const AnimalAccountingPage = () => {
     const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
-    const isEditTable = !!user.permissionIds.find(
-        (permission) => permission === '2e4f8621-1071-4bc5-beb0-f06058ec9566'
-    );
+    const isEditTable = CheckPermissions(user.permissionIds, Permissions.AnimalEditTable);
     const [typeAnimal, setTypeAnimal] = useState<string>('Корова');
     const [animals, setAnimals] = useState<IAnimal[]>([]);
     const changedAnimals = useAppSelector(selectChangedAnimals);
