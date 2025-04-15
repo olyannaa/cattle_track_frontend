@@ -1,6 +1,9 @@
 import { Tabs, TabsProps } from 'antd';
 import { useState } from 'react';
-import styles from './InfrastructurePage.module.css';
+import { GroupsContainer } from './components/groups/GroupsContainer';
+import { IdentificationFields } from './components/indentification-fields/IdentificationFields';
+import { TypesGroups } from './components/types-groups/TypesGroups';
+import { Settings } from './components/settings/Settings';
 
 export const InfrastructurePage = () => {
     const [activeTab, setActiveTab] = useState('1');
@@ -27,8 +30,8 @@ export const InfrastructurePage = () => {
     };
     return (
         <div>
-            <div className={styles['register-animals__header']}>
-                <h1>Регистрация нового животного</h1>
+            <div className='header-container'>
+                <h1 className='header-title'>Инфраструктура</h1>
                 <Tabs
                     style={{
                         fontWeight: 400,
@@ -39,7 +42,10 @@ export const InfrastructurePage = () => {
                     onChange={onChange}
                 />
             </div>
-            <div className={styles['register-animals__content']}></div>
+            {activeTab === '1' && <GroupsContainer />}
+            {activeTab === '2' && <TypesGroups />}
+            {activeTab === '3' && <IdentificationFields />}
+            {activeTab === '4' && <Settings />}
         </div>
     );
 };

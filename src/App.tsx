@@ -32,6 +32,8 @@ function App() {
                 colorPrimary: '#FF4218',
                 colorPrimaryActive: 'rgba(255, 66, 24, 0.7)',
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+                colorLink: '#FF4218',
+                colorLinkHover: 'rgba(255, 66, 24, 0.7)',
             },
             Input: {
                 borderRadius: 2,
@@ -49,6 +51,7 @@ function App() {
                 inkBarColor: 'rgba(255, 66, 24, 1)',
                 itemHoverColor: 'rgba(255, 66, 24, 0.7)',
                 itemActiveColor: 'rgba(255, 66, 24, 0.7)',
+                fontSize: 16,
             },
             Radio: {
                 colorPrimary: '#FF4218',
@@ -74,6 +77,12 @@ function App() {
                 colorBorder: 'rgba(0, 0, 0, 0.06)',
                 fontSize: 16,
             },
+            Message: {
+                borderRadiusLG: 2,
+            },
+            Modal: {
+                titleFontSize: 24,
+            },
         },
         token: {},
         cssVar: true,
@@ -85,8 +94,14 @@ function App() {
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        <Route path='/animals' element={<RegisterAnimalPage />} />
-                        <Route path='/infrastructure' element={<InfrastructurePage/>} />
+                        <Route
+                            path='/animals'
+                            element={<RegisterAnimalPage />}
+                        />
+                        <Route
+                            path='/infrastructure'
+                            element={<InfrastructurePage />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>
