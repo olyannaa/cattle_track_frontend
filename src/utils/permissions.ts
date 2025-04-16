@@ -1,8 +1,8 @@
 import { IUser } from './userType';
 
 export enum Permissions {
-    AnimalEditTable = 'animal table edit',
-    Test = 'test',
+    animalEditTable = 'animal table edit',
+    test = 'test',
 }
 
 export const CheckPermissions = (permission: string): boolean => {

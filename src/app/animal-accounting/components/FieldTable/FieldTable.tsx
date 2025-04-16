@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { IAnimalTable } from '../../data';
 import { Badge, Input, Select } from 'antd';
 import styles from './FieldTable.module.css';
-import {
-    selectAnimalGroups,
-    updateChangedAnimals,
-} from '../../../../features/animalsSlice';
+import { selectAnimalGroups, updateChangedAnimals } from '../../services/animalsSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 
 type Props = {

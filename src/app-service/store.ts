@@ -1,6 +1,6 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { api } from '../app-service/services/api';
-import animals from '../features/animalsSlice';
+import animals from '../app/animal-accounting/services/animalsSlice';
 
 export const store = configureStore({
     reducer: {

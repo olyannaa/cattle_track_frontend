@@ -1,23 +1,26 @@
 import { Flex, message, Table } from 'antd';
 import { HeaderContent } from '../../global-components/HeaderContent/HeaderContent';
 import styles from './AnimalAccountingPage.module.css';
-import { getColumns, IAnimalTable, items } from './data';
 import {
-    IAnimal,
-    IResponsePaginationInfo,
     useGetAnimalGroupsQuery,
     useLazyGetAnimalsQuery,
     useLazyGetPaginationInfoQuery,
     useUpdateAnimalsMutation,
-} from '../../app-service/services/animals';
+} from './services/animals';
 import { useEffect, useState } from 'react';
 import { downloadScvAnimals } from '../../functions/fetchFiles';
 import { useAppSelector } from '../../app-service/hooks';
-import { selectChangedAnimals } from '../../features/animalsSlice';
+import { selectChangedAnimals } from './services/animalsSlice';
 import { CheckPermissions, Permissions } from '../../utils/permissions';
+import {
+    IAnimal,
+    IAnimalTable,
+    IResponsePaginationInfo,
+} from './data/interfaces/animalApi';
+import { getColumns, items } from './data/const/tableAnimal';
 
 export const AnimalAccountingPage = () => {
-    const isEditTable = CheckPermissions(Permissions.AnimalEditTable);
+    const isEditTable = CheckPermissions(Permissions.animalEditTable);
     const [typeAnimal, setTypeAnimal] = useState<string>('Корова');
     const [animals, setAnimals] = useState<IAnimal[]>([]);
     const changedAnimals = useAppSelector(selectChangedAnimals);

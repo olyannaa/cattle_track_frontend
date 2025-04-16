@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { animalsApi, IChangedAnimal } from '../app-service/services/animals';
-import { RootState } from '../app-service/store';
+import { RootState } from '../../../app-service/store';
 
 interface IAnimalGroup {
     id: string;

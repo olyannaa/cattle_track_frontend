@@ -1,6 +1,6 @@
 import { TableProps, TabsProps } from 'antd';
-import { IAnimal } from '../../app-service/services/animals';
-import { FieldTable } from './components/FieldTable/FieldTable';
+import { FieldTable } from '../../components/FieldTable/FieldTable';
+import { IAnimalTable } from '../interfaces/animalApi';
 
 export const items: TabsProps['items'] = [
     {
@@ -24,10 +24,6 @@ export const items: TabsProps['items'] = [
         label: 'Бычки',
     },
 ];
-
-export interface IAnimalTable extends IAnimal {
-    key: string;
-}
 
 export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['columns'] => [
     {
