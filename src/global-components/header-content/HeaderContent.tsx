@@ -4,7 +4,7 @@ import styles from './HeaderContent.module.css';
 type Props = {
     title: string;
     items: TabsProps['items'];
-    buttons: {
+    buttons?: {
         text: string;
         buttonClick: () => void;
     }[];
