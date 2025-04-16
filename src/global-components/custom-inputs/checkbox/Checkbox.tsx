@@ -2,6 +2,7 @@ import { Checkbox, CheckboxChangeEvent } from 'antd';
 
 type Props = {
     onChange: (e: CheckboxChangeEvent) => void;
+    value: boolean;
     title: string;
 };
 
@@ -16,6 +17,7 @@ export const CheckboxCustom = ({ title, onChange }: Props) => {
                 borderRadius: '2px',
                 width: '100%',
             }}
+            value={false}
         >
             {title}
         </Checkbox>
