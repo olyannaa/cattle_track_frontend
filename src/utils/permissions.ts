@@ -1,12 +1,15 @@
+import { IUser } from './userType';
+
 export enum Permissions {
     AnimalEditTable = 'animal table edit',
     Test = 'test',
 }
 
-export const CheckPermissions = (arr: string[], permission: string): boolean => {
-    if (!arr.length) {
+export const CheckPermissions = (permission: string): boolean => {
+    const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.permissionIds.length) {
         return false;
     }
 
-    return !!arr.find((permissionCurr) => permissionCurr === permission);
+    return !!user.permissionIds.find((permissionCurr) => permissionCurr === permission);
 };

@@ -1,4 +1,4 @@
-import { Button, Flex, message, Pagination, Table } from 'antd';
+import { Flex, message, Table } from 'antd';
 import { HeaderContent } from '../../global-components/HeaderContent/HeaderContent';
 import styles from './AnimalAccountingPage.module.css';
 import { getColumns, IAnimalTable, items } from './data';
@@ -14,12 +14,10 @@ import { useEffect, useState } from 'react';
 import { downloadScvAnimals } from '../../functions/fetchFiles';
 import { useAppSelector } from '../../app-service/hooks';
 import { selectChangedAnimals } from '../../features/animalsSlice';
-import { IUser } from '../../utils/userType';
 import { CheckPermissions, Permissions } from '../../utils/permissions';
 
 export const AnimalAccountingPage = () => {
-    const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
-    const isEditTable = CheckPermissions(user.permissionIds, Permissions.AnimalEditTable);
+    const isEditTable = CheckPermissions(Permissions.AnimalEditTable);
     const [typeAnimal, setTypeAnimal] = useState<string>('Корова');
     const [animals, setAnimals] = useState<IAnimal[]>([]);
     const changedAnimals = useAppSelector(selectChangedAnimals);
