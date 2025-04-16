@@ -15,7 +15,7 @@ import { IUser } from '../../utils/userType';
 const { Header, Sider, Content } = Layout;
 
 export const LayoutPage: React.FC = () => {
-    const user: IUser = JSON.parse(localStorage.getItem('user') || '');
+    const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
 
     const [collapsed, setCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
