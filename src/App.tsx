@@ -64,6 +64,7 @@ function App() {
                 controlHeight: 40,
                 activeBorderColor: 'rgba(255, 75, 64, 1)',
                 hoverBorderColor: 'rgba(255, 75, 64, 1)',
+                optionSelectedBg: 'rgba(255, 66, 24, 0.1)',
             },
             Upload: {
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
@@ -72,6 +73,15 @@ function App() {
                 borderRadiusLG: 2,
                 colorBorder: 'rgba(0, 0, 0, 0.06)',
                 fontSize: 16,
+            },
+            Table: {
+                headerBorderRadius: 0,
+            },
+            Pagination: {
+                colorPrimary: 'rgba(255, 66, 24, 1)',
+                colorPrimaryBorder: 'rgba(255, 66, 24, 1)',
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+                borderRadius: 2,
             },
         },
         token: {},
