@@ -1,4 +1,4 @@
-import { Button, Flex, Tabs, TabsProps, Typography } from 'antd';
+import { Button, Flex, Tabs, TabsProps } from 'antd';
 import styles from './HeaderContent.module.css';
 
 type Props = {
@@ -15,9 +15,7 @@ export const HeaderContent = ({ title, items, buttons = [], onChange }: Props) =
     return (
         <Flex vertical className={styles['content-header']}>
             <Flex className={styles['title']} justify='space-between'>
-                <Typography.Title className={styles['title__text']}>
-                    {title}
-                </Typography.Title>
+                <h1 className={styles['title__text']}>{title}</h1>
                 <Flex gap={12} className={styles['title__buttons']}>
                     {buttons.length
                         ? buttons.map((button, i) => (

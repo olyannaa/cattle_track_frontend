@@ -32,7 +32,3 @@ export type IChangedAnimal = {
     status: string | null;
     [key: string]: string | null;
 };
-
-export interface IAnimalTable extends IAnimal {
-    key: string;
-}

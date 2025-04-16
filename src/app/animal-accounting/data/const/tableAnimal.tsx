@@ -1,6 +1,6 @@
 import { TableProps, TabsProps } from 'antd';
 import { FieldTable } from '../../components/FieldTable/FieldTable';
-import { IAnimalTable } from '../interfaces/animalApi';
+import { IAnimalTable } from '../interfaces/animalTable';
 
 export const items: TabsProps['items'] = [
     {

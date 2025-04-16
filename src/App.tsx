@@ -94,7 +94,7 @@ function App() {
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        <Route path='/animals' element={<AnimalAccountingPage />} />
+                        <Route path='/accounting' element={<AnimalAccountingPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

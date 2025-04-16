@@ -12,12 +12,9 @@ import { downloadScvAnimals } from '../../functions/fetchFiles';
 import { useAppSelector } from '../../app-service/hooks';
 import { selectChangedAnimals } from './services/animalsSlice';
 import { CheckPermissions, Permissions } from '../../utils/permissions';
-import {
-    IAnimal,
-    IAnimalTable,
-    IResponsePaginationInfo,
-} from './data/interfaces/animalApi';
+import { IAnimalTable } from './data/interfaces/animalTable';
 import { getColumns, items } from './data/const/tableAnimal';
+import { IAnimal, IResponsePaginationInfo } from './data/types/animal';
 
 export const AnimalAccountingPage = () => {
     const isEditTable = CheckPermissions(Permissions.animalEditTable);
@@ -100,7 +97,7 @@ export const AnimalAccountingPage = () => {
                 onChange={setTypeAnimal}
                 buttons={buttons}
             />
-            <Flex className={styles['wrapper-table']} vertical>
+            <Flex className={styles['table']} vertical>
                 <Table<IAnimalTable>
                     columns={getColumns(isEditTable)}
                     style={{ width: '100%' }}
@@ -116,7 +113,7 @@ export const AnimalAccountingPage = () => {
                         onChange: (page) => getAnimals(page),
                         showTotal: (total, range) =>
                             `${range[0]}-${range[1]} из ${total} элементов`,
-                        className: styles['pagination'],
+                        className: styles['table__pagination'],
                     }}
                 />
             </Flex>

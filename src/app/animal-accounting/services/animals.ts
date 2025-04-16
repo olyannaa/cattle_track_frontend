@@ -4,7 +4,7 @@ import {
     IRequestGetAnimals,
     IResponseGetAnimals,
     IResponsePaginationInfo,
-} from '../data/interfaces/animalApi';
+} from '../data/types/animal';
 
 export const animalsApi = api.injectEndpoints({
     endpoints: (builder) => ({
