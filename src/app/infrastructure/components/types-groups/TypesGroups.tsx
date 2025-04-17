@@ -52,7 +52,12 @@ export const TypesGroups = () => {
                 <h2 className='form-title'>Управление типами групп</h2>
                 <div>
                     <InputLabel label='Название группы' />
-                    <Form.Item name='name'>
+                    <Form.Item
+                        name='name'
+                        rules={[
+                            { required: true, message: 'Обязательное поле' },
+                        ]}
+                    >
                         <Input
                             className='form-input_default'
                             placeholder='Введите название'

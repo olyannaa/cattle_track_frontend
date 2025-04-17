@@ -4,14 +4,20 @@ import {
     FetchBaseQueryError,
 } from '@reduxjs/toolkit/query';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getUserOrgId } from '../../utils/userInfo';
+import { IUser } from '../../utils/userType';
 
 const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =
     fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         credentials: 'include',
-        headers: {
-            organizationId: getUserOrgId(),
+        prepareHeaders: (headers) => {
+            const user: IUser = JSON.parse(
+                localStorage.getItem('user') || '{}'
+            );
+            if (user) {
+                headers.set('organizationid', user.organizationId);
+            }
+            return headers;
         },
     });
 

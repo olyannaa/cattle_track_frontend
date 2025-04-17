@@ -54,7 +54,15 @@ export const GroupsForm = ({ isEmpty }: { isEmpty: boolean }) => {
                 <div className='form-row-inputs'>
                     <div className='form-input_default'>
                         <InputLabel label='Название группы' />
-                        <Form.Item name='name'>
+                        <Form.Item
+                            name='name'
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Обязательное поле',
+                                },
+                            ]}
+                        >
                             <Input placeholder='Введите название'></Input>
                         </Form.Item>
                     </div>

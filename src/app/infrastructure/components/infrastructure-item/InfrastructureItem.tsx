@@ -113,10 +113,8 @@ export const InfrastructureItem = ({
         <Flex className={styles['item-container']}>
             {contextHolder}
             <Flex className={styles['item-container__info']}>
-                <div className={styles['item-icon']}>
-                    <div className={styles['item-icon__letter']}>
-                        {firstLetter}
-                    </div>
+                <div className={styles['item__icon']}>
+                    <div className={styles['item__letter']}>{firstLetter}</div>
                 </div>
                 <div>
                     <h3>{item.name}</h3>

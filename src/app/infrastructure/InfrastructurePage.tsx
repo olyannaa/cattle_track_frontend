@@ -1,7 +1,7 @@
 import { Tabs, TabsProps } from 'antd';
 import { useState } from 'react';
 import { GroupsContainer } from './components/groups/GroupsContainer';
-import { IdentificationFields } from './components/indentification-fields/IdentificationFields';
+import { IdentificationFields } from './components/identification-fields/IdentificationFields';
 import { TypesGroups } from './components/types-groups/TypesGroups';
 import { Settings } from './components/settings/Settings';
 

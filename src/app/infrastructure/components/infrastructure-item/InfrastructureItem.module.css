@@ -9,7 +9,7 @@
     max-width: 628px;
 }
 
-.item-icon {
+.item__icon {
     display: flex;
     background-color: var(--volcano);
     height: 32px;
@@ -20,7 +20,7 @@
     margin-right: var(--spacing-m);
 }
 
-.item-icon__letter {
+.item__letter {
     color: var(--volcano-accent);
 }
 

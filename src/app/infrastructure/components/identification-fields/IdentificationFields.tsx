@@ -56,7 +56,12 @@ export const IdentificationFields = () => {
                 </h2>
                 <div>
                     <InputLabel label='Название поля' />
-                    <Form.Item name='name'>
+                    <Form.Item
+                        name='name'
+                        rules={[
+                            { required: true, message: 'Обязательное поле' },
+                        ]}
+                    >
                         <Input
                             className='form-input_default'
                             placeholder='Введите название'
