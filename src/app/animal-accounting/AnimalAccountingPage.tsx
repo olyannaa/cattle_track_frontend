@@ -1,5 +1,5 @@
 import { Flex, message, Table } from 'antd';
-import { HeaderContent } from '../../global-components/HeaderContent/HeaderContent';
+import { HeaderContent } from '../../global-components/header-content/HeaderContent';
 import styles from './AnimalAccountingPage.module.css';
 import {
     useGetAnimalGroupsQuery,
