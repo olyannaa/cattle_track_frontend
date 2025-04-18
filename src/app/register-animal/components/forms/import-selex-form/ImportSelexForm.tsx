@@ -34,7 +34,7 @@ export const ImportSelexForm = () => {
     const [visibleAlert, setVisibleAlert] = useState(false);
     const [alert, setAlert] = useState<IAlert | null>(null);
 
-    const registrationAnimalCsv = (dataForm: {
+    const registrationAnimalCsv = async (dataForm: {
         file: {
             file: File;
             fileList: any;
@@ -43,7 +43,7 @@ export const ImportSelexForm = () => {
         const registerData: FormData = new FormData();
         registerData.append('file', dataForm.file.fileList?.[0]?.originFileObj);
         try {
-            registerAnimalFromCsv(registerData);
+            await registerAnimalFromCsv(registerData).unwrap();
             setAlert({
                 message: 'Животное успешно зарегистрировано',
                 type: 'success',

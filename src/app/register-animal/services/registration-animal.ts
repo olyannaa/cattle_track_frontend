@@ -9,21 +9,17 @@ export type SelectResponseType = {
     name: string;
 };
 
-const org_id: string = JSON.parse(
-    localStorage.getItem('user') ?? ''
-)?.organizationId;
-
 export const registrationAnimalApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAnimalIdentifications: builder.query<SelectResponseType[], void>({
             query: () => ({
-                url: `animal/identifications?orgatization_id=${org_id}`,
+                url: `animal/identifications`,
                 method: 'GET',
             }),
         }),
         getAnimalGroups: builder.query<SelectResponseType[], void>({
             query: () => ({
-                url: `animal/groups?orgatization_id=${org_id}`,
+                url: `animal/groups`,
                 method: 'GET',
             }),
         }),
@@ -36,7 +32,7 @@ export const registrationAnimalApi = api.injectEndpoints({
         }),
         registrationAnimalFromCSV: builder.mutation<void, FormData>({
             query: (data) => ({
-                url: `animal/registration/import/csv?org_id=${org_id}`,
+                url: `animal/registration/import/csv`,
                 method: 'POST',
                 body: data,
             }),
