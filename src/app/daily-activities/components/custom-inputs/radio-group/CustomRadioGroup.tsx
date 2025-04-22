@@ -1,16 +1,8 @@
 import { Form, Radio } from 'antd';
 import { Label } from '../label/Label';
-import { CheckboxGroupProps } from 'antd/es/checkbox';
+import { IFormItemRadioGroup } from '../../../data/interface/IFormItem';
 
-export const CustomRadioGroup = ({
-    label,
-    options,
-    name,
-}: {
-    label: string;
-    options: CheckboxGroupProps<string>['options'];
-    name: string;
-}) => {
+export const CustomRadioGroup = ({ label, options, name }: IFormItemRadioGroup) => {
     return (
         <>
             <Label label={label} />

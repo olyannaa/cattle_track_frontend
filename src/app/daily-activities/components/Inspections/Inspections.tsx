@@ -1,7 +1,9 @@
-import { Button, Flex, Typography } from 'antd';
+import { Button, Flex, Form, Typography } from 'antd';
 import { CheckboxCustom } from '../../../../global-components/custom-inputs/checkbox/Checkbox';
 import { useState } from 'react';
 import { FormInspection } from '../forms/FormInspection/FormInspection';
+import { InputSearch } from '../custom-inputs/input-search/InputSearch';
+import { CustomSelect } from '../custom-inputs/select/CustomSelect';
 
 export const Inspections = () => {
     const [isGroupAction, setIsGroupAction] = useState<boolean>(false);
@@ -31,6 +33,16 @@ export const Inspections = () => {
                     />
                 )}
             </Flex>
+            <Form style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+                <InputSearch
+                    name='search-animal'
+                    label='Поиск по номеру'
+                    placeholder='Введите номер животного для фильтрации списка'
+                />
+                <CustomSelect label='Выберите животное из списка' name='' />
+                <CustomSelect label='Группа содержания' name='group' />
+            </Form>
+
             <FormInspection />
         </Flex>
     );

@@ -2,6 +2,7 @@ import { Form } from 'antd';
 import { CustomDatePicker } from '../../custom-inputs/date-picker/CustomDatePicker';
 import { CustomRadioGroup } from '../../custom-inputs/radio-group/CustomRadioGroup';
 import { CustomTextArea } from '../../custom-inputs/text-area/CustomTextArea';
+import { PersonInput } from '../../custom-inputs/person-input/PersonInput';
 
 export const FormInspection = () => {
     return (
@@ -12,6 +13,7 @@ export const FormInspection = () => {
                 options={['Плановый', 'Внеплановый', 'Диагностический', 'Предубойный']}
                 name='typeInspection'
             />
+            <PersonInput label='Кто проводил' name='name' placeholder='Введите ФИО' />
             <CustomTextArea
                 name='note'
                 label='Примечание'
