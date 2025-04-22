@@ -1,4 +1,4 @@
-import { Button, Form, message } from 'antd';
+import { Button, Flex, Form, message, Typography } from 'antd';
 import { LoginInput } from '../LoginInput/LoginInput';
 import styles from './LoginForm.module.css';
 import { LoginData, useLoginMutation } from '../../../../app-service/services/auth';
@@ -55,16 +55,22 @@ export const LoginForm = () => {
                     placeholder='Введите пароль'
                     type='password'
                 />
-                <Button
-                    type='primary'
-                    size='large'
-                    style={{ width: '100%' }}
-                    color='default'
-                    variant='solid'
-                    htmlType='submit'
-                >
-                    Войти
-                </Button>
+                <Flex vertical className={styles['form-login__footer']}>
+                    <Button
+                        type='primary'
+                        size='large'
+                        color='default'
+                        variant='solid'
+                        htmlType='submit'
+                        className={styles['button_login']}
+                    >
+                        Войти
+                    </Button>
+                    <Typography.Text className={styles['login__help']}>
+                        Если Вы забыли имя пользователя или пароль - обратитесь к
+                        администратору
+                    </Typography.Text>
+                </Flex>
             </Form>
         </>
     );

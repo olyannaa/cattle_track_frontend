@@ -10,9 +10,14 @@
     margin-bottom: 12px;
 }
 
-.login__help {
-    margin-top: 12px;
-    color: rgba(140, 140, 140, 1);
-    text-align: center;
-    font-size: 12px;
+@media (max-width: 500px) {
+    .login {
+        width: 100%;
+        border-radius: 0;
+        height: 100%;
+    }
+
+    .login__title {
+        text-align: left;
+    }
 }
