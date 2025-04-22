@@ -104,14 +104,8 @@ function App() {
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        <Route
-                            path='/animals'
-                            element={<RegisterAnimalPage />}
-                        />
-                        <Route
-                            path='/infrastructure'
-                            element={<InfrastructurePage />}
-                        />
+                        <Route path='/animals' element={<RegisterAnimalPage />} />
+                        <Route path='/infrastructure' element={<InfrastructurePage />} />
                         <Route path='/accounting' element={<AnimalAccountingPage />} />
                     </Route>
                 </Routes>
