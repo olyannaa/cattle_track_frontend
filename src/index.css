@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
-@import url('./font-styles.css');
+@import './styles/font-styles.css';
+
 :root {
+    --block-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
     --block-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
     --global-bg: #ffffff;
     --grey-bg: #f5f5f5;
@@ -20,6 +22,20 @@
 body {
     font-family: 'Roboto', sans-serif;
     color: #000;
+}
+
+.radio-border {
+    border: 1px solid var(--grey-border);
+    border-radius: 2px;
+    padding: 9px var(--spacing-m);
+    flex: 1;
+    background-color: #fff;
+}
+
+.alert {
+    max-width: 432px;
+    margin-bottom: var(--spacing-xl);
+    border-radius: 2px;
 }
 
 .radio-border {
@@ -67,16 +83,14 @@ main {
     display: block;
 }
 
-/* h2,
 h4,
 h5,
 h6,
 p {
     font-size: inherit;
     font-weight: inherit;
-} */
-
-ul,
+}
+*/ ul,
 ul li {
     list-style: none;
 }
@@ -165,6 +179,21 @@ input[type='file'] {
 
 .ant-tabs-top > .ant-tabs-nav::before {
     border-bottom: none;
+}
+
+/* Цвет иконки в драггере */
+.ant-upload-wrapper .ant-upload-drag p.ant-upload-drag-icon .anticon {
+    color: #ff4218;
+}
+
+.ant-upload-wrapper .ant-upload-drag {
+    border-radius: 2px;
+    border: var(--grey-border) solid 1px;
+}
+
+/** Чтобы не было нижнего отступа у табов */
+.ant-tabs-top > .ant-tabs-nav {
+    margin: 0;
 }
 
 /* Цвет иконки в драггере */

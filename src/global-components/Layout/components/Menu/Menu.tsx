@@ -1,6 +1,7 @@
 import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 import {
     BellFilled,
+    CarryOutFilled,
     ClockCircleFilled,
     DatabaseFilled,
     FolderOpenFilled,
@@ -34,30 +35,37 @@ export const AppMenu = () => {
         },
         {
             key: '4',
-            icon: <DatabaseFilled />,
-            label: 'Ежедневные действия',
+            icon: <CarryOutFilled />,
+            label: <Link to='/infrastructure'>Инфраструктура</Link>,
             danger: true,
         },
         {
             key: '5',
+            icon: <DatabaseFilled />,
+            label: 'Ежедневные действия',
+            danger: true,
+        },
+
+        {
+            key: '6',
             icon: <SafetyCertificateFilled />,
             label: 'Учет кормления',
             danger: true,
         },
         {
-            key: '6',
+            key: '7',
             icon: <ClockCircleFilled />,
             label: 'Репродуктивный учет',
             danger: true,
         },
         {
-            key: '7',
+            key: '8',
             icon: <BellFilled />,
             label: 'Контроль провесов',
             danger: true,
         },
         {
-            key: '8',
+            key: '9',
             icon: <SettingOutlined />,
             label: 'Отчеты',
             danger: true,

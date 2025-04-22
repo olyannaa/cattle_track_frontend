@@ -15,8 +15,9 @@ import { IUser } from '../../utils/userType';
 const { Header, Sider, Content } = Layout;
 
 export const LayoutPage: React.FC = () => {
-    const user: IUser = JSON.parse(localStorage.getItem('user') || '');
-    const [collapsed, setCollapsed] = useState(true);
+    const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+    const [collapsed, setCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
@@ -57,6 +58,10 @@ export const LayoutPage: React.FC = () => {
             navigate('/');
         } catch {}
     };
+
+    if (!user) {
+        return <Navigate to='/' />;
+    }
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
