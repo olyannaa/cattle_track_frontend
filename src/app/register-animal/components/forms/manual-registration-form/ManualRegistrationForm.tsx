@@ -75,13 +75,6 @@ export const ManualRegistrationForm = () => {
         });
         formData.append('AdditionalFields', JSON.stringify(additionalInfo));
         formData.append('OrganizationId', org_id);
-        for (const [key, value] of formData.entries()) {
-            if (value instanceof File) {
-                console.log(key, value.name);
-            } else {
-                console.log(key, value);
-            }
-        }
         try {
             await registerAnimal(formData).unwrap();
             setAlert({
