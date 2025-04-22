@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LayoutPage } from './global-components/Layout/Layout';
-import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
+import { AnimalAccountingPage } from './app/animal-accounting/AnimalAccountingPage';
 import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { MainPage } from './app/main/MainPage';
@@ -94,7 +94,7 @@ function App() {
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        <Route path='/animals' element={<RegisterAnimalPage />} />
+                        <Route path='/accounting' element={<AnimalAccountingPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
