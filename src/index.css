@@ -169,6 +169,10 @@ input[type='file'] {
     border-bottom: none;
 }
 
+._select__status_ck601_75 .ant-select-selector {
+    padding: 0 3px !important;
+}
+
 /* Цвет иконки в драггере */
 .ant-upload-wrapper .ant-upload-drag p.ant-upload-drag-icon .anticon {
     color: #ff4218;
