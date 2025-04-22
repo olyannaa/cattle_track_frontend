@@ -79,7 +79,7 @@ export const AnimalAccountingPage = () => {
 
     const buttons = [
         {
-            text: 'Экспортировать таблицу (SCV)',
+            text: 'Экспортировать таблицу (CSV)',
             buttonClick: handlerExportCSV,
         },
     ];
