@@ -39,6 +39,20 @@ body {
     background-color: #fff;
 }
 
+.alert {
+    max-width: 432px;
+    margin-bottom: var(--spacing-xl);
+    border-radius: 2px;
+}
+
+.radio-border {
+    border: 1px solid var(--grey-border);
+    border-radius: 2px;
+    padding: 9px var(--spacing-m);
+    flex: 1;
+    background-color: #fff;
+}
+
 * {
     padding: 0px;
     margin: 0px;
@@ -77,8 +91,7 @@ p {
     font-size: inherit;
     font-weight: inherit;
 }
-
-ul,
+*/ ul,
 ul li {
     list-style: none;
 }

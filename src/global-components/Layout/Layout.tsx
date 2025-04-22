@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Flex, Layout } from 'antd';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { AppMenu } from './components/Menu/Menu';
+import { AppMenu } from './components/menu/Menu';
 import styles from './Layout.module.css';
 import { useLogoutMutation } from '../../app-service/services/auth';
 import { IUser } from '../../utils/userType';
@@ -22,18 +22,6 @@ export const LayoutPage: React.FC = () => {
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
     const siderStyle: React.CSSProperties = {
         position: 'sticky',
         insetInlineStart: 0,
@@ -46,6 +34,22 @@ export const LayoutPage: React.FC = () => {
         maxHeight: 696,
         display: isMobile && collapsed ? 'none' : 'block',
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    if (!user) {
+        return <Navigate to='/' />;
+    }
 
     const handlerLogout = async () => {
         try {
@@ -110,7 +114,11 @@ export const LayoutPage: React.FC = () => {
                             className={styles['trapezoid-button']}
                         >
                             <div className={styles['trapezoid-button__icon']}>
-                                {collapsed ? <RightOutlined /> : <LeftOutlined />}
+                                {collapsed ? (
+                                    <RightOutlined />
+                                ) : (
+                                    <LeftOutlined />
+                                )}
                             </div>
                         </div>
                     )}

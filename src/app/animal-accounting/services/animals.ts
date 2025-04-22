@@ -27,7 +27,7 @@ export const animalsApi = api.injectEndpoints({
                 body: data,
             }),
         }),
-        getAnimalGroups: builder.query<any, void>({
+        getAnimalsGroups: builder.query<any, void>({
             query: () => ({
                 url: `animals/groups`,
                 method: 'GET',
@@ -39,6 +39,6 @@ export const animalsApi = api.injectEndpoints({
 export const {
     useLazyGetAnimalsQuery,
     useUpdateAnimalsMutation,
-    useGetAnimalGroupsQuery,
+    useGetAnimalsGroupsQuery,
     useLazyGetPaginationInfoQuery,
 } = animalsApi;

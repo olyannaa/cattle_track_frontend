@@ -5,6 +5,7 @@ import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { MainPage } from './app/main/MainPage';
 import { InfrastructurePage } from './app/infrastructure/InfrastructurePage';
+import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
 
 function App() {
     const theme: ThemeConfig = {
@@ -104,9 +105,18 @@ function App() {
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        {/* <Route path='/animals' element={<RegisterAnimalPage />} /> */}
-                        <Route path='/infrastructure' element={<InfrastructurePage />} />
-                        <Route path='/accounting' element={<AnimalAccountingPage />} />
+                        <Route
+                            path='/animalregister'
+                            element={<RegisterAnimalPage />}
+                        />
+                        <Route
+                            path='/infrastructure'
+                            element={<InfrastructurePage />}
+                        />
+                        <Route
+                            path='/accounting'
+                            element={<AnimalAccountingPage />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>
