@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IAnimalTable } from '../../data';
+import { IAnimalTable } from '../../data/interfaces/animalTable';
 import { Badge, Input, Select } from 'antd';
 import styles from './FieldTable.module.css';
 import { selectAnimalGroups, updateChangedAnimals } from '../../services/animalsSlice';
