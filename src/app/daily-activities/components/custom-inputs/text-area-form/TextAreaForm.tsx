@@ -1,14 +1,14 @@
 import { Form, Input } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import { Label } from '../label/Label';
 import { IFormItemInput } from '../../../data/interface/IFormItem';
 
-export const PersonInput = ({ name, label, placeholder }: IFormItemInput) => {
+export const TextAreaForm = ({ name, label, placeholder }: IFormItemInput) => {
+    const { TextArea } = Input;
     return (
-        <div>
+        <div style={{ width: '100%' }}>
             <Label label={label} />
             <Form.Item name={name}>
-                <Input prefix={<UserOutlined />} placeholder={placeholder} />
+                <TextArea style={{ height: '96px' }} placeholder={placeholder} />
             </Form.Item>
         </div>
     );

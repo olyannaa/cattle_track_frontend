@@ -2,14 +2,13 @@ import { Form, Input } from 'antd';
 import { Label } from '../label/Label';
 import { IFormItemInput } from '../../../data/interface/IFormItem';
 
-export const CustomTextArea = ({ name, label, placeholder }: IFormItemInput) => {
-    const { TextArea } = Input;
+export const InputForm = ({ name, label, placeholder }: IFormItemInput) => {
     return (
-        <>
+        <div style={{ maxWidth: '475px', width: '100%' }}>
             <Label label={label} />
             <Form.Item name={name}>
-                <TextArea style={{ height: '96px' }} placeholder={placeholder} />
+                <Input placeholder={placeholder} />
             </Form.Item>
-        </>
+        </div>
     );
 };

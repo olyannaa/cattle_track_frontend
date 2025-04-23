@@ -11,13 +11,12 @@ export const CheckboxCustom = ({ title, onChange }: Props) => {
         <Checkbox
             onChange={onChange}
             style={{
-                maxWidth: '432px',
+                maxWidth: '243.5px',
                 padding: '8px 12px 10px',
                 border: '1px solid var(--grey-border)',
                 borderRadius: '2px',
                 width: '100%',
             }}
-            value={false}
         >
             {title}
         </Checkbox>
