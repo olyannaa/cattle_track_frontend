@@ -72,7 +72,7 @@ const slice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addMatcher(
-            animalsApi.endpoints.getAnimalGroups.matchFulfilled,
+            animalsApi.endpoints.getAnimalsGroups.matchFulfilled,
             (state, action) => {
                 state.animalGroups = [...action.payload];
             }

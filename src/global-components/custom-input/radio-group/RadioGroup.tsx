@@ -1,6 +1,5 @@
-import { Form, Radio } from 'antd';
+import { Radio } from 'antd';
 import { CheckboxGroupProps } from 'antd/es/checkbox';
-import { InputLabel } from '../input-label/InputLabel';
 
 export interface IRadioGroup {
     title: string;
