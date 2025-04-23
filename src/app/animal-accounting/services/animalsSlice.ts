@@ -3,7 +3,7 @@ import { RootState } from '../../../app-service/store';
 import { animalsApi } from './animals';
 import { IChangedAnimal } from '../data/types/animal';
 
-interface IAnimalGroup {
+export interface IAnimalGroup {
     id: string;
     name: string;
 }

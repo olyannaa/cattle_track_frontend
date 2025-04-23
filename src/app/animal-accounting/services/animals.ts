@@ -5,6 +5,7 @@ import {
     IResponseGetAnimals,
     IResponsePaginationInfo,
 } from '../data/types/animal';
+import { IAnimalGroup } from './animalsSlice';
 
 export const animalsApi = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -20,14 +21,14 @@ export const animalsApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        updateAnimals: builder.mutation<any, IChangedAnimal[]>({
+        updateAnimals: builder.mutation<void, IChangedAnimal[]>({
             query: (data) => ({
                 url: `animals`,
                 method: 'PUT',
                 body: data,
             }),
         }),
-        getAnimalsGroups: builder.query<any, void>({
+        getAnimalsGroups: builder.query<IAnimalGroup[], void>({
             query: () => ({
                 url: `animals/groups`,
                 method: 'GET',

@@ -21,12 +21,10 @@ export const AnimalAccountingPage = () => {
     const [typeAnimal, setTypeAnimal] = useState<string>('Корова');
     const [animals, setAnimals] = useState<IAnimal[]>([]);
     const changedAnimals = useAppSelector(selectChangedAnimals);
-    const [paginationInfo, setPaginationInfo] =
-        useState<IResponsePaginationInfo>();
+    const [paginationInfo, setPaginationInfo] = useState<IResponsePaginationInfo>();
     const [getPageCountQuery, { isLoading: isLoadingPageCount }] =
         useLazyGetPaginationInfoQuery();
-    const [getAnimalsQuery, { isLoading: isLoadingAnimals }] =
-        useLazyGetAnimalsQuery();
+    const [getAnimalsQuery, { isLoading: isLoadingAnimals }] = useLazyGetAnimalsQuery();
     const [updateAnimals] = useUpdateAnimalsMutation();
     useGetAnimalsGroupsQuery();
 
@@ -52,9 +50,7 @@ export const AnimalAccountingPage = () => {
     };
 
     const getAnimals = async (page = 1) => {
-        const response = (
-            await getAnimalsQuery({ type: typeAnimal, page: page })
-        ).data;
+        const response = (await getAnimalsQuery({ type: typeAnimal, page: page })).data;
         setAnimals(response || []);
     };
 
@@ -68,7 +64,7 @@ export const AnimalAccountingPage = () => {
             return;
         }
         try {
-            await updateAnimals(changedAnimals);
+            await updateAnimals(changedAnimals).unwrap();
             await getAnimals();
             await getCountAnimals();
             success();
