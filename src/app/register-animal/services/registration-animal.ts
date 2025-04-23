@@ -13,26 +13,26 @@ export const registrationAnimalApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAnimalIdentifications: builder.query<SelectResponseType[], void>({
             query: () => ({
-                url: `animal/identifications`,
+                url: `animals/identifications`,
                 method: 'GET',
             }),
         }),
         getAnimalGroups: builder.query<SelectResponseType[], void>({
             query: () => ({
-                url: `animal/groups`,
+                url: `animals/groups`,
                 method: 'GET',
             }),
         }),
         registrationAnimal: builder.mutation<void, FormData>({
             query: (body) => ({
-                url: 'animal/registration',
+                url: 'animals/registration',
                 method: 'POST',
                 body: body,
             }),
         }),
         registrationAnimalFromCSV: builder.mutation<void, FormData>({
             query: (data) => ({
-                url: `animal/registration/import/csv`,
+                url: `animals/registration/import/csv`,
                 method: 'POST',
                 body: data,
             }),
