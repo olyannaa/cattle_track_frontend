@@ -29,13 +29,13 @@ export const infrastructureApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getGroupsTypes: builder.query<InfrastructureDataItem[], void>({
             query: () => ({
-                url: `group/type`,
+                url: `groups/type`,
             }),
             providesTags: [{ type: 'TypesGroups', id: 'LIST1' }],
         }),
         addNewGroupType: builder.mutation<void, NewInfrastructure>({
             query: (body) => ({
-                url: 'group/type',
+                url: 'groups/type',
                 method: 'POST',
                 body: body,
             }),
@@ -43,20 +43,20 @@ export const infrastructureApi = api.injectEndpoints({
         }),
         deleteGroupType: builder.mutation<void, string>({
             query: (id) => ({
-                url: `group/type?typeId=${id}`,
+                url: `groups/type?typeId=${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['TypesGroups'],
         }),
         getGroups: builder.query<InfrastructureDataItem[], void>({
             query: () => ({
-                url: `/group`,
+                url: `/groups`,
             }),
             providesTags: [{ type: 'Groups', id: 'LIST' }],
         }),
         addGroup: builder.mutation<void, IGroup>({
             query: (body) => ({
-                url: `/group`,
+                url: `/groups`,
                 method: 'POST',
                 body: body,
             }),
@@ -64,14 +64,14 @@ export const infrastructureApi = api.injectEndpoints({
         }),
         deleteGroup: builder.mutation<void, string>({
             query: (id) => ({
-                url: `/group?groupId=${id}`,
+                url: `/groups?groupId=${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Groups'],
         }),
         editGroup: builder.mutation<void, IGroup>({
             query: (body) => ({
-                url: `/group`,
+                url: `/groups`,
                 method: 'PUT',
                 body: body,
             }),
@@ -79,13 +79,13 @@ export const infrastructureApi = api.injectEndpoints({
         }),
         getIdentificationFields: builder.query<InfrastructureDataItem[], void>({
             query: () => ({
-                url: `/group/identification`,
+                url: `/groups/identification`,
             }),
             providesTags: [{ type: 'IdentificationFields', id: 'LIST2' }],
         }),
         addIdentificationField: builder.mutation<void, NewInfrastructure>({
             query: (body) => ({
-                url: `/group/identification`,
+                url: `/groups/identification`,
                 method: 'POST',
                 body: body,
             }),
@@ -93,7 +93,7 @@ export const infrastructureApi = api.injectEndpoints({
         }),
         deleteIdentificationField: builder.mutation<void, string>({
             query: (id) => ({
-                url: `/group/identification?identificationId=${id}`,
+                url: `/groups/identification?identificationId=${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['IdentificationFields'],
