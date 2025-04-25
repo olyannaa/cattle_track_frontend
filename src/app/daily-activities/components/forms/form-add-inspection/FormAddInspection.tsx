@@ -1,8 +1,9 @@
-import { Button, Flex, Form } from 'antd';
+import { Flex } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { RadioGroupForm } from '../../custom-inputs/radio-group-form/RadioGroupForm';
 import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
+import { FormAddWrapper } from '../form-add-wrapper/FormAddWrapper';
 
 type Props = {
     isGroup: boolean;
@@ -10,7 +11,7 @@ type Props = {
 
 export const FormAddInspection = ({ isGroup }: Props) => {
     return (
-        <Form>
+        <FormAddWrapper isGroup={isGroup}>
             <Flex
                 gap='16px'
                 style={{
@@ -49,15 +50,6 @@ export const FormAddInspection = ({ isGroup }: Props) => {
                     label='Дата следующего осмотра'
                 />
             </Flex>
-            <Button
-                type='primary'
-                size='large'
-                color='default'
-                variant='solid'
-                htmlType='submit'
-            >
-                {isGroup ? 'Сохранить для выбранных животных' : 'Сохранить'}
-            </Button>
-        </Form>
+        </FormAddWrapper>
     );
 };

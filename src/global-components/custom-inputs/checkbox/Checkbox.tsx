@@ -1,12 +1,12 @@
 import { Checkbox, CheckboxChangeEvent } from 'antd';
 
 type Props = {
-    onChange: (e: CheckboxChangeEvent) => void;
-    value: boolean;
+    onChange?: (e: CheckboxChangeEvent) => void;
     title: string;
+    style?: React.CSSProperties;
 };
 
-export const CheckboxCustom = ({ title, onChange }: Props) => {
+export const CheckboxCustom = ({ title, onChange, style }: Props) => {
     return (
         <Checkbox
             onChange={onChange}
@@ -16,6 +16,8 @@ export const CheckboxCustom = ({ title, onChange }: Props) => {
                 border: '1px solid var(--grey-border)',
                 borderRadius: '2px',
                 width: '100%',
+                background: 'var(--global-bg)',
+                ...style,
             }}
         >
             {title}

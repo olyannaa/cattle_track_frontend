@@ -21,6 +21,7 @@ export interface IFormItemInput extends IFormItem {
 }
 
 export interface IFormItemSelect extends IFormItem {
+    style?: React.CSSProperties;
     options: { value: string; label: string }[];
     placeholder?: string;
 }

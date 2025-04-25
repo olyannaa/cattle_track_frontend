@@ -1,4 +1,4 @@
-import { Button, Flex, Form } from 'antd';
+import { Flex } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { RadioGroupForm } from '../../custom-inputs/radio-group-form/RadioGroupForm';
 import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
@@ -9,7 +9,7 @@ type Props = {
     isGroup: boolean;
 };
 
-export const FormAddTreatment = ({ isGroup }: Props) => {
+export const FormAddTransfer = ({ isGroup }: Props) => {
     return (
         <FormAddWrapper isGroup={isGroup}>
             <Flex
@@ -21,27 +21,19 @@ export const FormAddTreatment = ({ isGroup }: Props) => {
                 }}
                 wrap
             >
+                <div style={{ width: '100%' }}>
+                    <DatePickerForm name='dateTransfer' label='Дата перевода' />
+                </div>
                 <InputForm
-                    label='Диагноз'
-                    name='diagnosis'
-                    placeholder='Укажите диагноз'
+                    label='Новая группа'
+                    name='group'
+                    placeholder='Введите название'
                 />
                 <InputForm
-                    label='Кто проводил лечение'
+                    label='Кто проводил перевод'
                     name='name'
                     placeholder='Введите ФИО'
                 />
-                <DatePickerForm name='dateStartTreatment' label='Дата начала лечения' />
-                <DatePickerForm
-                    name='dateNextInspection'
-                    label='Дата следующего осмотра'
-                />
-                <InputForm
-                    label='Препарат'
-                    name='preparation'
-                    placeholder='Укажите препарат'
-                />
-                <InputForm label='Доза' name='dose' placeholder='Укажите дозу' />
                 <TextAreaForm
                     name='note'
                     label='Примечание'

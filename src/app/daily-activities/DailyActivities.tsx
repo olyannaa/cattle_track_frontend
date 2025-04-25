@@ -3,9 +3,16 @@ import { HeaderContent } from '../../global-components/header-content/HeaderCont
 import { items } from './data';
 import { useState } from 'react';
 import { TabsContent } from './components/tabs-content/TabsContent';
+import {
+    useGetDailyActivitiesQuery,
+    useGetPaginationInfoDailyActivitiesQuery,
+} from './service/dailyActivities';
+import { History } from './components/history/History';
 
 export const DailyActivities = () => {
     const [activeTab, setActiveTab] = useState('1');
+    useGetPaginationInfoDailyActivitiesQuery('Осмотры');
+    useGetDailyActivitiesQuery({ page: 1, type: 'Исследования' });
     return (
         <Flex vertical gap={16} style={{ maxWidth: '1038px' }}>
             <HeaderContent
@@ -20,14 +27,15 @@ export const DailyActivities = () => {
                     borderRadius: '8px',
                 }}
             >
-                {activeTab === '1' && <TabsContent title='Осмотры' />}
-                {activeTab === '2' && <TabsContent title='Вакцинации и обработки' />}
-                {activeTab === '3' && <TabsContent title='Лечение' />}
-                {activeTab === '4' && <TabsContent title='Перевод' />}
-                {activeTab === '5' && <TabsContent title='Выбраковка' />}
-                {activeTab === '6' && <TabsContent title='Исследования' />}
+                {activeTab === '1' && <TabsContent keyTab={activeTab} />}
+                {activeTab === '2' && <TabsContent keyTab={activeTab} />}
+                {activeTab === '3' && <TabsContent keyTab={activeTab} />}
+                {activeTab === '4' && <TabsContent keyTab={activeTab} />}
+                {activeTab === '5' && <TabsContent keyTab={activeTab} />}
+                {activeTab === '6' && <TabsContent keyTab={activeTab} />}
                 {/* {activeTab === '7' && <TabsContent title='Присвоение номеров' />} */}
             </Flex>
+            <History />
         </Flex>
     );
 };
