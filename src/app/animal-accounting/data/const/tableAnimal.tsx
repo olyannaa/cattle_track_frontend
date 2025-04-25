@@ -16,8 +16,8 @@ export const items: TabsProps['items'] = [
         label: 'Быки',
     },
     {
-        key: 'Телочка',
-        label: 'Телочки',
+        key: 'Телка',
+        label: 'Телки',
     },
     {
         key: 'Бычок',
