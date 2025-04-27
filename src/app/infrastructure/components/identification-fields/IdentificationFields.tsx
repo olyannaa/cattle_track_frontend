@@ -12,6 +12,7 @@ import { InfrastructureTypes } from '../../data/enums/infrastructureTypes';
 import { isErrorType } from '../../../../utils/errorType';
 
 export const IdentificationFields = () => {
+    const [form] = Form.useForm();
     const {
         data: identificationFields,
         isLoading,
@@ -32,6 +33,7 @@ export const IdentificationFields = () => {
                 type: 'success',
                 content: 'Поле идентификации успешно создано',
             });
+            form.resetFields();
         } catch (err) {
             if (isErrorType(err) && err?.data?.errorText) {
                 messageApi.open({
@@ -50,7 +52,11 @@ export const IdentificationFields = () => {
     return (
         <React.Fragment>
             {contextHolder}
-            <Form className='content-container' onFinish={addNewField}>
+            <Form
+                form={form}
+                className='content-container'
+                onFinish={addNewField}
+            >
                 <h2 className='form-title'>
                     Добавить новое поле идентификации
                 </h2>

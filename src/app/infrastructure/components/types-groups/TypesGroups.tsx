@@ -22,6 +22,7 @@ export const TypesGroups = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const showAlert: boolean =
         !isFetching && !isLoading && (!typesGroups || typesGroups.length === 0);
+    const [form] = Form.useForm();
 
     const addNewTypeGroup = async (value: NewInfrastructure) => {
         try {
@@ -30,6 +31,7 @@ export const TypesGroups = () => {
                 type: 'success',
                 content: 'Тип группы успешно создан',
             });
+            form.resetFields();
         } catch (err) {
             if (isErrorType(err) && err?.data?.errorText) {
                 messageApi.open({
@@ -48,7 +50,11 @@ export const TypesGroups = () => {
     return (
         <React.Fragment>
             {contextHolder}
-            <Form className='content-container' onFinish={addNewTypeGroup}>
+            <Form
+                form={form}
+                className='content-container'
+                onFinish={addNewTypeGroup}
+            >
                 <h2 className='form-title'>Управление типами групп</h2>
                 <div>
                     <InputLabel label='Название группы' />

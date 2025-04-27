@@ -17,6 +17,7 @@ export const GroupsForm = ({ isEmpty }: { isEmpty: boolean }) => {
     const [groupsTypes, setGroupsTypes] = useState<SelectDataType[]>([]);
     const [addGroup] = useAddGroupMutation();
     const [messageApi, contextHolder] = message.useMessage();
+    const [form] = Form.useForm();
 
     useEffect(() => {
         if (data) {
@@ -31,6 +32,7 @@ export const GroupsForm = ({ isEmpty }: { isEmpty: boolean }) => {
                 type: 'success',
                 content: 'Изменения успешно сохранены',
             });
+            form.resetFields();
         } catch (err) {
             if (isErrorType(err) && err?.data?.errorText) {
                 messageApi.open({
@@ -49,7 +51,11 @@ export const GroupsForm = ({ isEmpty }: { isEmpty: boolean }) => {
     return (
         <React.Fragment>
             {contextHolder}
-            <Form className='content-container' onFinish={addNewGroup}>
+            <Form
+                form={form}
+                className='content-container'
+                onFinish={addNewGroup}
+            >
                 <h2 className='form-title'>Управление группами</h2>
                 <div className='form-row-inputs'>
                     <div className='form-input_default'>
