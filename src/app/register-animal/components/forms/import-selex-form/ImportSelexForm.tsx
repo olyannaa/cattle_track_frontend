@@ -96,7 +96,7 @@ export const ImportSelexForm = () => {
                     />
                 )}
                 <Button htmlType='submit' type='primary' loading={isLoading}>
-                    Импортирова данные
+                    Импортировать данные
                 </Button>
             </Form>
             <div>
