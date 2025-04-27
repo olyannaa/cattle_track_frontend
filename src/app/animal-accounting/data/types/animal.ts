@@ -1,6 +1,14 @@
 export type IRequestGetAnimals = {
     page: number;
     type: string;
+    active: boolean;
+    column: string | null;
+    descending: boolean;
+};
+
+export type IRequestGetPaginationInfo = {
+    type: string;
+    active: boolean;
 };
 
 export type IAnimal = {

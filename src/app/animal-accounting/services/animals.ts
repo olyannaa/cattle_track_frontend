@@ -2,6 +2,7 @@ import { api } from '../../../app-service/services/api';
 import {
     IChangedAnimal,
     IRequestGetAnimals,
+    IRequestGetPaginationInfo,
     IResponseGetAnimals,
     IResponsePaginationInfo,
 } from '../data/types/animal';
@@ -9,15 +10,22 @@ import { IAnimalGroup } from './animalsSlice';
 
 export const animalsApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getPaginationInfo: builder.query<IResponsePaginationInfo, string>({
-            query: (type) => ({
-                url: `animals/pagination-info?Type=${type}`,
+        getPaginationInfo: builder.query<
+            IResponsePaginationInfo,
+            IRequestGetPaginationInfo
+        >({
+            query: (data) => ({
+                url: `animals/pagination-info?Type=${data.type}&active=${data.active}`,
                 method: 'GET',
             }),
         }),
         getAnimals: builder.query<IResponseGetAnimals, IRequestGetAnimals>({
             query: (data) => ({
-                url: `animals?Type=${data.type}&page=${data.page}`,
+                url: `animals?Type=${data.type}&page=${data.page}&SortInfo.active=${
+                    data.active
+                }&SortInfo.column=${data.column || 'TagNumber'}&SortInfo.descending=${
+                    data.descending
+                }`,
                 method: 'GET',
             }),
         }),
