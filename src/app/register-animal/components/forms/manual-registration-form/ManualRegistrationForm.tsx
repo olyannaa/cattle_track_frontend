@@ -48,6 +48,7 @@ export const ManualRegistrationForm = () => {
 
     const [visibleAlert, setVisibleAlert] = useState(false);
     const [alert, setAlert] = useState<IAlert | null>(null);
+    const [isExchangeOrPurchase, setIsExchangeOrPurchase] = useState(false);
 
     useEffect(() => {
         if (data) {
@@ -56,7 +57,16 @@ export const ManualRegistrationForm = () => {
     }, [data]);
 
     const handleRadioChange = (e: any) => {
-        setSelectedAnimalType(e.target.value); // Обновляем состояние, когда выбираем новый тип
+        setSelectedAnimalType(e.target.value);
+    };
+
+    const handleOriginChange = (e: any) => {
+        const value = e.target.value;
+        if (value === 'Обмен' || value === 'Покупка') {
+            setIsExchangeOrPurchase(true);
+        } else {
+            setIsExchangeOrPurchase(false);
+        }
     };
 
     const onFinish = async (values: FormData) => {
@@ -82,6 +92,7 @@ export const ManualRegistrationForm = () => {
                 type: 'success',
             });
             setVisibleAlert(true);
+            setIsExchangeOrPurchase(false);
             registerAnimalForm.resetFields();
         } catch (err: any) {
             if (err?.data?.errorText) {
@@ -152,7 +163,7 @@ export const ManualRegistrationForm = () => {
                     <div>
                         <InputLabel label='Происхождение' />
                         <Form.Item name='Origin' rules={requiredRule}>
-                            <Radio.Group>
+                            <Radio.Group onChange={handleOriginChange}>
                                 <div
                                     className={
                                         styles['manual-register__origin']
@@ -174,6 +185,17 @@ export const ManualRegistrationForm = () => {
                         </Form.Item>
                     </div>
                 </div>
+                {isExchangeOrPurchase && (
+                    <div>
+                        <InputLabel label='Место происхождения' />
+                        <Form.Item name='OriginLocation'>
+                            <Input
+                                className={styles['manual-register__input']}
+                                placeholder='Укажите место происхождения'
+                            ></Input>
+                        </Form.Item>
+                    </div>
+                )}
                 <div className={styles['manual-register__changed-form']}>
                     <div>
                         <InputLabel label='ID матери' />

@@ -1,11 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Radio } from 'antd';
 import { InputLabel } from '../../../../../../global-components/custom-input/input-label/InputLabel';
 import TextArea from 'antd/es/input/TextArea';
+import dayjs from 'dayjs';
 import styles from '../ManualRegistration.module.css';
 import netelStyles from './NetelForm.module.css';
+import useFormInstance from 'antd/es/form/hooks/useFormInstance';
 
 export const NetelFormRegister = () => {
     const requiredRule = [{ required: true, message: 'Обязательное поле' }];
+    const form = useFormInstance();
+
+    const handleInseminationDateChange = (e: any) => {
+        const value = e.target.value;
+        if (value) {
+            const expectedDate = dayjs(value)
+                .add(285, 'day')
+                .format('YYYY-MM-DD');
+            form.setFieldValue('ExpectedCalvingDate', expectedDate);
+        }
+    };
 
     return (
         <Form.Item className={styles['manual-register__additional-form']}>
@@ -18,7 +32,11 @@ export const NetelFormRegister = () => {
                         rules={requiredRule}
                         className={styles['manual-register__changed-input']}
                     >
-                        <Input type='date' placeholder='xx.xx.xxxx'></Input>
+                        <Input
+                            type='date'
+                            placeholder='xx.xx.xxxx'
+                            onChange={handleInseminationDateChange}
+                        ></Input>
                     </Form.Item>
                 </div>
                 <div className={styles['manual-register__changed-input']}>
