@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Radio } from 'antd';
-import { InputLabel } from '../../../../../../global-components/custom-input/input-label/InputLabel';
+import { InputLabel } from '../../../../../../global-components/custom-inputs/input-label/InputLabel';
 import TextArea from 'antd/es/input/TextArea';
 import dayjs from 'dayjs';
 import styles from '../ManualRegistration.module.css';
@@ -14,9 +14,7 @@ export const NetelFormRegister = () => {
     const handleInseminationDateChange = (e: any) => {
         const value = e.target.value;
         if (value) {
-            const expectedDate = dayjs(value)
-                .add(285, 'day')
-                .format('YYYY-MM-DD');
+            const expectedDate = dayjs(value).add(285, 'day').format('YYYY-MM-DD');
             form.setFieldValue('ExpectedCalvingDate', expectedDate);
         }
     };
@@ -88,14 +86,8 @@ export const NetelFormRegister = () => {
                 <Input placeholder='xxxxxxxx'></Input>
             </Form.Item>
             <InputLabel label='Примечание к осеменению' />
-            <Form.Item
-                name='Notes'
-                className={styles['manual-register__changed-input']}
-            >
-                <TextArea
-                    rows={4}
-                    placeholder='Дополнительная информация'
-                ></TextArea>
+            <Form.Item name='Notes' className={styles['manual-register__changed-input']}>
+                <TextArea rows={4} placeholder='Дополнительная информация'></TextArea>
             </Form.Item>
         </Form.Item>
     );

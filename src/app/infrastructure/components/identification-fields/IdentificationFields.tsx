@@ -52,21 +52,13 @@ export const IdentificationFields = () => {
     return (
         <React.Fragment>
             {contextHolder}
-            <Form
-                form={form}
-                className='content-container'
-                onFinish={addNewField}
-            >
-                <h2 className='form-title'>
-                    Добавить новое поле идентификации
-                </h2>
+            <Form form={form} className='content-container' onFinish={addNewField}>
+                <h2 className='form-title'>Добавить новое поле идентификации</h2>
                 <div>
                     <InputLabel label='Название поля' />
                     <Form.Item
                         name='name'
-                        rules={[
-                            { required: true, message: 'Обязательное поле' },
-                        ]}
+                        rules={[{ required: true, message: 'Обязательное поле' }]}
                     >
                         <Input
                             className='form-input_default'

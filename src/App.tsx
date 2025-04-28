@@ -6,6 +6,7 @@ import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { MainPage } from './app/main/MainPage';
 import { InfrastructurePage } from './app/infrastructure/InfrastructurePage';
 import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
+import ruRU from 'antd/lib/locale/ru_RU';
 
 function App() {
     const theme: ThemeConfig = {
@@ -81,6 +82,7 @@ function App() {
             },
             Table: {
                 headerBorderRadius: 0,
+                colorPrimary: 'rgba(255, 66, 24, 1)',
             },
             Pagination: {
                 colorPrimary: 'rgba(255, 66, 24, 1)',
@@ -94,29 +96,24 @@ function App() {
             Modal: {
                 titleFontSize: 24,
             },
+            Checkbox: {
+                colorPrimary: '#ff4218',
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+            },
         },
         token: {},
         cssVar: true,
     };
     return (
-        <ConfigProvider theme={theme}>
+        <ConfigProvider theme={theme} locale={ruRU}>
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        <Route
-                            path='/animalregister'
-                            element={<RegisterAnimalPage />}
-                        />
-                        <Route
-                            path='/infrastructure'
-                            element={<InfrastructurePage />}
-                        />
-                        <Route
-                            path='/accounting'
-                            element={<AnimalAccountingPage />}
-                        />
+                        <Route path='/animalregister' element={<RegisterAnimalPage />} />
+                        <Route path='/infrastructure' element={<InfrastructurePage />} />
+                        <Route path='/accounting' element={<AnimalAccountingPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

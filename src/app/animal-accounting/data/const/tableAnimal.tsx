@@ -2,6 +2,8 @@ import { TableProps, TabsProps } from 'antd';
 import { FieldTable } from '../../components/FieldTable/FieldTable';
 import { IAnimalTable } from '../interfaces/animalTable';
 
+export enum animalTableColumns {}
+
 export const items: TabsProps['items'] = [
     {
         key: 'Корова',
@@ -38,6 +40,7 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
             />
         ),
         minWidth: 80,
+        sorter: true,
     },
     {
         title: 'Дата рождения',
@@ -51,19 +54,20 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
             />
         ),
         minWidth: 103,
-        sorter: (a, b) => a.birthDate.localeCompare(b.birthDate),
+        sorter: true,
     },
     {
         title: 'Порода',
         dataIndex: 'breed',
         key: 'breed',
         minWidth: 130,
+        sorter: true,
     },
     {
         title: 'Группа',
         dataIndex: 'groupName',
         key: 'groupName',
-        sorter: (a, b) => a.groupName.localeCompare(b.groupName),
+        sorter: true,
         render: (_, animal) => (
             <FieldTable
                 animal={animal}
@@ -81,29 +85,34 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
             <FieldTable animal={animal} dataIndex={'status'} isEditTable={isEditTable} />
         ),
         minWidth: 128,
+        sorter: true,
     },
     {
         title: 'Происхождение',
         dataIndex: 'origin',
         key: 'origin',
         minWidth: 118,
+        sorter: true,
     },
     {
         title: 'Место происхождения',
         dataIndex: 'originLocation',
         key: 'originLocation',
         minWidth: 159,
+        sorter: true,
     },
     {
         title: '№ матери',
         dataIndex: 'motherTagNumber',
         key: 'motherTagNumber',
         minWidth: 78,
+        sorter: true,
     },
     {
         title: '№ отца',
         dataIndex: 'fatherTagNumber',
         key: 'fatherTagNumber',
         minWidth: 78,
+        sorter: true,
     },
 ];

@@ -1,4 +1,4 @@
-import { Flex, message, Table } from 'antd';
+import { Flex, message, Table, TablePaginationConfig } from 'antd';
 import { HeaderContent } from '../../global-components/header-content/HeaderContent';
 import styles from './AnimalAccountingPage.module.css';
 import {
@@ -15,11 +15,16 @@ import { CheckPermissions, Permissions } from '../../utils/permissions';
 import { IAnimalTable } from './data/interfaces/animalTable';
 import { getColumns, items } from './data/const/tableAnimal';
 import { IAnimal, IResponsePaginationInfo } from './data/types/animal';
+import { CheckboxCustom } from '../../global-components/custom-inputs/checkbox/Checkbox';
+import { FilterValue, SorterResult } from 'antd/es/table/interface';
 
 export const AnimalAccountingPage = () => {
     const isEditTable = CheckPermissions(Permissions.animalEditTable);
     const [typeAnimal, setTypeAnimal] = useState<string>('Корова');
     const [animals, setAnimals] = useState<IAnimal[]>([]);
+    const [noActiveAnimals, setNoActiveAnimals] = useState<boolean>(false);
+    const [sortedColumn, setSortedColumn] = useState<string | null>(null);
+    const [descending, setDescending] = useState<boolean>(true);
     const changedAnimals = useAppSelector(selectChangedAnimals);
     const [paginationInfo, setPaginationInfo] = useState<IResponsePaginationInfo>();
     const [getPageCountQuery, { isLoading: isLoadingPageCount }] =
@@ -45,19 +50,48 @@ export const AnimalAccountingPage = () => {
     };
 
     const getCountAnimals = async () => {
-        const res = (await getPageCountQuery(typeAnimal)).data;
+        const res = (
+            await getPageCountQuery({ type: typeAnimal, active: !noActiveAnimals })
+        ).data;
         setPaginationInfo(res);
     };
 
+    const onChangeTable = (
+        newPagination: TablePaginationConfig,
+        filters: Record<string, FilterValue | null>,
+        sorter: SorterResult<IAnimalTable> | SorterResult<IAnimalTable>[]
+    ) => {
+        newPagination;
+        filters;
+        if (!sorter || (!Array.isArray(sorter) && !sorter.field)) {
+            setSortedColumn(null);
+            setDescending(true);
+        } else {
+            if (!Array.isArray(sorter)) {
+                const field = sorter.field as string;
+                setSortedColumn(field.charAt(0).toUpperCase() + field.slice(1));
+                setDescending(sorter.order === 'descend');
+            }
+        }
+    };
+
     const getAnimals = async (page = 1) => {
-        const response = (await getAnimalsQuery({ type: typeAnimal, page: page })).data;
+        const response = (
+            await getAnimalsQuery({
+                type: typeAnimal,
+                page: page,
+                active: !noActiveAnimals,
+                column: sortedColumn,
+                descending: descending,
+            })
+        ).data;
         setAnimals(response || []);
     };
 
     useEffect(() => {
         getAnimals();
         getCountAnimals();
-    }, [typeAnimal]);
+    }, [typeAnimal, noActiveAnimals, sortedColumn, descending]);
 
     const handlerClickSaveChange = async () => {
         if (!changedAnimals.length) {
@@ -74,7 +108,13 @@ export const AnimalAccountingPage = () => {
     };
 
     const handlerExportCSV = async () => {
-        await downloadScvAnimals({ page: 1, type: typeAnimal });
+        await downloadScvAnimals({
+            page: 1,
+            type: typeAnimal,
+            active: !noActiveAnimals,
+            column: sortedColumn,
+            descending: descending,
+        });
     };
 
     const buttons = [
@@ -101,6 +141,11 @@ export const AnimalAccountingPage = () => {
                 buttons={buttons}
             />
             <Flex className={styles['table']} vertical>
+                <CheckboxCustom
+                    title='Отображать неактивных животных'
+                    onChange={(e) => setNoActiveAnimals(e.target.checked)}
+                    style={{ maxWidth: '285px', marginTop: '20px', marginBottom: '20px' }}
+                />
                 <Table<IAnimalTable>
                     columns={getColumns(isEditTable)}
                     style={{ width: '100%' }}
@@ -118,6 +163,7 @@ export const AnimalAccountingPage = () => {
                             `${range[0]}-${range[1]} из ${total} элементов`,
                         className: styles['table__pagination'],
                     }}
+                    onChange={onChangeTable}
                 />
             </Flex>
         </Flex>

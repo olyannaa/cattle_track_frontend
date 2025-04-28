@@ -3,6 +3,9 @@ import { IUser } from '../utils/userType';
 type IRequestGetAnimalsSCV = {
     page: number;
     type: string;
+    active: boolean;
+    column: string | null;
+    descending: boolean;
 };
 
 export const downloadScvAnimals = async (data: IRequestGetAnimalsSCV) => {
@@ -11,7 +14,9 @@ export const downloadScvAnimals = async (data: IRequestGetAnimalsSCV) => {
         const response = await fetch(
             `${import.meta.env.VITE_API_URL}files/csv/animals?page=${data.page}&Type=${
                 data.type
-            }`,
+            }&SortInfo.active=${data.active}&SortInfo.column=${
+                data.column || 'TagNumber'
+            }&SortInfo.descending=${data.descending}`,
             {
                 method: 'GET',
                 headers: {

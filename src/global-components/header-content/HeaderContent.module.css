@@ -25,6 +25,7 @@
     }
 
     .title__buttons {
+        margin-top: 12px;
         margin-bottom: 12px;
     }
 }

@@ -1,5 +1,5 @@
 import { Form, Input } from 'antd';
-import { InputLabel } from '../../../../../../global-components/custom-input/input-label/InputLabel';
+import { InputLabel } from '../../../../../../global-components/custom-inputs/input-label/InputLabel';
 import styles from '../ManualRegistration.module.css';
 import aiStyles from './AdditionalInfoForm.module.css';
 import {
@@ -35,9 +35,7 @@ export const AdditionalInfoForm = () => {
                             <InputLabel label={field.name} />
                             <Form.Item
                                 name={field.id}
-                                className={
-                                    styles['manual-register__changed-input']
-                                }
+                                className={styles['manual-register__changed-input']}
                             >
                                 <Input placeholder='Введите значение' />
                             </Form.Item>
