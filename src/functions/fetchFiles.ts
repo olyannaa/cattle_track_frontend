@@ -51,8 +51,7 @@ const getName = (response: Response) => {
     const result = response.headers
         .get('content-disposition')
         ?.split('; ')[1]
-        .substring(10)
-        .slice(0, -1);
+        .slice(10, -1);
     console.log(result);
     return result || `file.csv`;
 };
