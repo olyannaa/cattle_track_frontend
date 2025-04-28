@@ -61,6 +61,8 @@ export const AnimalAccountingPage = () => {
         filters: Record<string, FilterValue | null>,
         sorter: SorterResult<IAnimalTable> | SorterResult<IAnimalTable>[]
     ) => {
+        newPagination;
+        filters;
         if (!sorter || (!Array.isArray(sorter) && !sorter.field)) {
             setSortedColumn(null);
             setDescending(true);

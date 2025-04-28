@@ -4,9 +4,9 @@ import { InboxOutlined } from '@ant-design/icons';
 import {
     IRadioGroup,
     RadioGroupButton,
-} from '../../../../../global-components/custom-input/radio-group/RadioGroup';
+} from '../../../../../global-components/custom-inputs/radio-group/RadioGroup';
 import Dragger from 'antd/es/upload/Dragger';
-import { InputLabel } from '../../../../../global-components/custom-input/input-label/InputLabel';
+import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
 import styles from './ManualRegistration.module.css';
 import { AdditionalInfoForm } from './additional-info-form/AdditionalInfoForm';
 import {
@@ -36,12 +36,8 @@ const animalsOptions: IRadioGroup = {
 export const ManualRegistrationForm = () => {
     const { data } = useGetAnimalGroupsQuery();
     const [registerAnimalForm] = Form.useForm();
-    const [selectedAnimalType, setSelectedAnimalType] = useState<
-        string | undefined
-    >('');
-    const org_id: string = JSON.parse(
-        localStorage.getItem('user') ?? ''
-    )?.organizationId;
+    const [selectedAnimalType, setSelectedAnimalType] = useState<string | undefined>('');
+    const org_id: string = JSON.parse(localStorage.getItem('user') ?? '')?.organizationId;
     const [animalGroups, setAnimalGroups] = useState<SelectDataType[]>([]);
 
     const [registerAnimal, { isLoading }] = useRegistrationAnimalMutation();
@@ -112,11 +108,7 @@ export const ManualRegistrationForm = () => {
 
     return (
         <>
-            <Form
-                form={registerAnimalForm}
-                requiredMark={false}
-                onFinish={onFinish}
-            >
+            <Form form={registerAnimalForm} requiredMark={false} onFinish={onFinish}>
                 <div>
                     <div>
                         <InputLabel label='Номер бирки/RFID' />
@@ -164,15 +156,9 @@ export const ManualRegistrationForm = () => {
                         <InputLabel label='Происхождение' />
                         <Form.Item name='Origin' rules={requiredRule}>
                             <Radio.Group onChange={handleOriginChange}>
-                                <div
-                                    className={
-                                        styles['manual-register__origin']
-                                    }
-                                >
+                                <div className={styles['manual-register__origin']}>
                                     <div className='radio-border'>
-                                        <Radio value='Собственное'>
-                                            Собственное
-                                        </Radio>
+                                        <Radio value='Собственное'>Собственное</Radio>
                                     </div>
                                     <div className='radio-border'>
                                         <Radio value='Покупка'>Покупка</Radio>
@@ -228,14 +214,8 @@ export const ManualRegistrationForm = () => {
                 <AdditionalInfoForm />
                 <div>
                     <InputLabel label='Фотография животного' />
-                    <Form.Item
-                        name='Photo'
-                        className={styles['manual-register__input']}
-                    >
-                        <Dragger
-                            beforeUpload={() => false}
-                            accept='.jpg,.jpeg,.png'
-                        >
+                    <Form.Item name='Photo' className={styles['manual-register__input']}>
+                        <Dragger beforeUpload={() => false} accept='.jpg,.jpeg,.png'>
                             <p className='ant-upload-drag-icon'>
                                 <InboxOutlined />
                             </p>
@@ -243,8 +223,7 @@ export const ManualRegistrationForm = () => {
                                 Выберите или перетащите файл
                             </p>
                             <p className='ant-upload-hint'>
-                                Максимальный размер изображения 200Mb. Формат
-                                JPG/JPEG/PNG
+                                Максимальный размер изображения 200Mb. Формат JPG/JPEG/PNG
                             </p>
                         </Dragger>
                     </Form.Item>

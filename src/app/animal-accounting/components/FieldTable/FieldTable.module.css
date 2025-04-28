@@ -33,6 +33,7 @@
 
 .text-cell__groupName {
     width: 200px;
+    height: 23px;
 }
 
 .select__status {
