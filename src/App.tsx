@@ -1,9 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LayoutPage } from './global-components/Layout/Layout';
-import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
+import { AnimalAccountingPage } from './app/animal-accounting/AnimalAccountingPage';
 import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { MainPage } from './app/main/MainPage';
+import { InfrastructurePage } from './app/infrastructure/InfrastructurePage';
+import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
+import ruRU from 'antd/lib/locale/ru_RU';
 
 function App() {
     const theme: ThemeConfig = {
@@ -31,6 +34,8 @@ function App() {
                 colorPrimary: '#FF4218',
                 colorPrimaryActive: 'rgba(255, 66, 24, 0.7)',
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+                colorLink: '#FF4218',
+                colorLinkHover: 'rgba(255, 66, 24, 0.7)',
             },
             Input: {
                 borderRadius: 2,
@@ -48,6 +53,7 @@ function App() {
                 inkBarColor: 'rgba(255, 66, 24, 1)',
                 itemHoverColor: 'rgba(255, 66, 24, 0.7)',
                 itemActiveColor: 'rgba(255, 66, 24, 0.7)',
+                fontSize: 16,
             },
             Radio: {
                 colorPrimary: '#FF4218',
@@ -76,6 +82,7 @@ function App() {
             },
             Table: {
                 headerBorderRadius: 0,
+                colorPrimary: 'rgba(255, 66, 24, 1)',
             },
             Pagination: {
                 colorPrimary: 'rgba(255, 66, 24, 1)',
@@ -83,18 +90,30 @@ function App() {
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
                 borderRadius: 2,
             },
+            Message: {
+                borderRadiusLG: 2,
+            },
+            Modal: {
+                titleFontSize: 24,
+            },
+            Checkbox: {
+                colorPrimary: '#ff4218',
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+            },
         },
         token: {},
         cssVar: true,
     };
     return (
-        <ConfigProvider theme={theme}>
+        <ConfigProvider theme={theme} locale={ruRU}>
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        <Route path='/animals' element={<RegisterAnimalPage />} />
+                        <Route path='/animalregister' element={<RegisterAnimalPage />} />
+                        <Route path='/infrastructure' element={<InfrastructurePage />} />
+                        <Route path='/accounting' element={<AnimalAccountingPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

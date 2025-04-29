@@ -9,8 +9,9 @@ export const InputLabel = ({
         <div
             style={{
                 fontSize: '16px',
-                fontWeight: 'bold',
+                fontWeight: '500',
                 color: '#333',
+                lineHeight: '24px',
                 marginBottom: marginSize,
             }}
         >

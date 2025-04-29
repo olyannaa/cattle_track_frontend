@@ -17,22 +17,10 @@ const { Header, Sider, Content } = Layout;
 export const LayoutPage: React.FC = () => {
     const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
 
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
     const siderStyle: React.CSSProperties = {
         position: 'sticky',
@@ -46,6 +34,22 @@ export const LayoutPage: React.FC = () => {
         maxHeight: 696,
         display: isMobile && collapsed ? 'none' : 'block',
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    if (!user) {
+        return <Navigate to='/' />;
+    }
 
     const handlerLogout = async () => {
         try {
