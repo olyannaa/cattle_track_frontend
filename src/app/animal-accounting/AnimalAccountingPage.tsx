@@ -3,6 +3,7 @@ import { HeaderContent } from '../../global-components/header-content/HeaderCont
 import styles from './AnimalAccountingPage.module.css';
 import {
     useGetAnimalsGroupsQuery,
+    useGetIndetificationFieldsNamesQuery,
     useLazyGetAnimalsQuery,
     useLazyGetPaginationInfoQuery,
     useUpdateAnimalsMutation,
@@ -32,6 +33,8 @@ export const AnimalAccountingPage = () => {
     const [getAnimalsQuery, { isLoading: isLoadingAnimals }] = useLazyGetAnimalsQuery();
     const [updateAnimals] = useUpdateAnimalsMutation();
     useGetAnimalsGroupsQuery();
+    const {data} = useGetIndetificationFieldsNamesQuery()
+    console.log(animals)
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -42,10 +45,10 @@ export const AnimalAccountingPage = () => {
         });
     };
 
-    const error = () => {
+    const error = (error:string ) => {
         messageApi.open({
             type: 'error',
-            content: 'Ошибка при изменении данных',
+            content: error,
         });
     };
 
@@ -102,8 +105,9 @@ export const AnimalAccountingPage = () => {
             await getAnimals();
             await getCountAnimals();
             success();
-        } catch {
-            error();
+        } catch (err){
+            const currentErr = err as {data: {errorText: string}}
+            error(currentErr?.data?.errorText || 'Ошибка при изменении данных');
         }
     };
 
@@ -147,9 +151,9 @@ export const AnimalAccountingPage = () => {
                     style={{ maxWidth: '285px', marginTop: '20px', marginBottom: '20px' }}
                 />
                 <Table<IAnimalTable>
-                    columns={getColumns(isEditTable)}
+                    columns={getColumns(isEditTable, data || [])}
                     style={{ width: '100%' }}
-                    dataSource={animals.map((animal) => ({
+                    dataSource={animals.map(({identificationFields,...animal}) => ({
                         ...animal,
                         key: animal.id,
                     }))}

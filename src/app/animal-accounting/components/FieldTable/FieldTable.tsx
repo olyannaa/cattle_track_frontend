@@ -4,10 +4,11 @@ import { Badge, Input, Select } from 'antd';
 import styles from './FieldTable.module.css';
 import { selectAnimalGroups, updateChangedAnimals } from '../../services/animalsSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
+import { dataIndexTypes } from '../../data/types/animal';
 
 type Props = {
     animal: IAnimalTable;
-    dataIndex: 'tagNumber' | 'groupName' | 'birthDate' | 'status';
+    dataIndex:  dataIndexTypes;
     isEditTable: boolean;
 };
 
@@ -33,21 +34,21 @@ export const FieldTable = ({ animal, dataIndex, isEditTable }: Props) => {
     };
 
     const validationInput = (
-        dataIndex: 'tagNumber' | 'groupName' | 'birthDate' | 'status'
+        dataIndex: dataIndexTypes
     ) => {
-        if (dataIndex === 'birthDate' || dataIndex === 'tagNumber') {
-            return name ? name.trim() : '';
-        } else if (dataIndex === 'groupName') {
+        if (dataIndex === 'groupName'){
             return groups.find((group) => group.name === name)?.id || '';
-        } else {
+        } else if (dataIndex === 'status'){
             return name;
+        }else {
+            return name ? name.trim() : '';
         }
     };
 
     const changeAnimal = async () => {
         setIsOpenChange(false);
         const value = validationInput(dataIndex);
-        if (value === '') {
+        if (value === '' && (dataIndex === 'birthDate' || dataIndex === 'groupName' || dataIndex === 'status' || dataIndex === 'tagNumber')) {
             setName(animal[dataIndex]);
             return;
         }
@@ -60,7 +61,7 @@ export const FieldTable = ({ animal, dataIndex, isEditTable }: Props) => {
         );
     };
 
-    return dataIndex === 'tagNumber' || dataIndex === 'birthDate' ? (
+    return dataIndex !== 'groupName' && dataIndex !== 'status' ? (
         isOpenChange && isEditTable ? (
             <Input
                 value={name}

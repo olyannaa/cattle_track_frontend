@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../app-service/store';
 import { animalsApi } from './animals';
-import { IChangedAnimal } from '../data/types/animal';
+import { dataIndexTypes, IChangedAnimal } from '../data/types/animal';
 
 export interface IAnimalGroup {
     id: string;
@@ -22,7 +22,7 @@ type Action = {
     payload: {
         id: string;
         value: string | null;
-        dataIndex: 'tagNumber' | 'groupID' | 'birthDate' | 'status';
+        dataIndex: dataIndexTypes
     };
 };
 
@@ -60,10 +60,15 @@ const slice = createSlice({
                 state.changedAnimals.push({
                     ...{
                         id: action.payload.id,
-                        groupID: null,
                         tagNumber: null,
-                        status: null,
                         birthDate: null,
+                        breed: null,
+                        groupID: null,
+                        status: null,
+                        origin: null,
+                        originLocation: null,
+                        motherTagNumber: null,
+                        fatherTagNumber: null
                     },
                     [action.payload.dataIndex]: action.payload.value,
                 });
