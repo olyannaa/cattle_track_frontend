@@ -47,10 +47,6 @@ export const LayoutPage: React.FC = () => {
         };
     }, []);
 
-    if (!user) {
-        return <Navigate to='/' />;
-    }
-
     const handlerLogout = async () => {
         try {
             await logout().unwrap();
@@ -59,9 +55,9 @@ export const LayoutPage: React.FC = () => {
         } catch {}
     };
 
-    if (!user) {
-        return <Navigate to='/' />;
-    }
+    // if (!user) {
+    //     return <Navigate to='/' />;
+    // }
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -90,7 +86,7 @@ export const LayoutPage: React.FC = () => {
                     <Flex gap={'4px'}>
                         <Button type={'text'}>
                             <UserOutlined />
-                            {user.organizationName}
+                            {/* {user.organizationName} */}
                         </Button>
                         <Button onClick={handlerLogout} variant='link'>
                             Выход
@@ -114,7 +110,11 @@ export const LayoutPage: React.FC = () => {
                             className={styles['trapezoid-button']}
                         >
                             <div className={styles['trapezoid-button__icon']}>
-                                {collapsed ? <RightOutlined /> : <LeftOutlined />}
+                                {collapsed ? (
+                                    <RightOutlined />
+                                ) : (
+                                    <LeftOutlined />
+                                )}
                             </div>
                         </div>
                     )}

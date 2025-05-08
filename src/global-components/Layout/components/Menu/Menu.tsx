@@ -55,7 +55,9 @@ export const AppMenu = () => {
         {
             key: '7',
             icon: <ClockCircleFilled />,
-            label: 'Репродуктивный учет',
+            label: (
+                <Link to='reproductive-accounting'>Репродуктивный учет</Link>
+            ),
             danger: true,
         },
         {
