@@ -43,7 +43,7 @@ export const animalsApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        getIndetificationFieldsNames: builder.query<IdentificationFieldName[],void>({
+        getIdentificationFieldsNames: builder.query<IdentificationFieldName[],void>({
             query: ()=> ({
                 url: 'groups/identification',
                 method: 'GET'
@@ -57,5 +57,5 @@ export const {
     useUpdateAnimalsMutation,
     useGetAnimalsGroupsQuery,
     useLazyGetPaginationInfoQuery,
-    useGetIndetificationFieldsNamesQuery
+    useGetIdentificationFieldsNamesQuery
 } = animalsApi;

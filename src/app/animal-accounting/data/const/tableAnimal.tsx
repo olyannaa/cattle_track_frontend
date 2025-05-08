@@ -34,7 +34,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         title: '№ бирки',
         dataIndex: 'tagNumber',
         key: 'tagNumber',
-        render: (_, {identificationFields,...animal}) => (
+        render: (_, animal) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'tagNumber'}
@@ -153,17 +153,21 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         ),
         sorter: true,
     },
-    // ...fieldsName.map(({name})=> ({
-    //     title: name,
-    //     dataIndex: name,
-    //     key: name,
-    //     minWidth: 100,
-    //     render: (_, animal) => (
-    //         <IdentificationFieldTable
-    //             isEditTable={isEditTable}
-    //             nameField={name}
-    //         />
-    //     )
-    // }))
+    ...fieldsName.map(({name})=> ({
+        title: name,
+        dataIndex: name,
+        key: name,
+        minWidth: 100,
+        render: (_: unknown, animal: IAnimalTable) => {
+            const fieldValue = animal.identificationFields?.find(f => f.identificationFieldName === name)?.identificationValue ?? '';
+            return (
+                <IdentificationFieldTable
+                    isEditTable={isEditTable}
+                    nameField={name}
+                    value={fieldValue}
+                />
+            );
+        }
+    }))
 ];
 

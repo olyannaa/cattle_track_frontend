@@ -1,6 +1,4 @@
-import { IAnimal } from '../types/animal';
-
-export interface IAnimalTable{
+export interface IAnimalTable {
     key: string;
     birthDate: string;
     breed: string;
@@ -12,5 +10,10 @@ export interface IAnimalTable{
     originLocation: string;
     status: string;
     tagNumber: string;
-    [key: string]: string
+    identificationFields: [
+        {
+            identificationFieldName: string;
+            identificationValue: string;
+        }
+    ];
 }

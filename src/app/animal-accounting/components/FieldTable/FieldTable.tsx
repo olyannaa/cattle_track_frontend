@@ -8,7 +8,7 @@ import { dataIndexTypes } from '../../data/types/animal';
 
 type Props = {
     animal: IAnimalTable;
-    dataIndex:  dataIndexTypes;
+    dataIndex: dataIndexTypes;
     isEditTable: boolean;
 };
 
@@ -29,18 +29,16 @@ export const FieldTable = ({ animal, dataIndex, isEditTable }: Props) => {
     }));
 
     const handlerOpenChange = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-        e.stopPropagation;
+        e.stopPropagation();
         setIsOpenChange(true);
     };
 
-    const validationInput = (
-        dataIndex: dataIndexTypes
-    ) => {
-        if (dataIndex === 'groupName'){
+    const validationInput = (dataIndex: dataIndexTypes) => {
+        if (dataIndex === 'groupName') {
             return groups.find((group) => group.name === name)?.id || '';
-        } else if (dataIndex === 'status'){
+        } else if (dataIndex === 'status') {
             return name;
-        }else {
+        } else {
             return name ? name.trim() : '';
         }
     };
@@ -63,18 +61,9 @@ export const FieldTable = ({ animal, dataIndex, isEditTable }: Props) => {
 
     return dataIndex !== 'groupName' && dataIndex !== 'status' ? (
         isOpenChange && isEditTable ? (
-            <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                onBlur={() => changeAnimal()}
-                autoFocus
-                className={styles[`input__${dataIndex}`]}
-            />
+            <Input value={name} onChange={(e) => setName(e.target.value)} onBlur={() => changeAnimal()} autoFocus className={styles[`input__${dataIndex}`]} />
         ) : (
-            <div
-                className={styles[`text-cell__${dataIndex}`]}
-                onDoubleClick={(e) => handlerOpenChange(e)}
-            >
+            <div className={styles[`text-cell__${dataIndex}`]} onDoubleClick={(e) => handlerOpenChange(e)}>
                 {name}
             </div>
         )
@@ -88,17 +77,9 @@ export const FieldTable = ({ animal, dataIndex, isEditTable }: Props) => {
             className={styles[`select__${dataIndex}`]}
         />
     ) : dataIndex === 'status' ? (
-        <Badge
-            onDoubleClick={(e) => handlerOpenChange(e)}
-            status={name === 'Активное' ? 'success' : 'error'}
-            text={name}
-            className={styles[`text-cell__${dataIndex}`]}
-        />
+        <Badge onDoubleClick={(e) => handlerOpenChange(e)} status={name === 'Активное' ? 'success' : 'error'} text={name} className={styles[`text-cell__${dataIndex}`]} />
     ) : dataIndex === 'groupName' ? (
-        <div
-            className={styles[`text-cell__${dataIndex}`]}
-            onDoubleClick={(e) => handlerOpenChange(e)}
-        >
+        <div className={styles[`text-cell__${dataIndex}`]} onDoubleClick={(e) => handlerOpenChange(e)}>
             {name}
         </div>
     ) : (

@@ -3,7 +3,7 @@ import { HeaderContent } from '../../global-components/header-content/HeaderCont
 import styles from './AnimalAccountingPage.module.css';
 import {
     useGetAnimalsGroupsQuery,
-    useGetIndetificationFieldsNamesQuery,
+    useGetIdentificationFieldsNamesQuery,
     useLazyGetAnimalsQuery,
     useLazyGetPaginationInfoQuery,
     useUpdateAnimalsMutation,
@@ -28,13 +28,12 @@ export const AnimalAccountingPage = () => {
     const [descending, setDescending] = useState<boolean>(true);
     const changedAnimals = useAppSelector(selectChangedAnimals);
     const [paginationInfo, setPaginationInfo] = useState<IResponsePaginationInfo>();
-    const [getPageCountQuery, { isLoading: isLoadingPageCount }] =
-        useLazyGetPaginationInfoQuery();
+    const [getPageCountQuery, { isLoading: isLoadingPageCount }] = useLazyGetPaginationInfoQuery();
     const [getAnimalsQuery, { isLoading: isLoadingAnimals }] = useLazyGetAnimalsQuery();
     const [updateAnimals] = useUpdateAnimalsMutation();
     useGetAnimalsGroupsQuery();
-    const {data} = useGetIndetificationFieldsNamesQuery()
-    console.log(animals)
+    const { data } = useGetIdentificationFieldsNamesQuery();
+    console.log(animals);
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -45,7 +44,7 @@ export const AnimalAccountingPage = () => {
         });
     };
 
-    const error = (error:string ) => {
+    const error = (error: string) => {
         messageApi.open({
             type: 'error',
             content: error,
@@ -105,8 +104,8 @@ export const AnimalAccountingPage = () => {
             await getAnimals();
             await getCountAnimals();
             success();
-        } catch (err){
-            const currentErr = err as {data: {errorText: string}}
+        } catch (err) {
+            const currentErr = err as { data: { errorText: string } };
             error(currentErr?.data?.errorText || 'Ошибка при изменении данных');
         }
     };
@@ -153,7 +152,7 @@ export const AnimalAccountingPage = () => {
                 <Table<IAnimalTable>
                     columns={getColumns(isEditTable, data || [])}
                     style={{ width: '100%' }}
-                    dataSource={animals.map(({identificationFields,...animal}) => ({
+                    dataSource={animals.map((animal) => ({
                         ...animal,
                         key: animal.id,
                     }))}
@@ -163,8 +162,7 @@ export const AnimalAccountingPage = () => {
                         total: paginationInfo?.animalCount,
                         pageSize: paginationInfo?.entriesPerPage,
                         onChange: (page) => getAnimals(page),
-                        showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} из ${total} элементов`,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} из ${total} элементов`,
                         className: styles['table__pagination'],
                     }}
                     onChange={onChangeTable}
