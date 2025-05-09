@@ -1,5 +1,5 @@
 import { Alert, Button, Form, Input, message } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { InputLabel } from '../../../../global-components/custom-inputs/input-label/InputLabel';
 import {
     NewInfrastructure,
@@ -25,6 +25,15 @@ export const IdentificationFields = () => {
         !isFetching &&
         !isLoading &&
         (!identificationFields || identificationFields.length === 0);
+    const [visibleAlert, setVisibleAlert] = useState(false);
+
+    useEffect(() => {
+        if (identificationFields && identificationFields.length >= 6) {
+            setVisibleAlert(true);
+        } else {
+            setVisibleAlert(false);
+        }
+    }, [identificationFields])
 
     const addNewField = async (value: NewInfrastructure) => {
         try {
@@ -66,13 +75,22 @@ export const IdentificationFields = () => {
                         ></Input>
                     </Form.Item>
                 </div>
+                {visibleAlert && (
+                    <Alert
+                        className='alert alert__big top-margin-xl'
+                        message='Максимальное количество полей идентификации 6.'
+                        description='Удалите одно из полей, чтобы добавить новое.'
+                        type='info'
+                        showIcon
+                    />
+                )}
                 <Button
                     type='primary'
                     htmlType='submit'
                     className='form-button_default'
                     size='large'
                     loading={loading}
-                    disabled={loading}
+                    disabled={loading || visibleAlert}
                 >
                     Добавить поле
                 </Button>
