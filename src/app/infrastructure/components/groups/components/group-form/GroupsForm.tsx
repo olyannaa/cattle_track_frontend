@@ -15,7 +15,7 @@ import { isErrorType } from '../../../../../../utils/errorType';
 export const GroupsForm = ({ isEmpty }: { isEmpty: boolean }) => {
     const { data } = useGetGroupsTypesQuery();
     const [groupsTypes, setGroupsTypes] = useState<SelectDataType[]>([]);
-    const [addGroup] = useAddGroupMutation();
+    const [addGroup, { isLoading }] = useAddGroupMutation();
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
 
@@ -109,6 +109,8 @@ export const GroupsForm = ({ isEmpty }: { isEmpty: boolean }) => {
                     htmlType='submit'
                     className='form-button_default'
                     size='large'
+                    loading={isLoading}
+                    disabled={isLoading}
                 >
                     Создать группу
                 </Button>
