@@ -19,7 +19,7 @@ export const IdentificationFields = () => {
         isFetching,
     } = useGetIdentificationFieldsQuery();
     const [deleteIdentificationField] = useDeleteIdentificationFieldMutation();
-    const [addIdentificationField] = useAddIdentificationFieldMutation();
+    const [addIdentificationField, { isLoading: loading }] = useAddIdentificationFieldMutation();
     const [messageApi, contextHolder] = message.useMessage();
     const showAlert: boolean =
         !isFetching &&
@@ -71,6 +71,8 @@ export const IdentificationFields = () => {
                     htmlType='submit'
                     className='form-button_default'
                     size='large'
+                    loading={loading}
+                    disabled={loading}
                 >
                     Добавить поле
                 </Button>
