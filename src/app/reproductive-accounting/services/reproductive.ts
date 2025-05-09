@@ -30,7 +30,9 @@ export type RequestCalving = {
     complication: string;
     type: string;
     pathology?: string;
-    calfId?: string;
+    calfTagNumber?: string;
+    method?: string;
+    weight?: number;
 };
 
 export type Animal = {

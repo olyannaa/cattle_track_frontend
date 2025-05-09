@@ -1,17 +1,17 @@
-import { Button, Form, Input, message, Radio, Select } from 'antd';
+import { Button, Form, Input, message, Radio, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InputLabel } from '../../../../global-components/custom-inputs/input-label/InputLabel';
-import TextArea from 'antd/es/input/TextArea';
 import styles from '../../ReproductiveAccountingPage.module.css';
 import { CheckResultForm } from './check-result-form/CheckResultForm';
 import { RequestPregnancy, useGetPregnanciesQuery, useRegisterPregnancyMutation } from '../../services/reproductive';
 import { SelectDataType } from '../../../../utils/selectDataType';
 import { isErrorType } from '../../../../utils/errorType';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export const PregnancyRateForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const rules = [{ required: true, message: 'Обязательное поле' }];
-    const { data } = useGetPregnanciesQuery();
+    const { data, isLoading } = useGetPregnanciesQuery();
     const [cows, setCows] = useState<SelectDataType[]>([]);
     const [registerPregnancy] = useRegisterPregnancyMutation();
     const [form] = Form.useForm();
@@ -31,7 +31,7 @@ export const PregnancyRateForm = () => {
             await registerPregnancy(values).unwrap();
             messageApi.open({
                 type: 'success',
-                content: 'Поле идентификации успешно создано',
+                content: 'Результат проверки сохранён!',
             });
             form.resetFields();
         } catch (err) {
@@ -48,6 +48,20 @@ export const PregnancyRateForm = () => {
             }
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className='content-container'>
+                <Spin style={{ margin: 'auto' }} indicator={<LoadingOutlined spin style={{ color: '#ff4218' }} />} />
+            </div>
+        );
+    } else if (data?.length === 0) {
+        return (
+            <div className='content-container'>
+                <h3 style={{ margin: 'auto' }}>Нет коров для проверки стельности</h3>
+            </div>
+        );
+    }
 
     return (
         <React.Fragment>
@@ -72,7 +86,7 @@ export const PregnancyRateForm = () => {
                         <Radio.Group className={styles['reproductive__radio-group']}>
                             <div className={styles['reproductive__radio-container']}>
                                 <div className='radio-border'>
-                                    <Radio value='Искусственное'>Подлежит проверке</Radio>
+                                    <Radio value='Подлежит проверке'>Подлежит проверке</Radio>
                                 </div>
                                 <div className='radio-border'>
                                     <Radio value='Яловая'>Яловая</Radio>
@@ -85,14 +99,8 @@ export const PregnancyRateForm = () => {
                     </Form.Item>
                 </div>
                 <CheckResultForm />
-                <div>
-                    <InputLabel label='Примечания' />
-                    <Form.Item name='name'>
-                        <TextArea rows={3} className='form-input_default' placeholder='Дополнительная информация' />
-                    </Form.Item>
-                </div>
                 <Button type='primary' htmlType='submit'>
-                    Зарегистрировать результат проверки
+                    Сохранить результат проверки
                 </Button>
             </Form>
         </React.Fragment>

@@ -31,7 +31,7 @@ export const InseminationForm = () => {
             await registerInsemination(values).unwrap();
             messageApi.open({
                 type: 'success',
-                content: 'Поле идентификации успешно создано',
+                content: 'Осеменение зарегистрировано',
             });
             form.resetFields();
         } catch (err) {

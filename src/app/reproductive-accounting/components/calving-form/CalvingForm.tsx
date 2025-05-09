@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { InputLabel } from '../../../../global-components/custom-inputs/input-label/InputLabel';
 import TextArea from 'antd/es/input/TextArea';
 import styles from '../../ReproductiveAccountingPage.module.css';
-import { ConfirmCalvingModal } from './modal/ConfirmCalvingModal';
+import { ConfirmCalvingModal, ResultCalvingModal } from './modal/ConfirmCalvingModal';
 import { RequestCalving, useGetPregnanciesQuery, useRegisterCalvingMutation } from '../../services/reproductive';
 import { SelectDataType } from '../../../../utils/selectDataType';
 import { isErrorType } from '../../../../utils/errorType';
@@ -14,13 +14,11 @@ export const CalvingForm = () => {
     const [form] = Form.useForm();
     const calfType = Form.useWatch('type', form);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const handleSubmit = () => {
-        setIsModalOpen(true);
-    };
 
     const { data } = useGetPregnanciesQuery();
     const [cows, setCows] = useState<SelectDataType[]>([]);
     const [registerCalving] = useRegisterCalvingMutation();
+    const [modalResult, setModalResult] = useState<ResultCalvingModal | null>(null);
 
     useEffect(() => {
         if (data) {
@@ -34,11 +32,21 @@ export const CalvingForm = () => {
 
     const registerNewCalving = async (values: RequestCalving) => {
         try {
+            values.cowTagNumber = data?.find((animal) => animal.cowId === values.cowId)?.cowTagNumber;
             await registerCalving(values).unwrap();
-            messageApi.open({
-                type: 'success',
-                content: 'Поле идентификации успешно создано',
-            });
+            if (values.type === 'Живой') {
+                setModalResult({
+                    mother: values.cowTagNumber,
+                    calfType: values.method,
+                    date: values.date.toString(),
+                });
+                setIsModalOpen(true);
+            } else {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Отёл зарегистрирован',
+                });
+            }
             form.resetFields();
         } catch (err) {
             if (isErrorType(err) && err?.data?.errorText) {
@@ -53,6 +61,11 @@ export const CalvingForm = () => {
                 });
             }
         }
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setModalResult(null);
     };
 
     return (
@@ -131,8 +144,8 @@ export const CalvingForm = () => {
                         </Form.Item>
                     </div>
                     {calfType !== 'Живой' && (
-                        <Button type='primary' htmlType='submit' className='form-button form-button__margin-top-xl' onClick={handleSubmit}>
-                            Зарегистрировать отел
+                        <Button type='primary' htmlType='submit' className='form-button form-button__margin-top-xl'>
+                            Зарегистрировать отёл
                         </Button>
                     )}
                 </div>
@@ -141,13 +154,13 @@ export const CalvingForm = () => {
                         <h2 className='form-title'>Регистрация теленка</h2>
                         <div className='form-input_default'>
                             <InputLabel label='Номер бирки' />
-                            <Form.Item name='calfId' rules={rules}>
+                            <Form.Item name='calfTagNumber' rules={rules}>
                                 <Input placeholder='Введите номер бирки' />
                             </Form.Item>
                         </div>
                         <div style={{ maxWidth: '432px' }}>
                             <InputLabel label='Теленок' />
-                            <Form.Item name='inseminationType' rules={rules}>
+                            <Form.Item name='method' rules={rules}>
                                 <Radio.Group className={styles['reproductive__radio-group']}>
                                     <div className={styles['reproductive__radio-container']}>
                                         <div className='radio-border'>
@@ -162,17 +175,17 @@ export const CalvingForm = () => {
                         </div>
                         <div>
                             <InputLabel label='Вес при рождении' />
-                            <Form.Item name='name' rules={rules}>
+                            <Form.Item name='weight' rules={rules}>
                                 <Input className='form-input_default' placeholder='Введите вес, кг' />
                             </Form.Item>
                         </div>
                         <Button type='primary' htmlType='submit' className='form-button form-button__margin-top-xl'>
-                            Зарегистрировать отел
+                            Зарегистрировать отёл
                         </Button>
                     </div>
                 )}
             </Form>
-            <ConfirmCalvingModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            {modalResult && <ConfirmCalvingModal open={isModalOpen} onClose={closeModal} data={modalResult} />}
         </React.Fragment>
     );
 };
