@@ -39,12 +39,6 @@ body {
     background-color: #fff;
 }
 
-.alert {
-    max-width: 432px;
-    margin-bottom: var(--spacing-xl);
-    border-radius: 2px;
-}
-
 .radio-border {
     border: 1px solid var(--grey-border);
     border-radius: 2px;
