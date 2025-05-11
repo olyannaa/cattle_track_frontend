@@ -29,7 +29,7 @@ export type IAnimal = {
 };
 
 export type IdentificationField = {
-    dentificationFieldName: string,
+    identificationFieldName: string,
     identificationValue: string | null
 }
 
@@ -50,8 +50,9 @@ export type IChangedAnimal = {
     origin: string | null,
     originLocation: string | null,
     motherTagNumber: string | null,
-    fatherTagNumber: string | null
-    [key: string]: string | null;
+    fatherTagNumber: string | null,
+    identificationFields: IdentificationField[]
+    [key: string]: string | null | IdentificationField[];
 };
 
 export type IdentificationFieldName = {
@@ -59,4 +60,6 @@ export type IdentificationFieldName = {
     name: string
 }
 
-export type dataIndexTypes = 'tagNumber' | 'groupName' | 'birthDate' | 'status' |'breed' | 'origin' | 'originLocation' | 'motherTagNumber' | 'fatherTagNumber' | 'groupID'
+export type dataIndexTypes = 'tagNumber' | 'groupName' | 'birthDate' | 'status' |'breed' | 'origin' | 'originLocation' | 'motherTagNumber' | 'fatherTagNumber'
+
+export type dataIndexTypesChanged = 'tagNumber' | 'birthDate' | 'status' |'breed' | 'origin' | 'originLocation' | 'motherTagNumber' | 'fatherTagNumber' | 'groupID'

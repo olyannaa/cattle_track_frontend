@@ -34,7 +34,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         title: '№ бирки',
         dataIndex: 'tagNumber',
         key: 'tagNumber',
-        render: (_, animal) => (
+        render: (_, {identificationFields,...animal}) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'tagNumber'}
@@ -48,7 +48,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         title: 'Дата рождения',
         dataIndex: 'birthDate',
         key: 'birthDate',
-        render: (_, animal) => (
+        render: (_, {identificationFields,...animal}) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'birthDate'}
@@ -64,7 +64,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         dataIndex: 'breed',
         key: 'breed',
         minWidth: 130,
-        render: (_, animal) => (
+        render: (_,{identificationFields,...animal}) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'breed'}
@@ -78,7 +78,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         dataIndex: 'groupName',
         key: 'groupName',
         sorter: true,
-        render: (_, animal) => (
+        render: (_, {identificationFields,...animal}) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'groupName'}
@@ -91,7 +91,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         title: 'Статус',
         dataIndex: 'status',
         key: 'status',
-        render: (_, animal) => (
+        render: (_, {identificationFields,...animal}) => (
             <FieldTable animal={animal} dataIndex={'status'} isEditTable={isEditTable} />
         ),
         minWidth: 128,
@@ -102,7 +102,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         dataIndex: 'origin',
         key: 'origin',
         minWidth: 157,
-        render: (_, animal) => (
+        render: (_, {identificationFields,...animal}) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'origin'}
@@ -116,7 +116,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         dataIndex: 'originLocation',
         key: 'originLocation',
         minWidth: 159,
-        render: (_, animal) => (
+        render: (_, {identificationFields,...animal}) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'originLocation'}
@@ -130,7 +130,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         dataIndex: 'motherTagNumber',
         key: 'motherTagNumber',
         minWidth: 78,
-        render: (_, animal) => (
+        render: (_, {identificationFields,...animal}) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'motherTagNumber'}
@@ -144,7 +144,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
         dataIndex: 'fatherTagNumber',
         key: 'fatherTagNumber',
         minWidth: 78,
-        render: (_, animal) => (
+        render: (_, {identificationFields,...animal}) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'fatherTagNumber'}
@@ -165,6 +165,7 @@ export const getColumns = (isEditTable: boolean, fieldsName: IdentificationField
                     isEditTable={isEditTable}
                     nameField={name}
                     value={fieldValue}
+                    id = {animal.id}
                 />
             );
         }

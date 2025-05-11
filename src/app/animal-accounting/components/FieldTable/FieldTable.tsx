@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IAnimalTable } from '../../data/interfaces/animalTable';
+import { IAnimalTableBasic } from '../../data/interfaces/animalTable';
 import { Badge, Input, Select } from 'antd';
 import styles from './FieldTable.module.css';
 import { selectAnimalGroups, updateChangedAnimals } from '../../services/animalsSlice';
@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import { dataIndexTypes } from '../../data/types/animal';
 
 type Props = {
-    animal: IAnimalTable;
+    animal: IAnimalTableBasic;
     dataIndex: dataIndexTypes;
     isEditTable: boolean;
 };

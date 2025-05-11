@@ -1,4 +1,6 @@
-export interface IAnimalTable {
+import { IdentificationField } from "../types/animal";
+
+export interface IAnimalTableBasic {
     key: string;
     birthDate: string;
     breed: string;
@@ -10,10 +12,10 @@ export interface IAnimalTable {
     originLocation: string;
     status: string;
     tagNumber: string;
-    identificationFields: [
-        {
-            identificationFieldName: string;
-            identificationValue: string;
-        }
-    ];
 }
+
+export interface IAnimalTable extends IAnimalTableBasic{
+    identificationFields: IdentificationField[]
+}
+
+
