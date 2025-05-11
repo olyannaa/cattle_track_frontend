@@ -1,5 +1,3 @@
-import { IdentificationFields } from "../../../infrastructure/components/identification-fields/IdentificationFields";
-
 export type IRequestGetAnimals = {
     page: number;
     type: string;
