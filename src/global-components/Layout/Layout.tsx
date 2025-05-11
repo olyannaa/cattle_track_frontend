@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {
-    AppstoreFilled,
-    LeftOutlined,
-    RightOutlined,
-    UserOutlined,
-} from '@ant-design/icons';
+import { AppstoreFilled, LeftOutlined, RightOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Flex, Layout } from 'antd';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { AppMenu } from './components/Menu/Menu';
+import { AppMenu } from './components/menu/Menu';
 import styles from './Layout.module.css';
 import { useLogoutMutation } from '../../app-service/services/auth';
 import { IUser } from '../../utils/userType';
@@ -18,7 +13,7 @@ export const LayoutPage: React.FC = () => {
     const user: IUser = JSON.parse(localStorage.getItem('user') || '{}');
 
     const [collapsed, setCollapsed] = useState(true);
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Проверка на мобильный экран
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768); 
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
 
@@ -46,10 +41,6 @@ export const LayoutPage: React.FC = () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-
-    if (!user) {
-        return <Navigate to='/' />;
-    }
 
     const handlerLogout = async () => {
         try {
@@ -109,13 +100,8 @@ export const LayoutPage: React.FC = () => {
                     <div className='demo-logo-vertical' />
                     <AppMenu />
                     {!isMobile && (
-                        <div
-                            onClick={() => setCollapsed(!collapsed)}
-                            className={styles['trapezoid-button']}
-                        >
-                            <div className={styles['trapezoid-button__icon']}>
-                                {collapsed ? <RightOutlined /> : <LeftOutlined />}
-                            </div>
+                        <div onClick={() => setCollapsed(!collapsed)} className={styles['trapezoid-button']}>
+                            <div className={styles['trapezoid-button__icon']}>{collapsed ? <RightOutlined /> : <LeftOutlined />}</div>
                         </div>
                     )}
                 </Sider>
