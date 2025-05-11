@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { IAnimalTable } from '../../data/interfaces/animalTable';
+import { IAnimalTableBasic } from '../../data/interfaces/animalTable';
 import { Badge, Input, Select } from 'antd';
 import styles from './FieldTable.module.css';
 import { selectAnimalGroups, updateChangedAnimals } from '../../services/animalsSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
+import { dataIndexTypes } from '../../data/types/animal';
 
 type Props = {
-    animal: IAnimalTable;
-    dataIndex: 'tagNumber' | 'groupName' | 'birthDate' | 'status';
+    animal: IAnimalTableBasic;
+    dataIndex: dataIndexTypes;
     isEditTable: boolean;
 };
 
@@ -28,26 +29,24 @@ export const FieldTable = ({ animal, dataIndex, isEditTable }: Props) => {
     }));
 
     const handlerOpenChange = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-        e.stopPropagation;
+        e.stopPropagation();
         setIsOpenChange(true);
     };
 
-    const validationInput = (
-        dataIndex: 'tagNumber' | 'groupName' | 'birthDate' | 'status'
-    ) => {
-        if (dataIndex === 'birthDate' || dataIndex === 'tagNumber') {
-            return name ? name.trim() : '';
-        } else if (dataIndex === 'groupName') {
+    const validationInput = (dataIndex: dataIndexTypes) => {
+        if (dataIndex === 'groupName') {
             return groups.find((group) => group.name === name)?.id || '';
-        } else {
+        } else if (dataIndex === 'status') {
             return name;
+        } else {
+            return name ? name.trim() : '';
         }
     };
 
     const changeAnimal = async () => {
         setIsOpenChange(false);
         const value = validationInput(dataIndex);
-        if (value === '') {
+        if (value === '' && (dataIndex === 'birthDate' || dataIndex === 'groupName' || dataIndex === 'status' || dataIndex === 'tagNumber')) {
             setName(animal[dataIndex]);
             return;
         }
@@ -60,20 +59,11 @@ export const FieldTable = ({ animal, dataIndex, isEditTable }: Props) => {
         );
     };
 
-    return dataIndex === 'tagNumber' || dataIndex === 'birthDate' ? (
+    return dataIndex !== 'groupName' && dataIndex !== 'status' ? (
         isOpenChange && isEditTable ? (
-            <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                onBlur={() => changeAnimal()}
-                autoFocus
-                className={styles[`input__${dataIndex}`]}
-            />
+            <Input value={name} onChange={(e) => setName(e.target.value)} onBlur={() => changeAnimal()} autoFocus className={styles[`input__${dataIndex}`]} />
         ) : (
-            <div
-                className={styles[`text-cell__${dataIndex}`]}
-                onDoubleClick={(e) => handlerOpenChange(e)}
-            >
+            <div className={styles[`text-cell__${dataIndex}`]} onDoubleClick={(e) => handlerOpenChange(e)}>
                 {name}
             </div>
         )
@@ -87,17 +77,9 @@ export const FieldTable = ({ animal, dataIndex, isEditTable }: Props) => {
             className={styles[`select__${dataIndex}`]}
         />
     ) : dataIndex === 'status' ? (
-        <Badge
-            onDoubleClick={(e) => handlerOpenChange(e)}
-            status={name === 'Активное' ? 'success' : 'error'}
-            text={name}
-            className={styles[`text-cell__${dataIndex}`]}
-        />
+        <Badge onDoubleClick={(e) => handlerOpenChange(e)} status={name === 'Активное' ? 'success' : 'error'} text={name} className={styles[`text-cell__${dataIndex}`]} />
     ) : dataIndex === 'groupName' ? (
-        <div
-            className={styles[`text-cell__${dataIndex}`]}
-            onDoubleClick={(e) => handlerOpenChange(e)}
-        >
+        <div className={styles[`text-cell__${dataIndex}`]} onDoubleClick={(e) => handlerOpenChange(e)}>
             {name}
         </div>
     ) : (

@@ -1,3 +1,5 @@
+import { IdentificationFields } from "../../../infrastructure/components/identification-fields/IdentificationFields";
+
 export type IRequestGetAnimals = {
     page: number;
     type: string;
@@ -22,8 +24,14 @@ export type IAnimal = {
     originLocation: string;
     status: string;
     tagNumber: string;
-    [key: string]: string;
+    identificationFields: IdentificationField[]
+    [key: string]: string | IdentificationField[];
 };
+
+export type IdentificationField = {
+    identificationFieldName: string,
+    identificationValue: string | null
+}
 
 export type IResponseGetAnimals = IAnimal[];
 
@@ -34,9 +42,24 @@ export type IResponsePaginationInfo = {
 
 export type IChangedAnimal = {
     id: string;
-    tagNumber: string | null;
-    groupID: string | null;
-    birthDate: string | null;
-    status: string | null;
-    [key: string]: string | null;
+    tagNumber: string | null,
+    birthDate: string | null,
+    breed: string | null,
+    groupID: string | null,
+    status: string | null,
+    origin: string | null,
+    originLocation: string | null,
+    motherTagNumber: string | null,
+    fatherTagNumber: string | null,
+    identificationFields: IdentificationField[]
+    [key: string]: string | null | IdentificationField[];
 };
+
+export type IdentificationFieldName = {
+    id: string,
+    name: string
+}
+
+export type dataIndexTypes = 'tagNumber' | 'groupName' | 'birthDate' | 'status' |'breed' | 'origin' | 'originLocation' | 'motherTagNumber' | 'fatherTagNumber'
+
+export type dataIndexTypesChanged = 'tagNumber' | 'birthDate' | 'status' |'breed' | 'origin' | 'originLocation' | 'motherTagNumber' | 'fatherTagNumber' | 'groupID'
