@@ -42,7 +42,7 @@ export const InseminationTypeForm = () => {
                 </div>
             )}
 
-            {inseminationType === 'Естесственное' && (
+            {inseminationType === 'Естественное' && (
                 <div>
                     <InputLabel label='Выберите быка' />
                     <Form.Item name='bullId'>
