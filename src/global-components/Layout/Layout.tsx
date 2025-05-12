@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AppstoreFilled, LeftOutlined, RightOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Flex, Layout } from 'antd';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { AppMenu } from './components/Menu/Menu';
+import { AppMenu } from './components/menu/Menu';
 import styles from './Layout.module.css';
 import { useLogoutMutation } from '../../app-service/services/auth';
 import { IUser } from '../../utils/userType';
