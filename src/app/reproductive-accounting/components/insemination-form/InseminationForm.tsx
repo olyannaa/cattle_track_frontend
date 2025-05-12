@@ -75,7 +75,7 @@ export const InseminationForm = () => {
                                     <Radio value='Искусственное'>Искусственное</Radio>
                                 </div>
                                 <div className='radio-border'>
-                                    <Radio value='Естесственное'>Естесственное</Radio>
+                                    <Radio value='Естественное'>Естественное</Radio>
                                 </div>
                                 <div className='radio-border'>
                                     <Radio value='Эмбрион'>Эмбрион</Radio>
