@@ -42,7 +42,6 @@ const slice = createSlice({
             const index = state.changedAnimals.findIndex(
                 (animal) => animal.id === action.payload.id
             );
-
             if (index !== -1) {
                 const changedAnimal = {
                     ...state.changedAnimals[index],
@@ -64,7 +63,7 @@ const slice = createSlice({
                     };
                 }
             } else {
-                if (!action.payload.value) return;
+                if (action.payload.value === null) return;
                 state.changedAnimals.push({
                     ...{
                         id: action.payload.id,

@@ -33,7 +33,6 @@ export const AnimalAccountingPage = () => {
     const [updateAnimals] = useUpdateAnimalsMutation();
     useGetAnimalsGroupsQuery();
     const { data } = useGetIdentificationFieldsNamesQuery();
-    console.log(animals);
 
     const [messageApi, contextHolder] = message.useMessage();
 
