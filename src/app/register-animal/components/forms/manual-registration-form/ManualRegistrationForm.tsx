@@ -125,7 +125,7 @@ export const ManualRegistrationForm = () => {
                     <Form.Item
                         name='Type'
                         rules={requiredRule}
-                        label={<InputLabel label='Категория животного' />}
+                        label={<InputLabel label='Половозрастная группа' />}
                         labelCol={{ span: 24 }}
                     >
                         <RadioGroupButton
