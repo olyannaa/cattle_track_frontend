@@ -90,6 +90,12 @@ export const reproductiveApi = api.injectEndpoints({
                 body: body,
             }),
         }),
+        getCalving: builder.query<FullPregnancyInfo[], void>({
+            query: () => ({
+                url: `reproductive/calving`,
+                method: 'GET',
+            }),
+        }),
         registerCalving: builder.mutation<void, RequestCalving>({
             query: (body) => ({
                 url: 'reproductive/calving',
@@ -100,4 +106,5 @@ export const reproductiveApi = api.injectEndpoints({
     }),
 });
 
-export const { useGetBullsQuery, useGetCowsQuery, useRegistrationInseminationMutation, useGetPregnanciesQuery, useRegisterCalvingMutation, useRegisterPregnancyMutation } = reproductiveApi;
+export const { useGetBullsQuery, useGetCowsQuery, useGetCalvingQuery, useRegistrationInseminationMutation, useGetPregnanciesQuery, useRegisterCalvingMutation, useRegisterPregnancyMutation } =
+    reproductiveApi;

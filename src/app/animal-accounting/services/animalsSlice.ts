@@ -151,13 +151,13 @@ const slice = createSlice({
             (state, action) => {
                 state.animalGroups = [...action.payload];
             }
-        ),
-            builder.addMatcher(
-                animalsApi.endpoints.getAnimals.matchFulfilled,
-                (state) => {
-                    state.changedAnimals = [];
-                }
-            );
+        );
+        builder.addMatcher(
+            animalsApi.endpoints.getAnimals.matchFulfilled,
+            (state) => {
+                state.changedAnimals = [];
+            }
+        );
     },
 });
 

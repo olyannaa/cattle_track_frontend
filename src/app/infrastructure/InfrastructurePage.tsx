@@ -31,7 +31,7 @@ export const InfrastructurePage = () => {
     return (
         <div>
             <div className='header-container'>
-                <h1 className='header-title'>Репродуктивный учёт</h1>
+                <h1 className='header-title'>Инфраструктура</h1>
                 <Tabs
                     style={{
                         fontWeight: 400,

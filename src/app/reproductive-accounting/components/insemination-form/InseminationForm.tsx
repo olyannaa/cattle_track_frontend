@@ -11,10 +11,14 @@ import { isErrorType } from '../../../../utils/errorType';
 export const InseminationForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const requiredRule = [{ required: true, message: 'Обязательное поле' }];
-    const { data } = useGetCowsQuery();
+    const { data, refetch } = useGetCowsQuery();
     const [cows, setCows] = useState<SelectDataType[]>([]);
     const [registerInsemination] = useRegistrationInseminationMutation();
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     useEffect(() => {
         if (data) {
