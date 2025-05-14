@@ -4,7 +4,7 @@ import { InputLabel } from '../../../../global-components/custom-inputs/input-la
 import TextArea from 'antd/es/input/TextArea';
 import styles from '../../ReproductiveAccountingPage.module.css';
 import { ConfirmCalvingModal, ResultCalvingModal } from './modal/ConfirmCalvingModal';
-import { RequestCalving, useGetPregnanciesQuery, useRegisterCalvingMutation } from '../../services/reproductive';
+import { RequestCalving, useGetCalvingQuery, useRegisterCalvingMutation } from '../../services/reproductive';
 import { SelectDataType } from '../../../../utils/selectDataType';
 import { isErrorType } from '../../../../utils/errorType';
 
@@ -15,10 +15,14 @@ export const CalvingForm = () => {
     const calfType = Form.useWatch('type', form);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { data } = useGetPregnanciesQuery();
+    const { data, refetch } = useGetCalvingQuery();
     const [cows, setCows] = useState<SelectDataType[]>([]);
     const [registerCalving] = useRegisterCalvingMutation();
     const [modalResult, setModalResult] = useState<ResultCalvingModal | null>(null);
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     useEffect(() => {
         if (data) {
@@ -41,6 +45,7 @@ export const CalvingForm = () => {
                     date: values.date.toString(),
                 });
                 setIsModalOpen(true);
+                refetch();
             } else {
                 messageApi.open({
                     type: 'success',

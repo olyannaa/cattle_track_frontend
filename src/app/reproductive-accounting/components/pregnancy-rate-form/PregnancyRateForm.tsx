@@ -11,10 +11,14 @@ import { LoadingOutlined } from '@ant-design/icons';
 export const PregnancyRateForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const rules = [{ required: true, message: 'Обязательное поле' }];
-    const { data, isLoading } = useGetPregnanciesQuery();
+    const { data, isLoading, refetch } = useGetPregnanciesQuery();
     const [cows, setCows] = useState<SelectDataType[]>([]);
     const [registerPregnancy] = useRegisterPregnancyMutation();
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     useEffect(() => {
         if (data) {
@@ -34,6 +38,7 @@ export const PregnancyRateForm = () => {
                 content: 'Результат проверки сохранён!',
             });
             form.resetFields();
+            refetch();
         } catch (err) {
             if (isErrorType(err) && err?.data?.errorText) {
                 messageApi.open({
