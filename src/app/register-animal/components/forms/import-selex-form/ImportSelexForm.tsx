@@ -116,8 +116,6 @@ export const ImportSelexForm = () => {
                 </div>
                 <List
                     className={styles['import-selex__additional-list']}
-                    header={<div>Header</div>}
-                    footer={<div>Footer</div>}
                     bordered
                     dataSource={data}
                     renderItem={(item) => <List.Item>{item}</List.Item>}

@@ -18,7 +18,7 @@ export const TypesGroups = () => {
         isLoading,
     } = useGetGroupsTypesQuery();
     const [deleteGroupType] = useDeleteGroupTypeMutation();
-    const [addTypeGroup] = useAddNewGroupTypeMutation();
+    const [addTypeGroup, {isLoading: addLoading}] = useAddNewGroupTypeMutation();
     const [messageApi, contextHolder] = message.useMessage();
     const showAlert: boolean =
         !isFetching && !isLoading && (!typesGroups || typesGroups.length === 0);
@@ -75,6 +75,8 @@ export const TypesGroups = () => {
                     htmlType='submit'
                     className='form-button_default'
                     size='large'
+                    loading={addLoading}
+                    disabled={addLoading}
                 >
                     Создать группу
                 </Button>

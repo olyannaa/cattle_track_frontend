@@ -1,25 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Alert, Button, Form, Input, Radio, Select } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import {
-    IRadioGroup,
-    RadioGroupButton,
-} from '../../../../../global-components/custom-inputs/radio-group/RadioGroup';
+import { IRadioGroup, RadioGroupButton } from '../../../../../global-components/custom-inputs/radio-group/RadioGroup';
 import Dragger from 'antd/es/upload/Dragger';
 import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
 import styles from './ManualRegistration.module.css';
 import { AdditionalInfoForm } from './additional-info-form/AdditionalInfoForm';
-import {
-    useGetAnimalGroupsQuery,
-    useRegistrationAnimalMutation,
-} from '../../../services/registration-animal';
+import { useGetAnimalGroupsQuery, useRegistrationAnimalMutation } from '../../../services/registration-animal';
 import { useEffect, useState } from 'react';
 import { IAlert } from '../../../../../utils/alertType';
 import { NetelFormRegister } from './netel-form/NetelForm';
-import {
-    formatDataForSelectInput,
-    SelectDataType,
-} from '../../../../../utils/formatting-data';
+import { formatDataForSelectInput, SelectDataType } from '../../../../../utils/formatting-data';
 
 const requiredRule = [{ required: true, message: 'Обязательное поле' }];
 const animalsOptions: IRadioGroup = {
@@ -34,7 +25,7 @@ const animalsOptions: IRadioGroup = {
 };
 
 export const ManualRegistrationForm = () => {
-    const { data } = useGetAnimalGroupsQuery();
+    const { data, refetch } = useGetAnimalGroupsQuery();
     const [registerAnimalForm] = Form.useForm();
     const [selectedAnimalType, setSelectedAnimalType] = useState<string | undefined>('');
     const org_id: string = JSON.parse(localStorage.getItem('user') ?? '')?.organizationId;
@@ -45,6 +36,10 @@ export const ManualRegistrationForm = () => {
     const [visibleAlert, setVisibleAlert] = useState(false);
     const [alert, setAlert] = useState<IAlert | null>(null);
     const [isExchangeOrPurchase, setIsExchangeOrPurchase] = useState(false);
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     useEffect(() => {
         if (data) {
@@ -68,8 +63,7 @@ export const ManualRegistrationForm = () => {
     const onFinish = async (values: FormData) => {
         const formData = new FormData();
         const additionalInfo: Record<string, string> = {};
-        const uuidRegex =
-            /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
         Object.entries(values).forEach(([key, value]) => {
             if (uuidRegex.test(key)) {
                 additionalInfo[key] = value;
@@ -131,7 +125,7 @@ export const ManualRegistrationForm = () => {
                     <Form.Item
                         name='Type'
                         rules={requiredRule}
-                        label={<InputLabel label='Категория животного' />}
+                        label={<InputLabel label='Половозрастная группа' />}
                         labelCol={{ span: 24 }}
                     >
                         <RadioGroupButton
@@ -186,10 +180,7 @@ export const ManualRegistrationForm = () => {
                     <div>
                         <InputLabel label='ID матери' />
                         <Form.Item name='MotherTag'>
-                            <Input
-                                className={styles['manual-register__input']}
-                                placeholder='xxxxxx'
-                            ></Input>
+                            <Input className={styles['manual-register__input']} placeholder='xxxxxx'></Input>
                         </Form.Item>
                     </div>
                     <div>

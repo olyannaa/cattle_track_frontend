@@ -2,15 +2,16 @@ import { Form, Input } from 'antd';
 import { InputLabel } from '../../../../../../global-components/custom-inputs/input-label/InputLabel';
 import styles from '../ManualRegistration.module.css';
 import aiStyles from './AdditionalInfoForm.module.css';
-import {
-    SelectResponseType,
-    useGetAnimalIdentificationsQuery,
-} from '../../../../services/registration-animal';
+import { SelectResponseType, useGetAnimalIdentificationsQuery } from '../../../../services/registration-animal';
 import { useEffect, useState } from 'react';
 
 export const AdditionalInfoForm = () => {
-    const { data } = useGetAnimalIdentificationsQuery();
+    const { data, refetch } = useGetAnimalIdentificationsQuery();
     const [fields, setFields] = useState<SelectResponseType[]>([]);
+
+    useEffect(() => {
+        refetch();
+    }, []);
 
     useEffect(() => {
         if (data?.length) {
