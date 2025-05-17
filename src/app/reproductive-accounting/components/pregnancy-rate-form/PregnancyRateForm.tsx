@@ -23,7 +23,7 @@ export const PregnancyRateForm = () => {
     useEffect(() => {
         if (data) {
             const selectOptions: SelectDataType[] = data.map((animal) => ({
-                value: animal.cowId,
+                value: animal.id,
                 label: animal.name,
             }));
             setCows(selectOptions);
@@ -31,6 +31,9 @@ export const PregnancyRateForm = () => {
     }, [data]);
 
     const registerNewPregnancy = async (values: RequestPregnancy) => {
+        if (data) {
+            values.cowId = data.find((animal) => animal.id === values.cowId)?.cowId ?? '';
+        }
         try {
             await registerPregnancy(values).unwrap();
             messageApi.open({
@@ -71,7 +74,7 @@ export const PregnancyRateForm = () => {
     return (
         <React.Fragment>
             {contextHolder}
-            <Form className='content-container' onFinish={registerNewPregnancy}>
+            <Form form={form} className='content-container' onFinish={registerNewPregnancy}>
                 <h2 className='form-title'>Проверка стельности</h2>
                 <div>
                     <InputLabel label='Выберите корову' />

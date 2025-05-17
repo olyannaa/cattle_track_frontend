@@ -45,6 +45,7 @@ export type Animal = {
 };
 
 export type FullPregnancyInfo = {
+    id: string,
     organizationId: string;
     cowId: string;
     cowTagNumber?: string;
@@ -106,5 +107,12 @@ export const reproductiveApi = api.injectEndpoints({
     }),
 });
 
-export const { useGetBullsQuery, useGetCowsQuery, useGetCalvingQuery, useRegistrationInseminationMutation, useGetPregnanciesQuery, useRegisterCalvingMutation, useRegisterPregnancyMutation } =
-    reproductiveApi;
+export const {
+    useGetBullsQuery,
+    useGetCowsQuery,
+    useGetCalvingQuery,
+    useRegistrationInseminationMutation,
+    useGetPregnanciesQuery,
+    useRegisterCalvingMutation,
+    useRegisterPregnancyMutation,
+} = reproductiveApi;
