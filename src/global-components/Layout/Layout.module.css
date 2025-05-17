@@ -2,11 +2,13 @@
     padding: 0px 16px;
     background: #fff;
     box-shadow: var(--block-shadow);
+    display: flex;
 }
 
 .header__content-logo {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .layout__logout-btn {
