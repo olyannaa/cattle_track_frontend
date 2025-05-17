@@ -45,7 +45,7 @@ export type Animal = {
 };
 
 export type FullPregnancyInfo = {
-    id: string;
+    id: string,
     organizationId: string;
     cowId: string;
     cowTagNumber?: string;

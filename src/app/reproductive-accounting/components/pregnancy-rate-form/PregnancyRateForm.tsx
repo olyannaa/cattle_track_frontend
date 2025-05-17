@@ -41,9 +41,7 @@ export const PregnancyRateForm = () => {
                 content: 'Результат проверки сохранён!',
             });
             form.resetFields();
-            setTimeout(() => {
-                refetch();
-            });
+            refetch();
         } catch (err) {
             if (isErrorType(err) && err?.data?.errorText) {
                 messageApi.open({
