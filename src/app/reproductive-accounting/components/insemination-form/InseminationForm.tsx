@@ -56,7 +56,7 @@ export const InseminationForm = () => {
     return (
         <React.Fragment>
             {contextHolder}
-            <Form className='content-container' onFinish={registerNewInsemination}>
+            <Form form={form} className='content-container' onFinish={registerNewInsemination}>
                 <h2 className='form-title'>Регистрация осеменения</h2>
                 <div>
                     <InputLabel label='Выберите животное из списка' />
