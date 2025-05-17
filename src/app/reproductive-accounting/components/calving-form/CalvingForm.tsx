@@ -45,13 +45,13 @@ export const CalvingForm = () => {
                     date: values.date.toString(),
                 });
                 setIsModalOpen(true);
-                refetch();
             } else {
                 messageApi.open({
                     type: 'success',
                     content: 'Отёл зарегистрирован',
                 });
             }
+            refetch();
             form.resetFields();
         } catch (err) {
             if (isErrorType(err) && err?.data?.errorText) {
