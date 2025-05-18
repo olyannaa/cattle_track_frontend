@@ -22,6 +22,7 @@ export type RequestPregnancy = {
 
 export type RequestCalving = {
     cowId: string;
+    bullId?: string;
     cowTagNumber?: string;
     date: Date;
     veterinar?: string;
@@ -45,7 +46,7 @@ export type Animal = {
 };
 
 export type FullPregnancyInfo = {
-    id: string,
+    id: string;
     organizationId: string;
     cowId: string;
     cowTagNumber?: string;

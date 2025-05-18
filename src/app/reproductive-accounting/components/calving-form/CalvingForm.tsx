@@ -27,7 +27,7 @@ export const CalvingForm = () => {
     useEffect(() => {
         if (data) {
             const selectOptions: SelectDataType[] = data.map((animal) => ({
-                value: animal.cowId,
+                value: animal.id,
                 label: animal.name,
             }));
             setCows(selectOptions);
@@ -36,7 +36,12 @@ export const CalvingForm = () => {
 
     const registerNewCalving = async (values: RequestCalving) => {
         try {
-            values.cowTagNumber = data?.find((animal) => animal.cowId === values.cowId)?.cowTagNumber;
+            const value = data?.find((animal) => animal.id === values.cowId);
+            if (value?.cowId) {
+                values.cowId = value.cowId;
+            }
+            values.bullId = value?.bullId;
+            values.cowTagNumber = value?.cowTagNumber;
             await registerCalving(values).unwrap();
             if (values.type === 'Живой') {
                 setModalResult({
