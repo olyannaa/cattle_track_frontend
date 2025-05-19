@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Radio } from 'antd';
+import { DatePicker, Form, Input, Radio } from 'antd';
 import { InputLabel } from '../../../../../../global-components/custom-inputs/input-label/InputLabel';
 import TextArea from 'antd/es/input/TextArea';
 import dayjs from 'dayjs';
@@ -11,11 +11,12 @@ export const NetelFormRegister = () => {
     const requiredRule = [{ required: true, message: 'Обязательное поле' }];
     const form = useFormInstance();
 
-    const handleInseminationDateChange = (e: any) => {
-        const value = e.target.value;
-        if (value) {
-            const expectedDate = dayjs(value).add(285, 'day').format('YYYY-MM-DD');
+    const handleInseminationDateChange = (date: dayjs.Dayjs | null) => {
+        if (date) {
+            const expectedDate = date.add(285, 'day');
             form.setFieldValue('ExpectedCalvingDate', expectedDate);
+        } else {
+            form.setFieldValue('ExpectedCalvingDate', null);
         }
     };
 
@@ -29,18 +30,15 @@ export const NetelFormRegister = () => {
                         name='InseminationDate'
                         rules={requiredRule}
                         className={styles['manual-register__changed-input']}
+                        initialValue={dayjs()}
                     >
-                        <Input
-                            type='date'
-                            placeholder='xx.xx.xxxx'
-                            onChange={handleInseminationDateChange}
-                        ></Input>
+                         <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx' onChange={handleInseminationDateChange}></DatePicker>
                     </Form.Item>
                 </div>
                 <div className={styles['manual-register__changed-input']}>
                     <InputLabel label='Ожидаемая дата отела' />
-                    <Form.Item rules={requiredRule} name='ExpectedCalvingDate'>
-                        <Input type='date' placeholder='xx.xx.xxxx'></Input>
+                    <Form.Item className='form-input_default' rules={requiredRule} name='ExpectedCalvingDate' initialValue={dayjs().add(285, 'day')}>
+                         <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
                     </Form.Item>
                 </div>
             </div>

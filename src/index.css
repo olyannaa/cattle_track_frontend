@@ -34,15 +34,7 @@ body {
 .radio-border {
     border: 1px solid var(--grey-border);
     border-radius: 2px;
-    padding: 9px var(--spacing-m);
-    flex: 1;
-    background-color: #fff;
-}
-
-.radio-border {
-    border: 1px solid var(--grey-border);
-    border-radius: 2px;
-    padding: 9px var(--spacing-m);
+    padding: 8px var(--spacing-m);
     flex: 1;
     background-color: #fff;
 }

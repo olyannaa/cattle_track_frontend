@@ -2,7 +2,7 @@ import { api } from '../../../app-service/services/api';
 
 export type RequestInsemination = {
     cowId: string;
-    date: Date;
+    date: string;
     inseminationType: string;
     spermBatch?: string;
     spermManufacturer?: string;
@@ -15,7 +15,7 @@ export type RequestInsemination = {
 
 export type RequestPregnancy = {
     cowId: string;
-    date: Date;
+    date: string;
     status: string;
     expectedCalvingDate?: string;
 };
@@ -24,7 +24,7 @@ export type RequestCalving = {
     cowId: string;
     bullId?: string;
     cowTagNumber?: string;
-    date: Date;
+    date: string;
     veterinar?: string;
     treatments?: string;
     /** Тип отёла */

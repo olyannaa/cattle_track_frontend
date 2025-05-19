@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Radio, Select, Spin } from 'antd';
+import { Button, DatePicker, Form, message, Radio, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InputLabel } from '../../../../global-components/custom-inputs/input-label/InputLabel';
 import styles from '../../ReproductiveAccountingPage.module.css';
@@ -7,6 +7,7 @@ import { RequestPregnancy, useGetPregnanciesQuery, useRegisterPregnancyMutation 
 import { SelectDataType } from '../../../../utils/selectDataType';
 import { isErrorType } from '../../../../utils/errorType';
 import { LoadingOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 
 export const PregnancyRateForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -33,6 +34,10 @@ export const PregnancyRateForm = () => {
     const registerNewPregnancy = async (values: RequestPregnancy) => {
         if (data) {
             values.cowId = data.find((animal) => animal.id === values.cowId)?.cowId ?? '';
+        }
+        values.date = dayjs(values.date).format('YYYY-MM-DD');
+        if (values.expectedCalvingDate) {
+            values.expectedCalvingDate = dayjs(values.date).format('YYYY-MM-DD');
         }
         try {
             await registerPregnancy(values).unwrap();
@@ -84,8 +89,8 @@ export const PregnancyRateForm = () => {
                 </div>
                 <div>
                     <InputLabel label='Дата проверки' />
-                    <Form.Item name='date'>
-                        <Input type='date' className='form-input_default' placeholder='хх.хх.хххх' />
+                    <Form.Item className='form-input_default' name='date' initialValue={dayjs()}>
+                        <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
                     </Form.Item>
                 </div>
                 <div>
@@ -106,7 +111,7 @@ export const PregnancyRateForm = () => {
                         </Radio.Group>
                     </Form.Item>
                 </div>
-                <CheckResultForm />
+                {data && <CheckResultForm data={data} />}
                 <Button type='primary' htmlType='submit'>
                     Сохранить результат проверки
                 </Button>
