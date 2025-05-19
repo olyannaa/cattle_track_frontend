@@ -4,7 +4,7 @@ import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { MainPage } from './app/main/MainPage';
 import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
-import { DailyActivities } from './app/daily-activities/DailyActivities';
+import { DailyActions } from './app/daily-actions/DailyActions';
 
 function App() {
     const theme: ThemeConfig = {
@@ -101,9 +101,6 @@ function App() {
                 colorPrimary: 'rgb(255, 66, 24)',
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
             },
-            Form: {
-                itemMarginBottom: undefined,
-            },
             DatePicker: {
                 borderRadius: 2,
                 colorPrimary: 'rgb(255, 66, 24)',
@@ -125,7 +122,7 @@ function App() {
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
                         <Route path='/animals' element={<RegisterAnimalPage />} />
-                        <Route path='/daily-activities' element={<DailyActivities />} />
+                        <Route path='/daily-activities' element={<DailyActions />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

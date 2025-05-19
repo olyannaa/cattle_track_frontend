@@ -1,9 +1,13 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { api } from '../app-service/services/api';
+import animalsDailyActions from '../app/daily-actions/service/animalsDailyActionsSlice';
+import dailyActions from '../app/daily-actions/service/dailyActionsSlice';
 
 export const store = configureStore({
     reducer: {
         [api.reducerPath]: api.reducer,
+        animalsDailyActions,
+        dailyActions,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 });
