@@ -5,8 +5,8 @@ import { CustomSelect } from '../../custom-inputs/custom-select/CustomSelect';
 import { useEffect, useState } from 'react';
 import { RadioGroupFormWithSwitch } from '../../custom-inputs/radio-group-with-switch/RadioGroupWithSwitch';
 import {
-    useGetGroupsQuery,
-    useGetIdentificationFieldsQuery,
+    useGetGroupQuery,
+    useGetIdentificationsFieldsQuery,
 } from '../../../../../app-service/services/general';
 import { useAppDispatch, useAppSelector } from '../../../../../app-service/hooks';
 import {
@@ -34,13 +34,13 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [form] = Form.useForm();
     const dispatch = useAppDispatch();
-    const indentificationFields = useGetIdentificationFieldsQuery().data?.map(
+    const indentificationFields = useGetIdentificationsFieldsQuery().data?.map(
         (field) => ({
             label: field.name,
             value: field.id,
         })
     );
-    const groups = useGetGroupsQuery().data?.map((field) => ({
+    const groups = useGetGroupQuery().data?.map((field) => ({
         label: field.name,
         value: field.id,
     }));

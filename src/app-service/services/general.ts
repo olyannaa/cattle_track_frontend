@@ -12,13 +12,13 @@ export type IAnimalGroup = {
 
 export const generalApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getIdentificationFields: builder.query<IdentificationFieldName[], void>({
+        getIdentificationsFields: builder.query<IdentificationFieldName[], void>({
             query: () => ({
                 url: 'groups/identification',
                 method: 'GET',
             }),
         }),
-        getGroups: builder.query<IAnimalGroup[], void>({
+        getGroup: builder.query<IAnimalGroup[], void>({
             query: () => ({
                 url: 'groups',
                 method: 'GET',
@@ -27,4 +27,4 @@ export const generalApi = api.injectEndpoints({
     }),
 });
 
-export const { useGetIdentificationFieldsQuery, useGetGroupsQuery } = generalApi;
+export const { useGetIdentificationsFieldsQuery, useGetGroupQuery } = generalApi;

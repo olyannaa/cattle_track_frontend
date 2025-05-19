@@ -13,14 +13,10 @@ import {
 } from '../../../service/animalsDailyActionsSlice';
 import { changeDate } from '../form-add-inspection/FormAddInspection';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
-import { useGetGroupsQuery } from '../../../../../app-service/services/general';
+import { useGetGroupQuery } from '../../../../../app-service/services/general';
 import { Label } from '../../custom-inputs/label/Label';
 import { useEffect } from 'react';
 import { selectReset } from '../../../service/dailyActionsSlice';
-// import {
-//     useGetGroupsQuery,
-//     useGetGroupsQuery,
-// } from '../../../../../app-service/services/general';
 
 type Props = {
     isGroup: boolean;
@@ -37,7 +33,7 @@ export const FormAddTransfer = ({ isGroup }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const animals = useAppSelector(selectAnimals);
-    const options = useGetGroupsQuery().data?.map((group) => ({
+    const options = useGetGroupQuery().data?.map((group) => ({
         label: group.name,
         value: group.id,
     }));

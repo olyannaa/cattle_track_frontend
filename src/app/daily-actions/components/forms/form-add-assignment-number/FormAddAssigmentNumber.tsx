@@ -12,7 +12,7 @@ import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import { changeDate } from '../form-add-inspection/FormAddInspection';
 import { useEffect, useState } from 'react';
-import { useGetIdentificationFieldsQuery } from '../../../../../app-service/services/general';
+import { useGetIdentificationsFieldsQuery } from '../../../../../app-service/services/general';
 import { selectReset } from '../../../service/dailyActionsSlice';
 
 type Props = {
@@ -28,7 +28,7 @@ type FormType = {
 export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const identificationFields =
-        useGetIdentificationFieldsQuery().data?.map((field) => ({
+        useGetIdentificationsFieldsQuery().data?.map((field) => ({
             label: field.name,
             value: field.id,
         })) || [];

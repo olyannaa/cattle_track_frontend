@@ -50,6 +50,7 @@ export const History = ({ keyTab }: Props) => {
     const dispatch = useAppDispatch();
     useEffect(() => {
         setNameTab(items?.find((item) => item.key === keyTab)?.label?.toString() || '');
+        setCurrentPage(1);
     }, [keyTab]);
 
     useEffect(() => {
