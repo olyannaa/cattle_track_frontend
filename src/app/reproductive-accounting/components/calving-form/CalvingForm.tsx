@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Radio, Select } from 'antd';
+import { Button, DatePicker, Form, Input, message, Radio, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InputLabel } from '../../../../global-components/custom-inputs/input-label/InputLabel';
 import TextArea from 'antd/es/input/TextArea';
@@ -7,6 +7,7 @@ import { ConfirmCalvingModal, ResultCalvingModal } from './modal/ConfirmCalvingM
 import { RequestCalving, useGetCalvingQuery, useRegisterCalvingMutation } from '../../services/reproductive';
 import { SelectDataType } from '../../../../utils/selectDataType';
 import { isErrorType } from '../../../../utils/errorType';
+import dayjs from 'dayjs';
 
 export const CalvingForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -42,6 +43,7 @@ export const CalvingForm = () => {
             }
             values.bullId = value?.bullId;
             values.cowTagNumber = value?.cowTagNumber;
+            values.date = dayjs(values.date).format('YYYY-MM-DD');
             await registerCalving(values).unwrap();
             if (values.type === 'Живой') {
                 setModalResult({
@@ -92,8 +94,8 @@ export const CalvingForm = () => {
                     </div>
                     <div>
                         <InputLabel label='Дата отёла' />
-                        <Form.Item name='date' rules={rules}>
-                            <Input type='date' className='form-input_default' placeholder='хх.хх.хххх' />
+                        <Form.Item className='form-input_default' name='date' rules={rules} initialValue={dayjs()}>
+                            <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
                         </Form.Item>
                     </div>
                     <div>

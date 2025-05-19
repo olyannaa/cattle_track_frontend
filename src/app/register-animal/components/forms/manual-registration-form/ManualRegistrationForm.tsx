@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Alert, Button, Form, Input, Radio, Select } from 'antd';
+import { Alert, Button, DatePicker, Form, Input, Radio, Select } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { IRadioGroup, RadioGroupButton } from '../../../../../global-components/custom-inputs/radio-group/RadioGroup';
 import Dragger from 'antd/es/upload/Dragger';
@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { IAlert } from '../../../../../utils/alertType';
 import { NetelFormRegister } from './netel-form/NetelForm';
 import { formatDataForSelectInput, SelectDataType } from '../../../../../utils/formatting-data';
+import dayjs from 'dayjs';
 
 const requiredRule = [{ required: true, message: 'Обязательное поле' }];
 const animalsOptions: IRadioGroup = {
@@ -69,6 +70,8 @@ export const ManualRegistrationForm = () => {
                 additionalInfo[key] = value;
             } else if (key === 'Photo' && value?.fileList) {
                 formData.append('Photo', value.fileList[0]?.originFileObj);
+            } else if (key === 'BirthDate' || key === 'ExpectedCalvingDate' || key ===  'InseminationDate') {
+                formData.append(key, dayjs(value).format('YYYY-MM-DD'))
             } else {
                 formData.append(key, String(value ?? ''));
             }
@@ -107,43 +110,25 @@ export const ManualRegistrationForm = () => {
                     <div>
                         <InputLabel label='Номер бирки/RFID' />
                         <Form.Item name='TagNumber' rules={requiredRule}>
-                            <Input
-                                className={styles['manual-register__input']}
-                                placeholder='Введите номер бирки'
-                            ></Input>
+                            <Input className={styles['manual-register__input']} placeholder='Введите номер бирки'></Input>
                         </Form.Item>
                     </div>
                     <div>
                         <InputLabel label='Порода' />
                         <Form.Item name='Breed'>
-                            <Input
-                                className={styles['manual-register__input']}
-                                placeholder='Укажите породу'
-                            ></Input>
+                            <Input className={styles['manual-register__input']} placeholder='Укажите породу'></Input>
                         </Form.Item>
                     </div>
-                    <Form.Item
-                        name='Type'
-                        rules={requiredRule}
-                        label={<InputLabel label='Половозрастная группа' />}
-                        labelCol={{ span: 24 }}
-                    >
-                        <RadioGroupButton
-                            onChange={handleRadioChange}
-                            data={animalsOptions}
-                        />
+                    <Form.Item name='Type' rules={requiredRule} label={<InputLabel label='Половозрастная группа' />} labelCol={{ span: 24 }}>
+                        <RadioGroupButton onChange={handleRadioChange} data={animalsOptions} />
                     </Form.Item>
                 </div>
                 {selectedAnimalType === 'Нетель' && <NetelFormRegister />}
                 <div className={styles['manual-register__changed-form']}>
                     <div>
                         <InputLabel label='Дата рождения' />
-                        <Form.Item rules={requiredRule} name='BirthDate'>
-                            <Input
-                                className={styles['manual-register__input']}
-                                type='date'
-                                placeholder='xx.xx.xxxx'
-                            ></Input>
+                        <Form.Item rules={requiredRule} name='BirthDate' className='form-input_default' initialValue={dayjs()}>
+                            <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
                         </Form.Item>
                     </div>
                     <div>
@@ -169,10 +154,7 @@ export const ManualRegistrationForm = () => {
                     <div>
                         <InputLabel label='Место происхождения' />
                         <Form.Item name='OriginLocation'>
-                            <Input
-                                className={styles['manual-register__input']}
-                                placeholder='Укажите место происхождения'
-                            ></Input>
+                            <Input className={styles['manual-register__input']} placeholder='Укажите место происхождения'></Input>
                         </Form.Item>
                     </div>
                 )}
@@ -186,20 +168,14 @@ export const ManualRegistrationForm = () => {
                     <div>
                         <InputLabel label='ID отца' />
                         <Form.Item name='FatherTag'>
-                            <Input
-                                className={styles['manual-register__input']}
-                                placeholder='xxxxxx'
-                            ></Input>
+                            <Input className={styles['manual-register__input']} placeholder='xxxxxx'></Input>
                         </Form.Item>
                     </div>
                 </div>
                 <div>
                     <InputLabel label='Группа содержания' />
                     <Form.Item rules={requiredRule} name='GroupId'>
-                        <Select
-                            options={animalGroups}
-                            className={styles['manual-register__input']}
-                        ></Select>
+                        <Select options={animalGroups} className={styles['manual-register__input']}></Select>
                     </Form.Item>
                 </div>
                 <AdditionalInfoForm />
@@ -210,23 +186,12 @@ export const ManualRegistrationForm = () => {
                             <p className='ant-upload-drag-icon'>
                                 <InboxOutlined />
                             </p>
-                            <p className='ant-upload-text'>
-                                Выберите или перетащите файл
-                            </p>
-                            <p className='ant-upload-hint'>
-                                Максимальный размер изображения 200Mb. Формат JPG/JPEG/PNG
-                            </p>
+                            <p className='ant-upload-text'>Выберите или перетащите файл</p>
+                            <p className='ant-upload-hint'>Максимальный размер изображения 200Mb. Формат JPG/JPEG/PNG</p>
                         </Dragger>
                     </Form.Item>
                 </div>
-                {visibleAlert && alert && (
-                    <Alert
-                        className={styles['manual-register__alert']}
-                        message={alert.message}
-                        type={alert.type}
-                        showIcon
-                    />
-                )}
+                {visibleAlert && alert && <Alert className={styles['manual-register__alert']} message={alert.message} type={alert.type} showIcon />}
                 <Button htmlType='submit' type='primary' loading={isLoading}>
                     Зарегистрировать животное
                 </Button>

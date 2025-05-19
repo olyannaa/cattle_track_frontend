@@ -128,22 +128,10 @@ function App() {
                         <Route path='/main' element={<MainPage />} />
 
                         <Route path='/daily-activities' element={<DailyActions />} />
-                        <Route
-                            path='/animalregister'
-                            element={<RegisterAnimalPage />}
-                        />
-                        <Route
-                            path='/infrastructure'
-                            element={<InfrastructurePage />}
-                        />
-                        <Route
-                            path='/accounting'
-                            element={<AnimalAccountingPage />}
-                        />
-                        <Route
-                            path='/reproductive-accounting'
-                            element={<ReproductiveAccountingPage />}
-                        />
+                        <Route path='/animalregister' element={<RegisterAnimalPage />} />
+                        <Route path='/infrastructure' element={<InfrastructurePage />} />
+                        <Route path='/accounting' element={<AnimalAccountingPage />} />
+                        <Route path='/reproductive-accounting' element={<ReproductiveAccountingPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
