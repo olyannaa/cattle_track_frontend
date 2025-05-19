@@ -97,7 +97,10 @@ export const getUrlFilterAnimals = (
         if (filters[filter]) {
             if (filter === 'identificationFieldId' && filters.identificationFieldValue) {
                 url += `Filter.IdentificationField.Id=${filters[filter]}&`;
-            } else if (filter === 'identificationFieldValue') {
+            } else if (
+                filter === 'identificationFieldValue' &&
+                filters.identificationFieldId
+            ) {
                 url += `Filter.IdentificationField.Value=${filters[filter]}&`;
             } else if (filter === 'groupId') {
                 url += `Filter.GroupId=${filters[filter]}&`;

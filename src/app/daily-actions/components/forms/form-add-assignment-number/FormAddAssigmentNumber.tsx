@@ -23,6 +23,7 @@ type FormType = {
     date: string | undefined;
     name: string | undefined;
     type: string | undefined;
+    value: string | undefined;
 };
 
 export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
@@ -45,6 +46,7 @@ export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
             date: changeDate(String(dataForm.date)),
             performedBy: dataForm.name,
             subtype: dataForm.type,
+            identificationValue: dataForm.value,
         }));
         await createDailyActions(data);
     };
@@ -87,7 +89,7 @@ export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
                 />
                 <InputForm
                     label='Значение'
-                    name='name'
+                    name='value'
                     placeholder='Укажите новое значение'
                     required
                 />
