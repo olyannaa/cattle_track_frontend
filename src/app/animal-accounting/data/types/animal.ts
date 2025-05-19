@@ -27,8 +27,8 @@ export type IAnimal = {
 };
 
 export type IdentificationField = {
-    identificationFieldName: string;
-    identificationValue: string | null;
+    name: string;
+    value: string | null;
 };
 
 export type IResponseGetAnimals = IAnimal[];

@@ -22,7 +22,7 @@ type ActionAnimals = {
     payload: {
         id: string;
         value: string | null;
-        dataIndex: dataIndexTypesChanged
+        dataIndex: dataIndexTypesChanged;
     };
 };
 
@@ -30,7 +30,7 @@ type ActionAnimalsMoreFields = {
     payload: {
         id: string;
         value: string | null;
-        nameField: string
+        nameField: string;
     };
 };
 
@@ -50,16 +50,17 @@ const slice = createSlice({
                 if (
                     Object.keys(changedAnimal).every((key) => {
                         if (key === 'id') return true;
-                        if (key === 'identificationFields') return true
+                        if (key === 'identificationFields') return true;
                         return changedAnimal[key] == null;
-                    }) && !changedAnimal.identificationFields.length
+                    }) &&
+                    !changedAnimal.identificationFields.length
                 ) {
                     state.changedAnimals = state.changedAnimals.filter(
                         (animal) => animal.id !== action.payload.id
                     );
                 } else {
                     state.changedAnimals[index] = {
-                        ...changedAnimal
+                        ...changedAnimal,
                     };
                 }
             } else {
@@ -76,7 +77,7 @@ const slice = createSlice({
                         originLocation: null,
                         motherTagNumber: null,
                         fatherTagNumber: null,
-                        identificationFields:[]
+                        identificationFields: [],
                     },
                     [action.payload.dataIndex]: action.payload.value,
                 });
@@ -87,31 +88,34 @@ const slice = createSlice({
                 (animal) => animal.id === action.payload.id
             );
 
-            if (index !== -1){
-                const indexField = state.changedAnimals[index].identificationFields.findIndex(
-                    (field) => field.identificationFieldName === action.payload.nameField
-                )
+            if (index !== -1) {
+                const indexField = state.changedAnimals[
+                    index
+                ].identificationFields.findIndex(
+                    (field) => field.name === action.payload.nameField
+                );
 
-                if (indexField !== -1){
-                    state.changedAnimals[index].identificationFields[indexField].identificationValue = action.payload.value
-                }
-                else{
+                if (indexField !== -1) {
+                    state.changedAnimals[index].identificationFields[indexField].value =
+                        action.payload.value;
+                } else {
                     state.changedAnimals[index].identificationFields.push({
-                        identificationFieldName: action.payload.nameField,
-                        identificationValue: action.payload.value
-                    })
+                        name: action.payload.nameField,
+                        value: action.payload.value,
+                    });
                 }
 
                 const changedAnimal = {
-                    ...state.changedAnimals[index]
+                    ...state.changedAnimals[index],
                 };
                 if (
                     Object.keys(changedAnimal).every((key) => {
                         if (key === 'id') return true;
-                        if (key === 'identificationFields') return true
+                        if (key === 'identificationFields') return true;
                         return changedAnimal[key] == null;
-                    }) && changedAnimal.identificationFields.every((field)=> 
-                        field.identificationValue === null
+                    }) &&
+                    changedAnimal.identificationFields.every(
+                        (field) => field.value === null
                     )
                 ) {
                     state.changedAnimals = state.changedAnimals.filter(
@@ -119,10 +123,10 @@ const slice = createSlice({
                     );
                 } else {
                     state.changedAnimals[index] = {
-                        ...changedAnimal
+                        ...changedAnimal,
                     };
                 }
-            }else {
+            } else {
                 if (action.payload.value === null) return;
                 state.changedAnimals.push({
                     id: action.payload.id,
@@ -135,14 +139,15 @@ const slice = createSlice({
                     originLocation: null,
                     motherTagNumber: null,
                     fatherTagNumber: null,
-                    identificationFields:[{
-                        identificationFieldName: action.payload.nameField,
-                        identificationValue: action.payload.value
-                    }]
+                    identificationFields: [
+                        {
+                            name: action.payload.nameField,
+                            value: action.payload.value,
+                        },
+                    ],
                 });
             }
-
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
@@ -151,12 +156,9 @@ const slice = createSlice({
                 state.animalGroups = [...action.payload];
             }
         );
-        builder.addMatcher(
-            animalsApi.endpoints.getAnimals.matchFulfilled,
-            (state) => {
-                state.changedAnimals = [];
-            }
-        );
+        builder.addMatcher(animalsApi.endpoints.getAnimals.matchFulfilled, (state) => {
+            state.changedAnimals = [];
+        });
     },
 });
 
