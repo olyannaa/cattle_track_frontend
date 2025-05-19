@@ -48,7 +48,7 @@ const slice = createSlice({
             (state, action) => {
                 state.filterAnimals = [...action.payload];
                 if (action.payload.length === 1) {
-                    state.selectedAnimals = [action.payload[0]];
+                    state.selectedAnimals = [action.payload[0].id];
                 } else {
                     state.selectedAnimals = [];
                 }
