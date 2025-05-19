@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dailyActionsApi } from './dailyActions';
+import { dailyActionsApi, FiltersAnimalsType } from './dailyActions';
 import { RootState } from '../../../app-service/store';
 
 type AnimalDailyActions = {
@@ -14,11 +14,20 @@ type AnimalDailyActions = {
 type InitialState = {
     filterAnimals: AnimalDailyActions[];
     selectedAnimals: string[];
+    filtersAnimals: FiltersAnimalsType;
 };
 
 const initialState: InitialState = {
     filterAnimals: [],
     selectedAnimals: [],
+    filtersAnimals: {
+        groupId: '',
+        type: '',
+        isActive: true,
+        tagNumber: '',
+        identificationFieldId: '',
+        identificationFieldValue: '',
+    },
 };
 
 const slice = createSlice({
@@ -41,6 +50,17 @@ const slice = createSlice({
                 (animal) => animal !== action.payload
             );
         },
+        changeFiltersAnimals: (state, action) => {
+            state.filtersAnimals = {
+                ...state.filtersAnimals,
+                [action.payload.name]: action.payload.value,
+            };
+        },
+        resetFiltersAnimals: (state) => {
+            state.filtersAnimals = {
+                ...initialState.filtersAnimals,
+            };
+        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
@@ -48,10 +68,16 @@ const slice = createSlice({
             (state, action) => {
                 state.filterAnimals = [...action.payload];
                 if (action.payload.length === 1) {
-                    state.selectedAnimals = [action.payload[0]];
+                    state.selectedAnimals = [action.payload[0].id];
                 } else {
                     state.selectedAnimals = [];
                 }
+            }
+        );
+        builder.addMatcher(
+            dailyActionsApi.endpoints.createDailyActions.matchFulfilled,
+            (state) => {
+                state.filtersAnimals = { ...initialState.filtersAnimals };
             }
         );
     },
@@ -65,5 +91,13 @@ export const selectAnimals = (state: RootState) =>
 export const selectSelectedAnimals = (state: RootState) =>
     state.animalsDailyActions.selectedAnimals;
 
-export const { addSelectedAnimal, addSelectedAnimals, deleteSelectedAnimals } =
-    slice.actions;
+export const selectFiltersAnimals = (state: RootState) =>
+    state.animalsDailyActions.filtersAnimals;
+
+export const {
+    addSelectedAnimal,
+    addSelectedAnimals,
+    deleteSelectedAnimals,
+    resetFiltersAnimals,
+    changeFiltersAnimals,
+} = slice.actions;

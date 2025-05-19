@@ -17,6 +17,7 @@ export interface IFormItemRadioGroupWithSwitch extends IFormItemRadioGroup {
     form: FormInstance<any>;
     isGroup: boolean;
     onChangeAll: () => void;
+    value: string;
 }
 
 export interface IFormItemInput extends IFormItem {

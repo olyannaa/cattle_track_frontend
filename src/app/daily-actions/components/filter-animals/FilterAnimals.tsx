@@ -12,8 +12,13 @@ import {
     useLazyGetPaginationInfoFilterAnimalsQuery,
 } from '../../service/dailyActions';
 import { IDailyActionAnimalsTable } from '../../data/interface/IDailyActionAnimalsTable';
-import { useAppSelector } from '../../../../app-service/hooks';
-import { selectAnimals } from '../../service/animalsDailyActionsSlice';
+import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
+import {
+    changeFiltersAnimals,
+    resetFiltersAnimals,
+    selectAnimals,
+    selectFiltersAnimals,
+} from '../../service/animalsDailyActionsSlice';
 
 type Props = {
     isGroup: boolean;
@@ -30,13 +35,9 @@ export type FiltersType = {
 };
 
 export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
-    const [filters, setFilters] = useState<FiltersAnimalsType>({
-        groupId: '',
-        type: '',
-        identificationId: '',
-        identificationValue: '',
-        isActive: true,
-    });
+    const filters = useAppSelector(selectFiltersAnimals);
+    const animals = useAppSelector(selectAnimals);
+    const dispatch = useAppDispatch();
     const [sorters] = useState<SortersAnimalsType>({
         column: '',
         descending: false,
@@ -48,7 +49,7 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
     const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
     const [getPaginationInfoFilterAnimalsQuery] =
         useLazyGetPaginationInfoFilterAnimalsQuery();
-    const animals = useAppSelector(selectAnimals);
+
     const getFilterAnimals = async (
         data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
     ) => {
@@ -68,18 +69,7 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
     }, [filters, sorters]);
 
     useEffect(() => {
-        const newFilters = {
-            ...filters,
-            identificationFieldId: '',
-            identificationFieldValue: '',
-            tagNumber: '',
-        };
-
-        if (isGroup) {
-            getPaginationInfoFilterAnimals(newFilters);
-            getFilterAnimals({ filters: newFilters });
-        }
-        setFilters(newFilters);
+        dispatch(resetFiltersAnimals());
     }, [isGroup]);
 
     const handlerChangeCurrentPagination = (page: number) => {
@@ -100,17 +90,19 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
                         <CheckboxCustom
                             title='Только активные животные'
                             onChange={(e) =>
-                                setFilters((last) => ({
-                                    ...last,
-                                    isActive: e.target.checked,
-                                }))
+                                dispatch(
+                                    changeFiltersAnimals({
+                                        name: 'isActive',
+                                        value: e.target.checked,
+                                    })
+                                )
                             }
                             defaultChecked={true}
                         />
                     </>
                 )}
             </Flex>
-            <FormFilter isGroup={isGroup} filters={filters} setFilters={setFilters} />
+            <FormFilter isGroup={isGroup} filters={filters} />
             {isGroup && (
                 <Table<IDailyActionAnimalsTable>
                     style={{ width: '100%' }}
