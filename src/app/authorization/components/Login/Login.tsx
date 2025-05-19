@@ -27,11 +27,9 @@ export const Login = () => {
                 items={tabsLogin}
                 onChange={setCurrentTab}
                 size='large'
+                style={{ marginBottom: '24px' }}
             />
             {currentTab === '1' ? <LoginForm /> : ''}
-            <Typography.Text className={styles['login__help']}>
-                Если Вы забыли имя пользователя или пароль - обратитесь к администратору
-            </Typography.Text>
         </Flex>
     );
 };

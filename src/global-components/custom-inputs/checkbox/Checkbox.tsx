@@ -19,6 +19,7 @@ export const CheckboxCustom = ({ title, onChange, style }: Props) => {
                 background: 'var(--global-bg)',
                 ...style,
             }}
+            defaultChecked={false}
         >
             {title}
         </Checkbox>

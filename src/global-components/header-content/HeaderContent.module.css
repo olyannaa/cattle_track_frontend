@@ -26,6 +26,10 @@
 @media (max-width: 940px) {
     .title {
         flex-direction: column;
+    }
+
+    .title__buttons {
+        margin-top: 12px;
         margin-bottom: 12px;
     }
 }

@@ -1,10 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LayoutPage } from './global-components/Layout/Layout';
+import { DailyActions } from './app/daily-actions/DailyActions';
+import { AnimalAccountingPage } from './app/animal-accounting/AnimalAccountingPage';
 import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { MainPage } from './app/main/MainPage';
+import { InfrastructurePage } from './app/infrastructure/InfrastructurePage';
 import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
-import { DailyActions } from './app/daily-actions/DailyActions';
+import ruRU from 'antd/lib/locale/ru_RU';
+import { ReproductiveAccountingPage } from './app/reproductive-accounting/ReproductiveAccountingPage';
 
 function App() {
     const theme: ThemeConfig = {
@@ -80,6 +84,7 @@ function App() {
             },
             Table: {
                 headerBorderRadius: 0,
+                colorPrimary: 'rgba(255, 66, 24, 1)',
             },
             Pagination: {
                 colorPrimary: 'rgba(255, 66, 24, 1)',
@@ -115,14 +120,30 @@ function App() {
         cssVar: true,
     };
     return (
-        <ConfigProvider theme={theme}>
+        <ConfigProvider theme={theme} locale={ruRU}>
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
-                        <Route path='/animals' element={<RegisterAnimalPage />} />
+
                         <Route path='/daily-activities' element={<DailyActions />} />
+                        <Route
+                            path='/animalregister'
+                            element={<RegisterAnimalPage />}
+                        />
+                        <Route
+                            path='/infrastructure'
+                            element={<InfrastructurePage />}
+                        />
+                        <Route
+                            path='/accounting'
+                            element={<AnimalAccountingPage />}
+                        />
+                        <Route
+                            path='/reproductive-accounting'
+                            element={<ReproductiveAccountingPage />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>
