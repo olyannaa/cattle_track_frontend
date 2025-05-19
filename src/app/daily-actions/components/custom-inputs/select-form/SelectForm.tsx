@@ -18,13 +18,9 @@ export const SelectForm = ({
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Сделайте выбор' }]}
+                initialValue={defaultValue}
             >
-                <Select
-                    options={options}
-                    placeholder={placeholder}
-                    defaultValue={defaultValue}
-                    onChange={onChange}
-                />
+                <Select options={options} placeholder={placeholder} onChange={onChange} />
             </Form.Item>
         </div>
     );

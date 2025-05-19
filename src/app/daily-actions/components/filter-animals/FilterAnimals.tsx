@@ -105,6 +105,7 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
                                     isActive: e.target.checked,
                                 }))
                             }
+                            defaultChecked={true}
                         />
                     </>
                 )}

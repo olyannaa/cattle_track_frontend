@@ -85,7 +85,7 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
             getIdentificationValues();
         }
     }, [filters.identificationFieldId]);
-
+    console.log(selectedAnimals[0]);
     return (
         <Form
             style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', rowGap: '24px' }}
@@ -147,7 +147,6 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
                                         identificationFieldValue: value,
                                     }))
                                 }
-                                defaultValue=''
                             />
                         )}
                     </Flex>
@@ -160,7 +159,9 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
                     <CustomSelect
                         label='Выберите животное из списка'
                         options={animals}
-                        value={selectedAnimals[0]}
+                        value={
+                            animals.length === 1 ? animals[0].value : selectedAnimals[0]
+                        }
                         onChange={(value) => handlerChangeSelectedAnimals(value)}
                     />
                 </>
