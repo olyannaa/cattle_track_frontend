@@ -45,7 +45,8 @@ export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
             type: 'Присвоение номеров',
             date: changeDate(String(dataForm.date)),
             performedBy: dataForm.name,
-            subtype: dataForm.type,
+            subtype: identificationFields.find((field) => field.value === selectedField)
+                ?.label,
             identificationValue: dataForm.value,
         }));
         await createDailyActions(data);
@@ -85,12 +86,7 @@ export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
                     style={{ maxWidth: '475px' }}
                     placeholder='Выберите причину'
                     required
-                    onChange={(value) =>
-                        setSelectedField(
-                            identificationFields.find((field) => field.value === value)
-                                ?.label || ''
-                        )
-                    }
+                    onChange={(value) => setSelectedField(value)}
                 />
                 <InputForm
                     label='Значение'
