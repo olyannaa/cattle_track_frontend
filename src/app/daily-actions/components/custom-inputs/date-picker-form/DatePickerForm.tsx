@@ -1,6 +1,7 @@
 import { DatePicker, Form } from 'antd';
 import { Label } from '../label/Label';
 import { IFormItem } from '../../../data/interface/IFormItem';
+import dayjs from 'dayjs';
 
 export const DatePickerForm = ({ name, label, required = false }: IFormItem) => {
     return (
@@ -9,6 +10,7 @@ export const DatePickerForm = ({ name, label, required = false }: IFormItem) => 
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Заполните дату' }]}
+                initialValue={dayjs()}
             >
                 <DatePicker
                     placeholder='xx.xx.xxxx'

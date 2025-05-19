@@ -47,7 +47,11 @@ const slice = createSlice({
             dailyActionsApi.endpoints.getFilterAnimals.matchFulfilled,
             (state, action) => {
                 state.filterAnimals = [...action.payload];
-                state.selectedAnimals = [];
+                if (action.payload.length === 1) {
+                    state.selectedAnimals = [action.payload[0]];
+                } else {
+                    state.selectedAnimals = [];
+                }
             }
         );
     },
