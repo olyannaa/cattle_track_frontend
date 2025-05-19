@@ -174,7 +174,7 @@ export const CalvingForm = () => {
                                 <Radio.Group className={styles['reproductive__radio-group']}>
                                     <div className={styles['reproductive__radio-container']}>
                                         <div className='radio-border'>
-                                            <Radio value='Телочка'>Телочка</Radio>
+                                            <Radio value='Телка'>Телка</Radio>
                                         </div>
                                         <div className='radio-border'>
                                             <Radio value='Бычок'>Бычок</Radio>
