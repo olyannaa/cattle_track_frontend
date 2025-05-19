@@ -1,4 +1,4 @@
-import { Button, Flex, Tabs, TabsProps, Typography } from 'antd';
+import { Button, Flex, Tabs, TabsProps } from 'antd';
 import styles from './HeaderContent.module.css';
 
 type Props = {

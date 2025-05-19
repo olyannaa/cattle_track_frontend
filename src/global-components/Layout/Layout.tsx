@@ -22,18 +22,6 @@ export const LayoutPage: React.FC = () => {
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
     const siderStyle: React.CSSProperties = {
         position: 'sticky',
         insetInlineStart: 0,
@@ -46,6 +34,22 @@ export const LayoutPage: React.FC = () => {
         maxHeight: 696,
         display: isMobile && collapsed ? 'none' : 'block',
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    if (!user) {
+        return <Navigate to='/' />;
+    }
 
     const handlerLogout = async () => {
         try {

@@ -1,9 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LayoutPage } from './global-components/Layout/Layout';
-import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
 import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
 import { MainPage } from './app/main/MainPage';
+import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
+import { DailyActions } from './app/daily-actions/DailyActions';
 
 function App() {
     const theme: ThemeConfig = {
@@ -31,6 +32,8 @@ function App() {
                 colorPrimary: '#FF4218',
                 colorPrimaryActive: 'rgba(255, 66, 24, 0.7)',
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+                colorLink: '#FF4218',
+                colorLinkHover: 'rgba(255, 66, 24, 0.7)',
             },
             Input: {
                 borderRadius: 2,
@@ -48,6 +51,7 @@ function App() {
                 inkBarColor: 'rgba(255, 66, 24, 1)',
                 itemHoverColor: 'rgba(255, 66, 24, 0.7)',
                 itemActiveColor: 'rgba(255, 66, 24, 0.7)',
+                fontSize: 16,
             },
             Radio: {
                 colorPrimary: '#FF4218',
@@ -83,6 +87,29 @@ function App() {
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
                 borderRadius: 2,
             },
+            Message: {
+                borderRadiusLG: 2,
+            },
+            Modal: {
+                titleFontSize: 24,
+            },
+            Checkbox: {
+                colorPrimary: '#ff4218',
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+            },
+            Switch: {
+                colorPrimary: 'rgb(255, 66, 24)',
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+            },
+            DatePicker: {
+                borderRadius: 2,
+                colorPrimary: 'rgb(255, 66, 24)',
+                colorPrimaryHover: 'rgba(255, 66, 24, 1)',
+                colorPrimaryBorder: 'rgba(255, 66, 24, 1)',
+                activeShadow: '0 0 0 2px rgba(255, 66, 24,0.1)',
+                colorLink: 'rgba(255, 66, 24, 1)',
+                colorLinkHover: 'rgba(255, 66, 24, 0.7)',
+            },
         },
         token: {},
         cssVar: true,
@@ -95,6 +122,7 @@ function App() {
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
                         <Route path='/animals' element={<RegisterAnimalPage />} />
+                        <Route path='/daily-activities' element={<DailyActions />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
