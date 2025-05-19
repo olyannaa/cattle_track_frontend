@@ -22,42 +22,60 @@ export type IAnimal = {
     originLocation: string;
     status: string;
     tagNumber: string;
-    identificationFields: IdentificationField[]
+    identificationFields: IdentificationField[];
     [key: string]: string | IdentificationField[];
 };
 
 export type IdentificationField = {
-    identificationFieldName: string,
-    identificationValue: string | null
-}
+    identificationFieldName: string;
+    identificationValue: string | null;
+};
 
 export type IResponseGetAnimals = IAnimal[];
 
 export type IResponsePaginationInfo = {
-    animalCount: number;
+    count: number;
     entriesPerPage: number;
 };
 
 export type IChangedAnimal = {
     id: string;
-    tagNumber: string | null,
-    birthDate: string | null,
-    breed: string | null,
-    groupID: string | null,
-    status: string | null,
-    origin: string | null,
-    originLocation: string | null,
-    motherTagNumber: string | null,
-    fatherTagNumber: string | null,
-    identificationFields: IdentificationField[]
+    tagNumber: string | null;
+    birthDate: string | null;
+    breed: string | null;
+    groupID: string | null;
+    status: string | null;
+    origin: string | null;
+    originLocation: string | null;
+    motherTagNumber: string | null;
+    fatherTagNumber: string | null;
+    identificationFields: IdentificationField[];
     [key: string]: string | null | IdentificationField[];
 };
 
 export type IdentificationFieldName = {
-    id: string,
-    name: string
-}
+    id: string;
+    name: string;
+};
 
-export type dataIndexTypes = 'tagNumber' | 'groupName' | 'birthDate' | 'status' |'breed' | 'origin' | 'originLocation' | 'motherTagNumber' | 'fatherTagNumber'
+export type dataIndexTypes =
+    | 'tagNumber'
+    | 'groupName'
+    | 'birthDate'
+    | 'status'
+    | 'breed'
+    | 'origin'
+    | 'originLocation'
+    | 'motherTagNumber'
+    | 'fatherTagNumber';
 
-export type dataIndexTypesChanged = 'tagNumber' | 'birthDate' | 'status' |'breed' | 'origin' | 'originLocation' | 'motherTagNumber' | 'fatherTagNumber' | 'groupID'
+export type dataIndexTypesChanged =
+    | 'tagNumber'
+    | 'birthDate'
+    | 'status'
+    | 'breed'
+    | 'origin'
+    | 'originLocation'
+    | 'motherTagNumber'
+    | 'fatherTagNumber'
+    | 'groupID';
