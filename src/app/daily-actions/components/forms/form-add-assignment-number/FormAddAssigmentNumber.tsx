@@ -85,7 +85,12 @@ export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
                     style={{ maxWidth: '475px' }}
                     placeholder='Выберите причину'
                     required
-                    onChange={(value) => setSelectedField(value)}
+                    onChange={(value) =>
+                        setSelectedField(
+                            identificationFields.find((field) => field.value === value)
+                                ?.label || ''
+                        )
+                    }
                 />
                 <InputForm
                     label='Значение'

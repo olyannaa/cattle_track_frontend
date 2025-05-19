@@ -44,7 +44,11 @@ const months: Record<string, string> = {
 
 export const changeDate = (date: string) => {
     const arr = date.split(' ');
-    return `${arr[3]}-${months[arr[2]]}-${Number(arr[1]) + 1}`;
+    return `${arr[3]}-${months[arr[2]]}-${
+        String(Number(arr[1]) + 1).length < 2
+            ? '0' + String(Number(arr[1]) + 1)
+            : String(Number(arr[1]) + 1)
+    }`;
 };
 
 const options = [
