@@ -42,7 +42,7 @@ export const AppMenu = () => {
         {
             key: '5',
             icon: <DatabaseFilled />,
-            label: 'Ежедневные действия',
+            label: <Link to='/daily-activities'>Ежедневные действия</Link>,
             danger: true,
         },
 
@@ -75,11 +75,6 @@ export const AppMenu = () => {
     ];
 
     return (
-        <Menu
-            theme='light'
-            mode='inline'
-            defaultSelectedKeys={['1']}
-            items={menuItems}
-        />
+        <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />
     );
 };
