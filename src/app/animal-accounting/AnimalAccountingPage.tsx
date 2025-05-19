@@ -23,13 +23,14 @@ export const AnimalAccountingPage = () => {
     const isEditTable = CheckPermissions(Permissions.animalEditTable);
     const [typeAnimal, setTypeAnimal] = useState<string>('Корова');
     const [animals, setAnimals] = useState<IAnimal[]>([]);
-    const [currentPage, setCurrentPage] = useState<number>(1)
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [noActiveAnimals, setNoActiveAnimals] = useState<boolean>(false);
     const [sortedColumn, setSortedColumn] = useState<string | null>(null);
     const [descending, setDescending] = useState<boolean>(true);
     const changedAnimals = useAppSelector(selectChangedAnimals);
     const [paginationInfo, setPaginationInfo] = useState<IResponsePaginationInfo>();
-    const [getPageCountQuery, { isLoading: isLoadingPageCount }] = useLazyGetPaginationInfoQuery();
+    const [getPageCountQuery, { isLoading: isLoadingPageCount }] =
+        useLazyGetPaginationInfoQuery();
     const [getAnimalsQuery, { isLoading: isLoadingAnimals }] = useLazyGetAnimalsQuery();
     const [updateAnimals] = useUpdateAnimalsMutation();
     useGetAnimalsGroupsQuery();
@@ -97,9 +98,9 @@ export const AnimalAccountingPage = () => {
 
     useEffect(() => {
         setCurrentPage(1);
-        getAnimals(1)
+        getAnimals(1);
         getCountAnimals();
-    }, [typeAnimal, noActiveAnimals])
+    }, [typeAnimal, noActiveAnimals]);
 
     const handlerClickSaveChange = async () => {
         if (!changedAnimals.length) {
@@ -128,9 +129,9 @@ export const AnimalAccountingPage = () => {
     };
 
     const handlerChangeCurrentPagination = (page: number) => {
-        setCurrentPage(page)
-        getAnimals(page)
-    }
+        setCurrentPage(page);
+        getAnimals(page);
+    };
 
     const buttons = [
         {
@@ -172,10 +173,11 @@ export const AnimalAccountingPage = () => {
                     pagination={{
                         showSizeChanger: false,
                         current: currentPage,
-                        total: paginationInfo?.animalCount,
+                        total: paginationInfo?.count,
                         pageSize: paginationInfo?.entriesPerPage,
                         onChange: (page) => handlerChangeCurrentPagination(page),
-                        showTotal: (total, range) => `${range[0]}-${range[1]} из ${total} элементов`,
+                        showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} из ${total} элементов`,
                         className: styles['table__pagination'],
                     }}
                     onChange={onChangeTable}
