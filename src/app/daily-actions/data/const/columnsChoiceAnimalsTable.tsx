@@ -9,18 +9,21 @@ export const columnsChoiceAnimalsTable: TableProps<IDailyActionAnimalsTable>['co
             dataIndex: 'tagNumber',
             key: 'tagNumber',
             width: 96,
+            sorter: true,
         },
         {
             title: 'Категория',
             dataIndex: 'type',
             key: 'type',
             minWidth: 137,
+            sorter: true,
         },
         {
             title: 'Группа',
             dataIndex: 'groupName',
             key: 'groupName',
             minWidth: 110,
+            sorter: true,
         },
         {
             title: 'Выбрать',

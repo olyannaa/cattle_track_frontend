@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dailyActionsApi, FiltersAnimalsType } from './dailyActions';
+import { dailyActionsApi, FiltersAnimalsType, SortersAnimalsType } from './dailyActions';
 import { RootState } from '../../../app-service/store';
 
 type AnimalDailyActions = {
@@ -15,6 +15,7 @@ type InitialState = {
     filterAnimals: AnimalDailyActions[];
     selectedAnimals: string[];
     filtersAnimals: FiltersAnimalsType;
+    sortersAnimals: SortersAnimalsType;
 };
 
 const initialState: InitialState = {
@@ -27,6 +28,11 @@ const initialState: InitialState = {
         tagNumber: '',
         identificationFieldId: '',
         identificationFieldValue: '',
+    },
+    sortersAnimals: {
+        column: 'TagNumber',
+        descending: false,
+        page: 0,
     },
 };
 
@@ -45,6 +51,12 @@ const slice = createSlice({
                 state.selectedAnimals.push(action.payload);
             }
         },
+        addAllAnimals: (state, action) => {
+            state.selectedAnimals = [...action.payload];
+        },
+        deleteAllAnimals: (state) => {
+            state.selectedAnimals = [];
+        },
         deleteSelectedAnimals: (state, action) => {
             state.selectedAnimals = state.selectedAnimals.filter(
                 (animal) => animal !== action.payload
@@ -59,6 +71,17 @@ const slice = createSlice({
         resetFiltersAnimals: (state) => {
             state.filtersAnimals = {
                 ...initialState.filtersAnimals,
+            };
+        },
+        changeSortersAnimals: (state, action) => {
+            console.log(action.payload);
+            state.sortersAnimals = {
+                ...action.payload,
+            };
+        },
+        resetSortersAnimals: (state) => {
+            state.sortersAnimals = {
+                ...initialState.sortersAnimals,
             };
         },
     },
@@ -94,10 +117,17 @@ export const selectSelectedAnimals = (state: RootState) =>
 export const selectFiltersAnimals = (state: RootState) =>
     state.animalsDailyActions.filtersAnimals;
 
+export const selectSortersAnimals = (state: RootState) =>
+    state.animalsDailyActions.sortersAnimals;
+
 export const {
     addSelectedAnimal,
     addSelectedAnimals,
     deleteSelectedAnimals,
     resetFiltersAnimals,
     changeFiltersAnimals,
+    addAllAnimals,
+    deleteAllAnimals,
+    changeSortersAnimals,
+    resetSortersAnimals,
 } = slice.actions;

@@ -1,4 +1,4 @@
-import { Button, Flex, Form } from 'antd';
+import { Button, Flex, Form, FormInstance } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
@@ -6,27 +6,23 @@ import {
     newDailyAction,
     useCreateDailyActionsMutation,
     useLazyGetAnimalByIdQuery,
+    useLazyGetDailyActionsQuery,
+    useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
 import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
-import { changeDate } from '../form-add-inspection/FormAddInspection';
 import { useEffect, useState } from 'react';
 import { useGetIdentificationsFieldsQuery } from '../../../../../app-service/services/general';
-import { selectReset } from '../../../service/dailyActionsSlice';
+import dayjs from 'dayjs';
+import { FormTypeAssigmentNumber } from '../../../data/types/FormTypes';
 
 type Props = {
     isGroup: boolean;
+    form: FormInstance<any>;
 };
 
-type FormType = {
-    date: string | undefined;
-    name: string | undefined;
-    type: string | undefined;
-    value: string | undefined;
-};
-
-export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
+export const FormAddAssigmentNumber = ({ isGroup, form }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const identificationFields =
         useGetIdentificationsFieldsQuery().data?.map((field) => ({
@@ -35,21 +31,27 @@ export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
         })) || [];
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [getAnimalByIdQuery] = useLazyGetAnimalByIdQuery();
+    const [getDailyActionsQuery] = useLazyGetDailyActionsQuery();
+    const [getPaginationInfoDailyActionsQuery] =
+        useLazyGetPaginationInfoDailyActionsQuery();
+
     const [animal, setAnimal] = useState<IAnimal>();
     const [selectedField, setSelectedField] = useState<string>(
         identificationFields[0]?.value
     );
-    const addAction = async (dataForm: FormType) => {
+    const addAction = async (dataForm: FormTypeAssigmentNumber) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
             type: 'Присвоение номеров',
-            date: changeDate(String(dataForm.date)),
+            date: dayjs(dataForm.date).format('YYYY-MM-DD'),
             performedBy: dataForm.name,
             subtype: identificationFields.find((field) => field.value === selectedField)
                 ?.label,
             identificationValue: dataForm.value,
         }));
         await createDailyActions(data);
+        await getDailyActionsQuery({ page: 1, type: 'Присвоение номеров' });
+        await getPaginationInfoDailyActionsQuery('Присвоение номеров');
     };
 
     const getAnimalById = async () => {
@@ -60,12 +62,6 @@ export const FormAddAssigmentNumber = ({ isGroup }: Props) => {
     useEffect(() => {
         getAnimalById();
     }, [selectedAnimals[0]]);
-
-    const reset = useAppSelector(selectReset);
-    const [form] = Form.useForm();
-    useEffect(() => {
-        form.resetFields();
-    }, [reset]);
 
     return (
         <Form onFinish={addAction} form={form}>

@@ -1,4 +1,4 @@
-import { Button, Flex, Form } from 'antd';
+import { Button, Flex, Form, FormInstance } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { RadioGroupForm } from '../../custom-inputs/radio-group-form/RadioGroupForm';
 import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
@@ -6,49 +6,21 @@ import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
+    useLazyGetDailyActionsQuery,
+    useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
 import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import { useEffect } from 'react';
 import { selectReset } from '../../../service/dailyActionsSlice';
+import dayjs from 'dayjs';
+import { FormTypeInspection } from '../../../data/types/FormTypes';
 
 type Props = {
     isGroup: boolean;
     type: string;
-};
-
-type FormType = {
-    dateInspection: string | undefined;
-    dateNextInspection: string | undefined;
-    name: string | undefined;
-    note: string | undefined;
-    resultInspection: string | undefined;
-    typeInspection: string | undefined;
-};
-
-const months: Record<string, string> = {
-    Jan: '01',
-    Feb: '02',
-    Mar: '03',
-    Apr: '04',
-    May: '05',
-    Jun: '06',
-    Jul: '07',
-    Aug: '08',
-    Sep: '09',
-    Oct: '10',
-    Nov: '11',
-    Dec: '12',
-};
-
-export const changeDate = (date: string) => {
-    const arr = date.split(' ');
-    return `${arr[3]}-${months[arr[2]]}-${
-        String(Number(arr[1]) + 1).length < 2
-            ? '0' + String(Number(arr[1]) + 1)
-            : String(Number(arr[1]) + 1)
-    }`;
+    form: FormInstance<any>;
 };
 
 const options = [
@@ -70,28 +42,32 @@ const options = [
     },
 ];
 
-export const FormAddInspection = ({ isGroup, type }: Props) => {
+export const FormAddInspection = ({ isGroup, type, form }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const reset = useAppSelector(selectReset);
-    const [form] = Form.useForm();
-    const addAction = async (dataForm: FormType) => {
+    const [getDailyActionsQuery] = useLazyGetDailyActionsQuery();
+    const [getPaginationInfoDailyActionsQuery] =
+        useLazyGetPaginationInfoDailyActionsQuery();
+    const addAction = async (dataForm: FormTypeInspection) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
             type: type === '1' ? 'Осмотры' : 'Вакцинации и обработки',
-            date: changeDate(String(dataForm.dateInspection)),
+            date: dayjs(dataForm.dateInspection).format('YYYY-MM-DD'),
             subtype: dataForm.typeInspection,
             performedBy: dataForm.name,
             result: dataForm.resultInspection,
             notes: dataForm.note,
-            nextDate: changeDate(String(dataForm.dateNextInspection)),
+            nextDate: dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'),
         }));
         await createDailyActions(data);
+        // await getDailyActionsQuery({
+        //     page: 1,
+        //     type: type === '1' ? 'Осмотры' : 'Вакцинации и обработки',
+        // });
+        // await getPaginationInfoDailyActionsQuery(
+        //     type === '1' ? 'Осмотры' : 'Вакцинации и обработки'
+        // );
     };
-
-    useEffect(() => {
-        form.resetFields();
-    }, [reset]);
 
     return (
         <Form onFinish={addAction} form={form}>

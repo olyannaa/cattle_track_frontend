@@ -54,10 +54,6 @@ export const FormFilter = ({ isGroup }: Props) => {
         await getFilterAnimalsQuery({ filters: { ...filters, tagNumber: value } });
     };
 
-    const handlerChangeSelectedAnimals = (value: string) => {
-        dispatch(addSelectedAnimal(value));
-    };
-
     const getIdentificationValues = async () => {
         const response = (
             await getIdentificationValuesQuery({
@@ -190,7 +186,7 @@ export const FormFilter = ({ isGroup }: Props) => {
                         value={
                             animals.length === 1 ? animals[0].value : selectedAnimals[0]
                         }
-                        onChange={(value) => handlerChangeSelectedAnimals(value)}
+                        onChange={(value) => dispatch(addSelectedAnimal(value))}
                     />
                 </>
             )}

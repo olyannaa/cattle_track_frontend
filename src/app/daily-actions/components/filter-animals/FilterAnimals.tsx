@@ -1,4 +1,4 @@
-import { Flex, Table } from 'antd';
+import { Checkbox, CheckboxChangeEvent, Flex, Table, TablePaginationConfig } from 'antd';
 import { CheckboxCustom } from '../../../../global-components/custom-inputs/checkbox/Checkbox';
 import { FormFilter } from '../forms/form-filter/FormFilter';
 import { useEffect, useState } from 'react';
@@ -7,18 +7,24 @@ import {
     FiltersAnimalsType,
     IRequestGetFilterAnimals,
     IResponsePaginationInfoDailyActions,
-    SortersAnimalsType,
     useLazyGetFilterAnimalsQuery,
     useLazyGetPaginationInfoFilterAnimalsQuery,
 } from '../../service/dailyActions';
 import { IDailyActionAnimalsTable } from '../../data/interface/IDailyActionAnimalsTable';
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import {
+    addAllAnimals,
     changeFiltersAnimals,
+    changeSortersAnimals,
+    deleteAllAnimals,
     resetFiltersAnimals,
+    resetSortersAnimals,
     selectAnimals,
     selectFiltersAnimals,
+    selectSelectedAnimals,
+    selectSortersAnimals,
 } from '../../service/animalsDailyActionsSlice';
+import { FilterValue, SorterResult } from 'antd/es/table/interface';
 
 type Props = {
     isGroup: boolean;
@@ -37,15 +43,12 @@ export type FiltersType = {
 export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
     const filters = useAppSelector(selectFiltersAnimals);
     const animals = useAppSelector(selectAnimals);
+    const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const dispatch = useAppDispatch();
-    const [sorters] = useState<SortersAnimalsType>({
-        column: '',
-        descending: false,
-        page: 0,
-    });
+    const sorters = useAppSelector(selectSortersAnimals);
     const [paginationInfo, setPaginationInfo] =
         useState<IResponsePaginationInfoDailyActions>();
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [isSelectedAllAnimals, setIsSelectedAllAnimals] = useState<boolean>(false);
     const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
     const [getPaginationInfoFilterAnimalsQuery] =
         useLazyGetPaginationInfoFilterAnimalsQuery();
@@ -61,21 +64,71 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
         setPaginationInfo(response);
     };
 
+    const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
+        setIsSelectedAllAnimals(e.target.checked);
+        if (e.target.checked) {
+            dispatch(addAllAnimals(animals.map((action) => action.id)));
+        } else {
+            dispatch(deleteAllAnimals());
+        }
+    };
+
+    useEffect(() => {
+        getFilterAnimals();
+        dispatch(resetSortersAnimals());
+        if (isGroup) {
+            getPaginationInfoFilterAnimals();
+            dispatch(changeSortersAnimals({ ...sorters, page: 1 }));
+        }
+    }, [filters]);
+
     useEffect(() => {
         getFilterAnimals();
         if (isGroup) {
             getPaginationInfoFilterAnimals();
         }
-    }, [filters, sorters]);
+    }, [sorters]);
 
     useEffect(() => {
         dispatch(resetFiltersAnimals());
     }, [isGroup]);
 
-    const handlerChangeCurrentPagination = (page: number) => {
-        setCurrentPage(page);
-        getPaginationInfoFilterAnimals();
-        getFilterAnimals();
+    useEffect(() => {
+        if (selectedAnimals.length === animals.length && animals.length > 0) {
+            setIsSelectedAllAnimals(true);
+        } else {
+            setIsSelectedAllAnimals(false);
+        }
+    }, [selectedAnimals]);
+
+    const onChangeTable = (
+        newPagination: TablePaginationConfig,
+        filters: Record<string, FilterValue | null>,
+        sorter:
+            | SorterResult<IDailyActionAnimalsTable>
+            | SorterResult<IDailyActionAnimalsTable>[]
+    ) => {
+        filters;
+        if (!sorter || (!Array.isArray(sorter) && !sorter.field)) {
+            dispatch(
+                changeSortersAnimals({
+                    page: newPagination.current,
+                    column: 'TagNumber',
+                    descending: 'false',
+                })
+            );
+        } else {
+            if (!Array.isArray(sorter)) {
+                const field = sorter.field as string;
+                dispatch(
+                    changeSortersAnimals({
+                        page: newPagination.current,
+                        column: field.charAt(0).toUpperCase() + field.slice(1),
+                        descending: sorter.order === 'descend',
+                    })
+                );
+            }
+        }
     };
 
     return (
@@ -104,23 +157,39 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
             </Flex>
             <FormFilter isGroup={isGroup} filters={filters} />
             {isGroup && (
-                <Table<IDailyActionAnimalsTable>
-                    style={{ width: '100%' }}
-                    columns={columnsChoiceAnimalsTable}
-                    dataSource={animals.map((animal) => ({
-                        ...animal,
-                        key: animal.id,
-                    }))}
-                    pagination={{
-                        showSizeChanger: false,
-                        current: currentPage,
-                        total: paginationInfo?.count,
-                        pageSize: 5,
-                        onChange: (page) => handlerChangeCurrentPagination(page),
-                        showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} из ${total} элементов`,
-                    }}
-                />
+                <>
+                    <Checkbox
+                        onChange={handlerChangeSelectedAllActions}
+                        style={{
+                            width: '138px',
+                            padding: '8px 12px 10px',
+                            border: '1px solid var(--grey-border)',
+                            borderRadius: '2px',
+                            background: 'var(--global-bg)',
+                            height: '40px',
+                        }}
+                        checked={isSelectedAllAnimals}
+                    >
+                        Выбрать все
+                    </Checkbox>
+                    <Table<IDailyActionAnimalsTable>
+                        style={{ width: '100%' }}
+                        columns={columnsChoiceAnimalsTable}
+                        dataSource={animals.map((animal) => ({
+                            ...animal,
+                            key: animal.id,
+                        }))}
+                        pagination={{
+                            showSizeChanger: false,
+                            current: sorters.page,
+                            total: paginationInfo?.count,
+                            pageSize: paginationInfo?.entriesPerPage,
+                            showTotal: (total, range) =>
+                                `${range[0]}-${range[1]} из ${total} элементов`,
+                        }}
+                        onChange={onChangeTable}
+                    />
+                </>
             )}
         </>
     );

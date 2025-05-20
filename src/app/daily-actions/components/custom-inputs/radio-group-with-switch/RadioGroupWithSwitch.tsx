@@ -11,7 +11,7 @@ export const RadioGroupWithSwitch = ({
     onChangeAll,
     value,
 }: IFormItemRadioGroupWithSwitch) => {
-    const handleSwitchChange = (checked: boolean) => {
+    const handlerSwitchChange = (checked: boolean) => {
         if (checked) {
             onChangeAll();
         }
@@ -45,7 +45,7 @@ export const RadioGroupWithSwitch = ({
                 >
                     <div style={{ fontWeight: '500' }}>Выбрать всех</div>
                     <div style={{ marginBottom: '0' }}>
-                        <Switch onChange={handleSwitchChange} checked={!value} />
+                        <Switch onChange={handlerSwitchChange} checked={!value} />
                     </div>
                 </Flex>
             )}

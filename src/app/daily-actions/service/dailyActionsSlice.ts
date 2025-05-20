@@ -1,15 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../app-service/store';
-import { dailyActionsApi } from './dailyActions';
+import {
+    dailyActionsApi,
+    IDailyAction,
+    IResponsePaginationInfoDailyActions,
+} from './dailyActions';
 
 type InitialState = {
     selectedDailyActions: string[];
     reset: boolean;
+    dailyActions: IDailyAction[];
+    paginationInfoDailyActions: IResponsePaginationInfoDailyActions;
 };
 
 const initialState: InitialState = {
     selectedDailyActions: [],
     reset: false,
+    dailyActions: [],
+    paginationInfoDailyActions: {
+        count: 0,
+        entriesPerPage: 0,
+    },
 };
 
 const slice = createSlice({
@@ -47,7 +58,8 @@ const slice = createSlice({
         );
         builder.addMatcher(
             dailyActionsApi.endpoints.getDailyActions.matchFulfilled,
-            (state) => {
+            (state, action) => {
+                state.dailyActions = [...action.payload];
                 state.selectedDailyActions = [];
             }
         );
@@ -55,6 +67,12 @@ const slice = createSlice({
             dailyActionsApi.endpoints.createDailyActions.matchFulfilled,
             (state) => {
                 state.reset = !state.reset;
+            }
+        );
+        builder.addMatcher(
+            dailyActionsApi.endpoints.getPaginationInfoDailyActions.matchFulfilled,
+            (state, action) => {
+                state.paginationInfoDailyActions = { ...action.payload };
             }
         );
     },
@@ -65,6 +83,11 @@ export default slice.reducer;
 export const selectSelectedDailyActions = (state: RootState) =>
     state.dailyActions.selectedDailyActions;
 
+export const selectDailyActions = (state: RootState) => state.dailyActions.dailyActions;
+
 export const selectReset = (state: RootState) => state.dailyActions.reset;
+
+export const selectPaginationInfoDailyActions = (state: RootState) =>
+    state.dailyActions.paginationInfoDailyActions;
 
 export const { addAction, deleteAction, addAllActions, deleteAllActions } = slice.actions;

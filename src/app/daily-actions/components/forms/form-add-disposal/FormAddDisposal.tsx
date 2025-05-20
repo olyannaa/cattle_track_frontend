@@ -1,25 +1,21 @@
-import { Button, Flex, Form } from 'antd';
+import { Button, Flex, Form, FormInstance } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
+    useLazyGetDailyActionsQuery,
+    useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
 import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
-import { changeDate } from '../form-add-inspection/FormAddInspection';
-import { useEffect } from 'react';
-import { selectReset } from '../../../service/dailyActionsSlice';
+import dayjs from 'dayjs';
+import { FormTypeDisposal } from '../../../data/types/FormTypes';
 
 type Props = {
     isGroup: boolean;
-};
-
-type FormType = {
-    dateCulling: string | undefined;
-    name: string | undefined;
-    reason: string | undefined;
+    form: FormInstance<any>;
 };
 
 const options = [
@@ -49,23 +45,28 @@ const options = [
     },
 ];
 
-export const FormAddDisposal = ({ isGroup }: Props) => {
+export const FormAddDisposal = ({ isGroup, form }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const reset = useAppSelector(selectReset);
-    const [form] = Form.useForm();
-    useEffect(() => {
-        form.resetFields();
-    }, [reset]);
-    const addAction = async (dataForm: FormType) => {
+    const [getDailyActionsQuery] = useLazyGetDailyActionsQuery();
+    const [getPaginationInfoDailyActionsQuery] =
+        useLazyGetPaginationInfoDailyActionsQuery();
+    const addAction = async (dataForm: FormTypeDisposal) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
             type: 'Выбытие',
-            date: changeDate(String(dataForm.dateCulling)),
+            date: dayjs(dataForm.dateCulling).format('YYYY-MM-DD'),
             performedBy: dataForm.name,
             subtype: dataForm.reason,
         }));
         await createDailyActions(data);
+        await getDailyActionsQuery({
+            page: 1,
+            type: 'Выбытие',
+            sortColumn: 'tagNumber',
+            descending: true,
+        });
+        await getPaginationInfoDailyActionsQuery('Выбытие');
     };
     return (
         <Form onFinish={addAction} form={form}>

@@ -1,4 +1,4 @@
-import { Button, Flex, Form } from 'antd';
+import { Button, Flex, Form, FormInstance } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
@@ -11,25 +11,18 @@ import {
     selectAnimals,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
-import { changeDate } from '../form-add-inspection/FormAddInspection';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import { useGetGroupQuery } from '../../../../../app-service/services/general';
 import { Label } from '../../custom-inputs/label/Label';
-import { useEffect } from 'react';
-import { selectReset } from '../../../service/dailyActionsSlice';
+import dayjs from 'dayjs';
+import { FormTypeTransfer } from '../../../data/types/FormTypes';
 
 type Props = {
     isGroup: boolean;
+    form: FormInstance<any>;
 };
 
-type FormType = {
-    dateTransfer: string | undefined;
-    group: string | undefined;
-    name: string | undefined;
-    note: string | undefined;
-};
-
-export const FormAddTransfer = ({ isGroup }: Props) => {
+export const FormAddTransfer = ({ isGroup, form }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const animals = useAppSelector(selectAnimals);
@@ -37,11 +30,11 @@ export const FormAddTransfer = ({ isGroup }: Props) => {
         label: group.name,
         value: group.id,
     }));
-    const addAction = async (dataForm: FormType) => {
+    const addAction = async (dataForm: FormTypeTransfer) => {
         const data: newDailyAction[] = selectedAnimals.map((selectAnimal) => ({
             animalId: selectAnimal,
             type: 'Перевод',
-            date: changeDate(String(dataForm.dateTransfer)),
+            date: dayjs(dataForm.dateTransfer).format('YYYY-MM-DD'),
             performedBy: dataForm.name,
             notes: dataForm.note,
             newGroupId: dataForm.group,
@@ -49,12 +42,6 @@ export const FormAddTransfer = ({ isGroup }: Props) => {
         }));
         await createDailyActions(data);
     };
-
-    const reset = useAppSelector(selectReset);
-    const [form] = Form.useForm();
-    useEffect(() => {
-        form.resetFields();
-    }, [reset]);
 
     return (
         <Form onFinish={addAction} form={form}>

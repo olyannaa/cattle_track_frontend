@@ -1,14 +1,23 @@
-import { Button, Checkbox, CheckboxChangeEvent, Flex, Table, Typography } from 'antd';
+import {
+    Button,
+    Checkbox,
+    CheckboxChangeEvent,
+    Flex,
+    Table,
+    TablePaginationConfig,
+    Typography,
+} from 'antd';
 import { columnsTableHistoryInspection } from '../../data/const/columnsTableHistoryInspection';
 import {
     IDailyAction,
+    IRequestGetDailyActions,
     IResponsePaginationInfoDailyActions,
     useDeleteDailyActionsMutation,
     useDeleteDailyActionsResearchMutation,
     useLazyGetDailyActionsQuery,
     useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../service/dailyActions';
-import { items } from '../../data';
+
 import { useEffect, useState } from 'react';
 import { columnsTableHistoryTreatment } from '../../data/const/columnsTableHistoryTreatment';
 import { columnsTableHistoryTransfer } from '../../data/const/columnsTableHistoryTransfer';
@@ -19,10 +28,14 @@ import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import {
     addAllActions,
     deleteAllActions,
-    selectReset,
+    selectDailyActions,
+    selectPaginationInfoDailyActions,
     selectSelectedDailyActions,
 } from '../../service/dailyActionsSlice';
 import { columnsTableHistoryAssignmentNumbers } from '../../data/const/columnsTableHistoryAssignmentNumbers';
+import { FilterValue, SorterResult } from 'antd/es/table/interface';
+import { items } from '../../data/const/tabs';
+import { getColumnsTable } from '../../functions/getColumnsTableHistory';
 
 type Props = {
     keyTab: string;
@@ -32,15 +45,13 @@ export const History = ({ keyTab }: Props) => {
     const [nameTab, setNameTab] = useState(
         items?.find((item) => item.key === keyTab)?.label?.toString() || ''
     );
-
-    const reset = useAppSelector(selectReset);
-
-    const selectedDailyActions = useAppSelector(selectSelectedDailyActions);
-    const [dailyActions, setDailyActions] = useState<IDailyAction[]>([]);
-    const [paginationInfo, setPaginationInfo] =
-        useState<IResponsePaginationInfoDailyActions>();
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const selectedDailyActions = useAppSelector(selectSelectedDailyActions);
+    const paginationInfo = useAppSelector(selectPaginationInfoDailyActions);
+    const dailyActions = useAppSelector(selectDailyActions);
     const [isSelectedAllActions, setIsSelectedAllActions] = useState<boolean>(false);
+    const [sortedColumn, setSortedColumn] = useState<string>('tagNumber');
+    const [isDescending, setIsDescending] = useState<boolean>(true);
     const [getDailyActionsQuery] = useLazyGetDailyActionsQuery();
     const [deleteDailyActionsQuery] = useDeleteDailyActionsMutation();
     const [deleteDailyActionsResearchQuery] = useDeleteDailyActionsResearchMutation();
@@ -49,14 +60,16 @@ export const History = ({ keyTab }: Props) => {
 
     const dispatch = useAppDispatch();
     useEffect(() => {
-        setNameTab(items?.find((item) => item.key === keyTab)?.label?.toString() || '');
+        const newName =
+            items?.find((item) => item.key === keyTab)?.label?.toString() || '';
+        setNameTab(newName);
         setCurrentPage(1);
     }, [keyTab]);
 
     useEffect(() => {
-        getDailyActivities();
+        getDailyActions();
         getPaginationInfoDailyActivities();
-    }, [nameTab, reset]);
+    }, [nameTab]);
 
     useEffect(() => {
         if (
@@ -69,21 +82,21 @@ export const History = ({ keyTab }: Props) => {
         }
     }, [selectedDailyActions]);
 
-    useEffect(() => {
-        getDailyActivities();
-        getPaginationInfoDailyActivities();
-    }, [currentPage]);
+    useEffect(() => {});
 
-    const getDailyActivities = async () => {
-        const response = (
-            await getDailyActionsQuery({ page: currentPage, type: nameTab })
-        ).data;
-        setDailyActions(response || []);
+    const getDailyActions = async (data?: IRequestGetDailyActions) => {
+        await getDailyActionsQuery(
+            data || {
+                page: 1,
+                type: nameTab,
+                sortColumn: 'tagNumber',
+                descending: true,
+            }
+        );
     };
 
-    const getPaginationInfoDailyActivities = async () => {
-        const response = (await getPaginationInfoDailyActionsQuery(nameTab)).data;
-        setPaginationInfo(response);
+    const getPaginationInfoDailyActivities = async (name?: string) => {
+        await getPaginationInfoDailyActionsQuery(name || nameTab);
     };
 
     const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
@@ -101,33 +114,31 @@ export const History = ({ keyTab }: Props) => {
         } else {
             await deleteDailyActionsQuery(selectedDailyActions);
         }
-        getDailyActivities();
+        getDailyActions();
         getPaginationInfoDailyActivities();
+    };
+
+    const onChangeTable = (
+        newPagination: TablePaginationConfig,
+        filters: Record<string, FilterValue | null>,
+        sorter: SorterResult<IDailyActionTable> | SorterResult<IDailyActionTable>[]
+    ) => {
+        newPagination;
+        filters;
+        if (!sorter || (!Array.isArray(sorter) && !sorter.field)) {
+            setSortedColumn('tagNumber');
+            setIsDescending(true);
+        } else {
+            if (!Array.isArray(sorter)) {
+                const field = sorter.field as string;
+                setSortedColumn(field.charAt(0).toUpperCase() + field.slice(1));
+                setIsDescending(sorter.order === 'descend');
+            }
+        }
     };
 
     const handlerChangeCurrentPagination = (page: number) => {
         setCurrentPage(page);
-    };
-
-    const getColumnsTable = () => {
-        switch (keyTab) {
-            case '1':
-                return columnsTableHistoryInspection;
-            case '2':
-                return columnsTableHistoryInspection;
-            case '3':
-                return columnsTableHistoryTreatment;
-            case '4':
-                return columnsTableHistoryTransfer;
-            case '5':
-                return columnsTableHistoryDisposal;
-            case '6':
-                return columnsTableHistoryResearch;
-            case '7':
-                return columnsTableHistoryAssignmentNumbers;
-            default:
-                break;
-        }
     };
 
     return (
@@ -166,7 +177,7 @@ export const History = ({ keyTab }: Props) => {
                 </Flex>
             </Flex>
             <Table<IDailyActionTable>
-                columns={getColumnsTable()}
+                columns={getColumnsTable(keyTab)}
                 dataSource={dailyActions.map((dailyAction) => ({
                     ...dailyAction,
                     key: dailyAction.id,
@@ -182,6 +193,7 @@ export const History = ({ keyTab }: Props) => {
                         `${range[0]}-${range[1]} из ${total} элементов`,
                     //className: styles['table__pagination'],
                 }}
+                onChange={onChangeTable}
             />
         </Flex>
     );

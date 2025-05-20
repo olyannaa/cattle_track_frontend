@@ -1,4 +1,4 @@
-import { Button, Flex, Form } from 'antd';
+import { Button, Flex, Form, FormInstance } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
@@ -10,24 +10,15 @@ import {
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
 import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
-import { changeDate } from '../form-add-inspection/FormAddInspection';
-import { selectReset } from '../../../service/dailyActionsSlice';
-import { useEffect } from 'react';
+import dayjs from 'dayjs';
+import { FormTypeResearch } from '../../../data/types/FormTypes';
 
 type Props = {
     isGroup: boolean;
+    form: FormInstance<any>;
 };
 
-type FormType = {
-    dateResearch: string | undefined;
-    name: string | undefined;
-    nameResearch: string | undefined;
-    note: string | undefined;
-    result: { target: { checked: boolean } } | undefined;
-    typeMaterial: string | undefined;
-};
-
-const options = [
+export const optionsResearch = [
     {
         label: 'Молоко',
         value: 'Молоко',
@@ -54,17 +45,14 @@ const options = [
     },
 ];
 
-export const FormAddResearch = ({ isGroup }: Props) => {
+export const FormAddResearch = ({ isGroup, form }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const reset = useAppSelector(selectReset);
-    const [form] = Form.useForm();
-
-    const addAction = async (dataForm: FormType) => {
+    const addAction = async (dataForm: FormTypeResearch) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
             type: 'Исследования',
-            date: changeDate(String(dataForm.dateResearch)),
+            date: dayjs(dataForm.dateResearch).format('YYYY-MM-DD'),
             performedBy: dataForm.name,
             notes: dataForm.note,
             materialType: dataForm.typeMaterial,
@@ -73,10 +61,6 @@ export const FormAddResearch = ({ isGroup }: Props) => {
         }));
         await createDailyActions(data);
     };
-
-    useEffect(() => {
-        form.resetFields();
-    }, [reset]);
     return (
         <Form onFinish={addAction} form={form}>
             <Flex
@@ -102,7 +86,7 @@ export const FormAddResearch = ({ isGroup }: Props) => {
                 <SelectForm
                     label='Вид материала'
                     name='typeMaterial'
-                    options={options}
+                    options={optionsResearch}
                     style={{ maxWidth: '475px' }}
                     required
                 />

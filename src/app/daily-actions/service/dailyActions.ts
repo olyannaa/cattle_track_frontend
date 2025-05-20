@@ -1,8 +1,10 @@
 import { api } from '../../../app-service/services/api';
 
-type IRequestGetDailyActions = {
+export type IRequestGetDailyActions = {
     type: string;
     page: number;
+    sortColumn: string;
+    descending: boolean;
 };
 
 export type FiltersAnimalsType = {
@@ -114,17 +116,17 @@ export const getUrlFilterAnimals = (
 
     Object.keys(sorters).forEach((sorter) => {
         if (sorter === 'column') {
-            url += `SortInfo.Column=${sorters[sorter] || 'TagNumber'}&`;
+            url += `SortInfo.Column=${sorters[sorter]}&`;
         }
         if (sorter === 'descending') {
-            url += `SortInfo.Descending=${sorters[sorter] || false}&`;
+            url += `SortInfo.Descending=${sorters[sorter]}&`;
         }
         if (sorter === 'page' && sorters[sorter]) {
-            url += `SortInfo.Descending=${sorters[sorter]}&`;
+            url += `Page=${sorters[sorter]}&`;
         }
     });
 
-    return url;
+    return url.slice(0, -1);
 };
 
 const getUrlIdentificationValues = (data: IRequestGetIdentificationValues) => {
@@ -144,11 +146,12 @@ const getUrlIdentificationValues = (data: IRequestGetIdentificationValues) => {
             }
         }
     });
-    return url;
+    return url.slice(0, -1);
 };
 
 const getUrlPaginationInfoFilterAnimals = (filters: FiltersAnimalsType) => {
     let url = 'DailyActions/animals/pagination-info?';
+    console.log(filters);
     Object.keys(filters).forEach((filter) => {
         if (filter === 'isActive') {
             url += `IsActive=${filters[filter] || false}&`;
@@ -197,7 +200,7 @@ export const dailyActionsApi = api.injectEndpoints({
         }),
         getDailyActions: builder.query<IDailyAction[], IRequestGetDailyActions>({
             query: (data) => ({
-                url: `DailyActions?type=${data.type}&page=${data.page}`,
+                url: `DailyActions?type=${data.type}&page=${data.page}&SortInfo.Column=${data.sortColumn}&SortInfo.Descending=${data.descending}`,
                 method: 'GET',
             }),
         }),
