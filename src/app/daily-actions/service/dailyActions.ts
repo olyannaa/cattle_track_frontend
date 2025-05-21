@@ -1,9 +1,14 @@
 import { api } from '../../../app-service/services/api';
+import {
+    getUrlFilterAnimals,
+    getUrlIdentificationValues,
+    getUrlPaginationInfoFilterAnimals,
+} from '../functions/getUrl';
 
 export type IRequestGetDailyActions = {
     type: string;
     page: number;
-    sortColumn: string;
+    column: string;
     descending: boolean;
 };
 
@@ -83,90 +88,6 @@ export type IRequestGetFilterAnimals = {
     sorters?: SortersAnimalsType;
 };
 
-export const getUrlFilterAnimals = (
-    filters: FiltersAnimalsType,
-    sorters: SortersAnimalsType = {
-        column: '',
-        descending: false,
-        page: 0,
-    }
-) => {
-    let url = 'DailyActions/animals?';
-    Object.keys(filters).forEach((filter) => {
-        if (filter === 'isActive') {
-            url += `Filter.IsActive=${filters[filter] || false}&`;
-        }
-        if (filters[filter]) {
-            if (filter === 'identificationFieldId' && filters.identificationFieldValue) {
-                url += `Filter.IdentificationField.Id=${filters[filter]}&`;
-            } else if (
-                filter === 'identificationFieldValue' &&
-                filters.identificationFieldId
-            ) {
-                url += `Filter.IdentificationField.Value=${filters[filter]}&`;
-            } else if (filter === 'groupId') {
-                url += `Filter.GroupId=${filters[filter]}&`;
-            } else if (filter === 'type') {
-                url += `Filter.Type=${filters[filter]}&`;
-            } else if (filter === 'tagNumber') {
-                url += `Filter.TagNumber=${filters[filter]}&`;
-            }
-        }
-    });
-
-    Object.keys(sorters).forEach((sorter) => {
-        if (sorter === 'column') {
-            url += `SortInfo.Column=${sorters[sorter]}&`;
-        }
-        if (sorter === 'descending') {
-            url += `SortInfo.Descending=${sorters[sorter]}&`;
-        }
-        if (sorter === 'page' && sorters[sorter]) {
-            url += `Page=${sorters[sorter]}&`;
-        }
-    });
-
-    return url.slice(0, -1);
-};
-
-const getUrlIdentificationValues = (data: IRequestGetIdentificationValues) => {
-    let url = 'groups/identification/values?';
-    Object.keys(data).forEach((key) => {
-        if (key === 'isActive') {
-            url += `Filter.IsActive=${data[key] || false}&`;
-        }
-        if (key === 'identificationId') {
-            url += `IdentificationId=${data[key]}&`;
-        }
-        if (data[key]) {
-            if (key === 'groupId') {
-                url += `Filter.GroupId=${data[key]}&`;
-            } else if (key === 'type') {
-                url += `Filter.Type=${data[key]}&`;
-            }
-        }
-    });
-    return url.slice(0, -1);
-};
-
-const getUrlPaginationInfoFilterAnimals = (filters: FiltersAnimalsType) => {
-    let url = 'DailyActions/animals/pagination-info?';
-    console.log(filters);
-    Object.keys(filters).forEach((filter) => {
-        if (filter === 'isActive') {
-            url += `IsActive=${filters[filter] || false}&`;
-        }
-        if (filters[filter]) {
-            if (filter === 'groupId') {
-                url += `GroupId=${filters[filter]}&`;
-            } else if (filter === 'type') {
-                url += `Type=${filters[filter]}&`;
-            }
-        }
-    });
-    return url;
-};
-
 export type IAnimal = {
     birthDate: string;
     breed: string;
@@ -179,6 +100,7 @@ export type IAnimal = {
     status: string;
     tagNumber: string;
     identificationFields: IdentificationField[];
+    type: string;
     [key: string]: string | IdentificationField[];
 };
 
@@ -200,7 +122,9 @@ export const dailyActionsApi = api.injectEndpoints({
         }),
         getDailyActions: builder.query<IDailyAction[], IRequestGetDailyActions>({
             query: (data) => ({
-                url: `DailyActions?type=${data.type}&page=${data.page}&SortInfo.Column=${data.sortColumn}&SortInfo.Descending=${data.descending}`,
+                url: `DailyActions?type=${data.type}&page=${data.page}&SortInfo.Column=${
+                    data.column || 'TagNumber'
+                }&SortInfo.Descending=${data.descending}`,
                 method: 'GET',
             }),
         }),
@@ -220,6 +144,13 @@ export const dailyActionsApi = api.injectEndpoints({
             }),
         }),
         createDailyActions: builder.mutation<any, newDailyAction[]>({
+            query: (data) => ({
+                url: 'DailyActions',
+                method: 'POST',
+                body: data,
+            }),
+        }),
+        createDailyActionsWithoutResetFilters: builder.mutation<any, newDailyAction[]>({
             query: (data) => ({
                 url: 'DailyActions',
                 method: 'POST',
@@ -268,4 +199,5 @@ export const {
     useLazyGetPaginationInfoFilterAnimalsQuery,
     useDeleteDailyActionsResearchMutation,
     useLazyGetAnimalByIdQuery,
+    useCreateDailyActionsWithoutResetFiltersMutation,
 } = dailyActionsApi;

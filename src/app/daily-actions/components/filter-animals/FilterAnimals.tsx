@@ -49,9 +49,12 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
     const [paginationInfo, setPaginationInfo] =
         useState<IResponsePaginationInfoDailyActions>();
     const [isSelectedAllAnimals, setIsSelectedAllAnimals] = useState<boolean>(false);
-    const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
-    const [getPaginationInfoFilterAnimalsQuery] =
-        useLazyGetPaginationInfoFilterAnimalsQuery();
+    const [getFilterAnimalsQuery, { isLoading: isLoadingGetFilterAnimals }] =
+        useLazyGetFilterAnimalsQuery();
+    const [
+        getPaginationInfoFilterAnimalsQuery,
+        { isLoading: isLoadingGetPaginationInfoFilterAnimals },
+    ] = useLazyGetPaginationInfoFilterAnimalsQuery();
 
     const getFilterAnimals = async (
         data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
@@ -158,22 +161,24 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
             <FormFilter isGroup={isGroup} filters={filters} />
             {isGroup && (
                 <>
-                    <Checkbox
-                        onChange={handlerChangeSelectedAllActions}
-                        style={{
-                            width: '138px',
-                            padding: '8px 12px 10px',
-                            border: '1px solid var(--grey-border)',
-                            borderRadius: '2px',
-                            background: 'var(--global-bg)',
-                            height: '40px',
-                        }}
-                        checked={isSelectedAllAnimals}
-                    >
-                        Выбрать все
-                    </Checkbox>
+                    <Flex justify='flex-end' style={{ width: '100%' }}>
+                        <Checkbox
+                            onChange={handlerChangeSelectedAllActions}
+                            style={{
+                                width: '138px',
+                                padding: '8px 12px 10px',
+                                border: '1px solid var(--grey-border)',
+                                borderRadius: '2px',
+                                background: 'var(--global-bg)',
+                                height: '40px',
+                            }}
+                            checked={isSelectedAllAnimals}
+                        >
+                            Выбрать все
+                        </Checkbox>
+                    </Flex>
                     <Table<IDailyActionAnimalsTable>
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', overflowX: 'auto' }}
                         columns={columnsChoiceAnimalsTable}
                         dataSource={animals.map((animal) => ({
                             ...animal,
@@ -188,6 +193,10 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
                                 `${range[0]}-${range[1]} из ${total} элементов`,
                         }}
                         onChange={onChangeTable}
+                        loading={
+                            isLoadingGetFilterAnimals ||
+                            isLoadingGetPaginationInfoFilterAnimals
+                        }
                     />
                 </>
             )}

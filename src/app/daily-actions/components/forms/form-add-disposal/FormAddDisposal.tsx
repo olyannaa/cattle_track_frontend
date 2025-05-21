@@ -1,56 +1,26 @@
-import { Button, Flex, Form, FormInstance } from 'antd';
+import { Button, Flex, Form } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
-    useLazyGetDailyActionsQuery,
-    useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
 import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import dayjs from 'dayjs';
 import { FormTypeDisposal } from '../../../data/types/FormTypes';
+import { optionsDisposal } from '../../../data/const/optionsSelect';
 
 type Props = {
     isGroup: boolean;
-    form: FormInstance<any>;
+    resetHistory: () => void;
 };
 
-const options = [
-    {
-        label: 'Вынужденная прирезка',
-        value: 'Вынужденная прирезка',
-    },
-    {
-        label: 'Забой на мясо в хозяйстве',
-        value: 'Забой на мясо в хозяйстве',
-    },
-    {
-        label: 'Падеж',
-        value: 'Падеж',
-    },
-    {
-        label: 'Продажа',
-        value: 'Продажа',
-    },
-    {
-        label: 'Прочее',
-        value: 'Прочее',
-    },
-    {
-        label: 'Забой на мясокомбинат',
-        value: 'Забой на мясокомбинат',
-    },
-];
-
-export const FormAddDisposal = ({ isGroup, form }: Props) => {
+export const FormAddDisposal = ({ isGroup, resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const [getDailyActionsQuery] = useLazyGetDailyActionsQuery();
-    const [getPaginationInfoDailyActionsQuery] =
-        useLazyGetPaginationInfoDailyActionsQuery();
+    const [form] = Form.useForm();
     const addAction = async (dataForm: FormTypeDisposal) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
@@ -60,13 +30,8 @@ export const FormAddDisposal = ({ isGroup, form }: Props) => {
             subtype: dataForm.reason,
         }));
         await createDailyActions(data);
-        await getDailyActionsQuery({
-            page: 1,
-            type: 'Выбытие',
-            sortColumn: 'tagNumber',
-            descending: true,
-        });
-        await getPaginationInfoDailyActionsQuery('Выбытие');
+        form.resetFields();
+        resetHistory();
     };
     return (
         <Form onFinish={addAction} form={form}>
@@ -91,7 +56,7 @@ export const FormAddDisposal = ({ isGroup, form }: Props) => {
                 <SelectForm
                     label='Причина выбытия'
                     name='reason'
-                    options={options}
+                    options={optionsDisposal}
                     style={{ maxWidth: '475px' }}
                     placeholder='Выберите причину'
                     required

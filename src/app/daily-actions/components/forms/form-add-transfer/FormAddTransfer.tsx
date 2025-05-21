@@ -1,4 +1,4 @@
-import { Button, Flex, Form, FormInstance } from 'antd';
+import { Button, Flex, Form } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
@@ -19,12 +19,13 @@ import { FormTypeTransfer } from '../../../data/types/FormTypes';
 
 type Props = {
     isGroup: boolean;
-    form: FormInstance<any>;
+    resetHistory: () => void;
 };
 
-export const FormAddTransfer = ({ isGroup, form }: Props) => {
+export const FormAddTransfer = ({ isGroup, resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
+    const [form] = Form.useForm();
     const animals = useAppSelector(selectAnimals);
     const options = useGetGroupQuery().data?.map((group) => ({
         label: group.name,
@@ -41,6 +42,8 @@ export const FormAddTransfer = ({ isGroup, form }: Props) => {
             oldGroupId: animals.find((animal) => animal.id === selectAnimal)?.groupId,
         }));
         await createDailyActions(data);
+        form.resetFields();
+        resetHistory();
     };
 
     return (

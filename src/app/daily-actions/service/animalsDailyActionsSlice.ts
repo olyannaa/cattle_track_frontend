@@ -74,7 +74,6 @@ const slice = createSlice({
             };
         },
         changeSortersAnimals: (state, action) => {
-            console.log(action.payload);
             state.sortersAnimals = {
                 ...action.payload,
             };

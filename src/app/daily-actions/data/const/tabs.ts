@@ -30,3 +30,7 @@ export const items: TabsProps['items'] = [
         label: 'Присвоение номеров',
     },
 ];
+
+export const getNameTabs = (keyTab: string) => {
+    return items?.find((item) => item.key === keyTab)?.label?.toString() || '';
+};

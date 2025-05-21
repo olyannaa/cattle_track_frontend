@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { Label } from '../label/Label';
-import { ISelect } from '../../../data/interface/ISelect';
+import { ISelect } from '../../../data/interface/IInputsItem';
 
 export const CustomSelect = ({
     label,

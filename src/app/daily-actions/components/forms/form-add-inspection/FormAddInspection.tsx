@@ -1,4 +1,4 @@
-import { Button, Flex, Form, FormInstance } from 'antd';
+import { Button, Flex, Form } from 'antd';
 import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
 import { RadioGroupForm } from '../../custom-inputs/radio-group-form/RadioGroupForm';
 import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
@@ -6,48 +6,24 @@ import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
-    useLazyGetDailyActionsQuery,
-    useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
 import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
-import { useEffect } from 'react';
-import { selectReset } from '../../../service/dailyActionsSlice';
 import dayjs from 'dayjs';
 import { FormTypeInspection } from '../../../data/types/FormTypes';
+import { optionsInspections } from '../../../data/const/optionsSelect';
 
 type Props = {
     isGroup: boolean;
     type: string;
-    form: FormInstance<any>;
+    resetHistory: () => void;
 };
 
-const options = [
-    {
-        label: 'Вакцинация',
-        value: 'Вакцинация',
-    },
-    {
-        label: 'Дегельминтизация',
-        value: 'Дегельминтизация',
-    },
-    {
-        label: 'Обработка от эктопаразитов',
-        value: 'Обработка от эктопаразитов',
-    },
-    {
-        label: 'Другое',
-        value: 'Другое',
-    },
-];
-
-export const FormAddInspection = ({ isGroup, type, form }: Props) => {
+export const FormAddInspection = ({ isGroup, type, resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const [getDailyActionsQuery] = useLazyGetDailyActionsQuery();
-    const [getPaginationInfoDailyActionsQuery] =
-        useLazyGetPaginationInfoDailyActionsQuery();
+    const [form] = Form.useForm();
     const addAction = async (dataForm: FormTypeInspection) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
@@ -60,13 +36,8 @@ export const FormAddInspection = ({ isGroup, type, form }: Props) => {
             nextDate: dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'),
         }));
         await createDailyActions(data);
-        // await getDailyActionsQuery({
-        //     page: 1,
-        //     type: type === '1' ? 'Осмотры' : 'Вакцинации и обработки',
-        // });
-        // await getPaginationInfoDailyActionsQuery(
-        //     type === '1' ? 'Осмотры' : 'Вакцинации и обработки'
-        // );
+        form.resetFields();
+        resetHistory();
     };
 
     return (
@@ -108,7 +79,7 @@ export const FormAddInspection = ({ isGroup, type, form }: Props) => {
                     <SelectForm
                         label='Тип обработки'
                         name='typeInspection'
-                        options={options}
+                        options={optionsInspections}
                         style={{ maxWidth: '475px' }}
                         required
                     />

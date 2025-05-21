@@ -1,4 +1,3 @@
-import { FormInstance } from 'antd';
 import { CheckboxGroupProps } from 'antd/es/checkbox';
 
 export interface IFormItem {
@@ -13,16 +12,11 @@ export interface IFormItemRadioGroup extends IFormItem {
     onChange?: (value: string) => void;
 }
 
-export interface IFormItemRadioGroupWithSwitch extends IFormItemRadioGroup {
-    form: FormInstance<any>;
-    isGroup: boolean;
-    onChangeAll: () => void;
-    value: string;
-}
-
 export interface IFormItemInput extends IFormItem {
     placeholder?: string;
     onSearch?: (value: string) => void;
+    defaultValue?: string;
+    value?: string;
 }
 
 export interface IFormItemSelect extends IFormItem {

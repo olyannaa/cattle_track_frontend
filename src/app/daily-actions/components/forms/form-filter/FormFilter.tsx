@@ -108,8 +108,6 @@ export const FormFilter = ({ isGroup }: Props) => {
             <RadioGroupWithSwitch
                 options={['Телка', 'Нетель', 'Корова', 'Бычок', 'Бык']}
                 label='Категория животного'
-                name='type'
-                form={form}
                 isGroup={isGroup}
                 onChange={(value) =>
                     dispatch(
@@ -175,7 +173,6 @@ export const FormFilter = ({ isGroup }: Props) => {
                         )}
                     </Flex>
                     <InputSearch
-                        name='search-animal'
                         label='Поиск по номеру'
                         placeholder='Введите номер животного для фильтрации списка'
                         onSearch={handlerSearch}

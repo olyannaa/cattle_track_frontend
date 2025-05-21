@@ -38,10 +38,10 @@ export type FormTypeDisposal = {
 };
 
 export type FormTypeResearch = {
-    dateResearch: string | undefined;
-    name: string | undefined;
-    nameResearch: string | undefined;
-    note: string | undefined;
+    date: string | undefined;
+    performedBy: string | undefined;
+    researchName: string | undefined;
+    notes: string | undefined;
     result: { target: { checked: boolean } } | undefined;
-    typeMaterial: string | undefined;
+    materialType: string | undefined;
 };

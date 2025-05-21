@@ -4,6 +4,7 @@ import {
     dailyActionsApi,
     IDailyAction,
     IResponsePaginationInfoDailyActions,
+    SortersAnimalsType,
 } from './dailyActions';
 
 type InitialState = {
@@ -11,6 +12,7 @@ type InitialState = {
     reset: boolean;
     dailyActions: IDailyAction[];
     paginationInfoDailyActions: IResponsePaginationInfoDailyActions;
+    sorters: SortersAnimalsType;
 };
 
 const initialState: InitialState = {
@@ -20,6 +22,11 @@ const initialState: InitialState = {
     paginationInfoDailyActions: {
         count: 0,
         entriesPerPage: 0,
+    },
+    sorters: {
+        column: '',
+        descending: false,
+        page: 1,
     },
 };
 
@@ -47,6 +54,12 @@ const slice = createSlice({
 
         deleteAllActions: (state) => {
             state.selectedDailyActions = [];
+        },
+
+        changeSortersDailyActions: (state, action) => {
+            state.sorters = {
+                ...action.payload,
+            };
         },
     },
     extraReducers: (builder) => {
@@ -90,4 +103,12 @@ export const selectReset = (state: RootState) => state.dailyActions.reset;
 export const selectPaginationInfoDailyActions = (state: RootState) =>
     state.dailyActions.paginationInfoDailyActions;
 
-export const { addAction, deleteAction, addAllActions, deleteAllActions } = slice.actions;
+export const selectSortersDailyActions = (state: RootState) => state.dailyActions.sorters;
+
+export const {
+    addAction,
+    deleteAction,
+    addAllActions,
+    deleteAllActions,
+    changeSortersDailyActions,
+} = slice.actions;

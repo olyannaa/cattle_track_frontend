@@ -1,6 +1,6 @@
 import { Flex, Radio, RadioChangeEvent, Switch } from 'antd';
 import { Label } from '../label/Label';
-import { IFormItemRadioGroupWithSwitch } from '../../../data/interface/IFormItem';
+import { IItemRadioGroupWithSwitch } from '../../../data/interface/IInputsItem';
 
 export const RadioGroupWithSwitch = ({
     label,
@@ -10,7 +10,7 @@ export const RadioGroupWithSwitch = ({
     onChange,
     onChangeAll,
     value,
-}: IFormItemRadioGroupWithSwitch) => {
+}: IItemRadioGroupWithSwitch) => {
     const handlerSwitchChange = (checked: boolean) => {
         if (checked) {
             onChangeAll();

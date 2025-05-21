@@ -8,7 +8,8 @@ export const columnsChoiceAnimalsTable: TableProps<IDailyActionAnimalsTable>['co
             title: '№ животного',
             dataIndex: 'tagNumber',
             key: 'tagNumber',
-            width: 96,
+            width: 140,
+            minWidth: 140,
             sorter: true,
         },
         {
@@ -22,7 +23,7 @@ export const columnsChoiceAnimalsTable: TableProps<IDailyActionAnimalsTable>['co
             title: 'Группа',
             dataIndex: 'groupName',
             key: 'groupName',
-            minWidth: 110,
+            minWidth: 140,
             sorter: true,
         },
         {

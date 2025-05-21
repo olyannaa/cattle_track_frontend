@@ -4,23 +4,24 @@ import { columnsTableHistoryInspection } from '../data/const/columnsTableHistory
 import { columnsTableHistoryResearch } from '../data/const/columnsTableHistoryResearch';
 import { columnsTableHistoryTransfer } from '../data/const/columnsTableHistoryTransfer';
 import { columnsTableHistoryTreatment } from '../data/const/columnsTableHistoryTreatment';
+import { SortersAnimalsType } from '../service/dailyActions';
 
-export const getColumnsTable = (keyTab: string) => {
+export const getColumnsTable = (keyTab: string, sorters: SortersAnimalsType) => {
     switch (keyTab) {
         case '1':
-            return columnsTableHistoryInspection;
+            return columnsTableHistoryInspection(sorters);
         case '2':
-            return columnsTableHistoryInspection;
+            return columnsTableHistoryInspection(sorters);
         case '3':
-            return columnsTableHistoryTreatment;
+            return columnsTableHistoryTreatment(sorters);
         case '4':
-            return columnsTableHistoryTransfer;
+            return columnsTableHistoryTransfer(sorters);
         case '5':
-            return columnsTableHistoryDisposal;
+            return columnsTableHistoryDisposal(sorters);
         case '6':
-            return columnsTableHistoryResearch;
+            return columnsTableHistoryResearch(sorters);
         case '7':
-            return columnsTableHistoryAssignmentNumbers;
+            return columnsTableHistoryAssignmentNumbers(sorters);
         default:
             break;
     }
