@@ -1,11 +1,15 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { api } from '../app-service/services/api';
+import animalsDailyActions from '../app/daily-actions/service/animalsDailyActionsSlice';
+import dailyActions from '../app/daily-actions/service/dailyActionsSlice';
 import animals from '../app/animal-accounting/services/animalsSlice';
 import registerAnimal from '../app/register-animal/services/registration-animal-slice';
 
 export const store = configureStore({
     reducer: {
         [api.reducerPath]: api.reducer,
+        animalsDailyActions,
+        dailyActions,
         animals,
         registerAnimal,
     },

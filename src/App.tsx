@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LayoutPage } from './global-components/Layout/Layout';
+import { DailyActions } from './app/daily-actions/DailyActions';
 import { AnimalAccountingPage } from './app/animal-accounting/AnimalAccountingPage';
 import { Authorization } from './app/authorization/AuthorizationPage';
 import ConfigProvider, { ThemeConfig } from 'antd/es/config-provider';
@@ -7,6 +8,7 @@ import { MainPage } from './app/main/MainPage';
 import { InfrastructurePage } from './app/infrastructure/InfrastructurePage';
 import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
 import ruRU from 'antd/lib/locale/ru_RU';
+import { ReproductiveAccountingPage } from './app/reproductive-accounting/ReproductiveAccountingPage';
 
 function App() {
     const theme: ThemeConfig = {
@@ -100,6 +102,19 @@ function App() {
                 colorPrimary: '#ff4218',
                 colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
             },
+            Switch: {
+                colorPrimary: 'rgb(255, 66, 24)',
+                colorPrimaryHover: 'rgba(255, 66, 24, 0.7)',
+            },
+            DatePicker: {
+                borderRadius: 2,
+                colorPrimary: 'rgb(255, 66, 24)',
+                colorPrimaryHover: 'rgba(255, 66, 24, 1)',
+                colorPrimaryBorder: 'rgba(255, 66, 24, 1)',
+                activeShadow: '0 0 0 2px rgba(255, 66, 24,0.1)',
+                colorLink: 'rgba(255, 66, 24, 1)',
+                colorLinkHover: 'rgba(255, 66, 24, 0.7)',
+            },
         },
         token: {},
         cssVar: true,
@@ -111,9 +126,12 @@ function App() {
                     <Route path='/' element={<Authorization />} />
                     <Route element={<LayoutPage />}>
                         <Route path='/main' element={<MainPage />} />
+
+                        <Route path='/daily-activities' element={<DailyActions />} />
                         <Route path='/animalregister' element={<RegisterAnimalPage />} />
                         <Route path='/infrastructure' element={<InfrastructurePage />} />
                         <Route path='/accounting' element={<AnimalAccountingPage />} />
+                        <Route path='/reproductive-accounting' element={<ReproductiveAccountingPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

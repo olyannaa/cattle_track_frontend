@@ -1,6 +1,7 @@
 import { api } from '../../../app-service/services/api';
 import {
     IChangedAnimal,
+    IdentificationFieldName,
     IRequestGetAnimals,
     IRequestGetPaginationInfo,
     IResponseGetAnimals,
@@ -42,6 +43,12 @@ export const animalsApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        getIdentificationFieldsNames: builder.query<IdentificationFieldName[],void>({
+            query: ()=> ({
+                url: 'groups/identification',
+                method: 'GET'
+            })
+        })
     }),
 });
 
@@ -50,4 +57,5 @@ export const {
     useUpdateAnimalsMutation,
     useGetAnimalsGroupsQuery,
     useLazyGetPaginationInfoQuery,
+    useGetIdentificationFieldsNamesQuery
 } = animalsApi;

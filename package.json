@@ -13,6 +13,7 @@
         "@ionic/react": "^8.5.1",
         "@reduxjs/toolkit": "^2.6.1",
         "antd": "^5.24.4",
+        "dayjs": "^1.11.13",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-redux": "^9.2.0",

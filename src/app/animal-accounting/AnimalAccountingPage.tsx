@@ -3,6 +3,7 @@ import { HeaderContent } from '../../global-components/header-content/HeaderCont
 import styles from './AnimalAccountingPage.module.css';
 import {
     useGetAnimalsGroupsQuery,
+    useGetIdentificationFieldsNamesQuery,
     useLazyGetAnimalsQuery,
     useLazyGetPaginationInfoQuery,
     useUpdateAnimalsMutation,
@@ -22,6 +23,7 @@ export const AnimalAccountingPage = () => {
     const isEditTable = CheckPermissions(Permissions.animalEditTable);
     const [typeAnimal, setTypeAnimal] = useState<string>('Корова');
     const [animals, setAnimals] = useState<IAnimal[]>([]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [noActiveAnimals, setNoActiveAnimals] = useState<boolean>(false);
     const [sortedColumn, setSortedColumn] = useState<string | null>(null);
     const [descending, setDescending] = useState<boolean>(true);
@@ -32,6 +34,7 @@ export const AnimalAccountingPage = () => {
     const [getAnimalsQuery, { isLoading: isLoadingAnimals }] = useLazyGetAnimalsQuery();
     const [updateAnimals] = useUpdateAnimalsMutation();
     useGetAnimalsGroupsQuery();
+    const { data } = useGetIdentificationFieldsNamesQuery();
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -42,10 +45,10 @@ export const AnimalAccountingPage = () => {
         });
     };
 
-    const error = () => {
+    const error = (error: string) => {
         messageApi.open({
             type: 'error',
-            content: 'Ошибка при изменении данных',
+            content: error,
         });
     };
 
@@ -89,32 +92,45 @@ export const AnimalAccountingPage = () => {
     };
 
     useEffect(() => {
-        getAnimals();
+        getAnimals(currentPage);
         getCountAnimals();
-    }, [typeAnimal, noActiveAnimals, sortedColumn, descending]);
+    }, [sortedColumn, descending]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+        getAnimals(1);
+        getCountAnimals();
+    }, [typeAnimal, noActiveAnimals]);
 
     const handlerClickSaveChange = async () => {
         if (!changedAnimals.length) {
             return;
         }
         try {
+            setCurrentPage(1);
             await updateAnimals(changedAnimals).unwrap();
             await getAnimals();
             await getCountAnimals();
             success();
-        } catch {
-            error();
+        } catch (err) {
+            const currentErr = err as { data: { errorText: string } };
+            error(currentErr?.data?.errorText || 'Ошибка при изменении данных');
         }
     };
 
     const handlerExportCSV = async () => {
         await downloadScvAnimals({
-            page: 1,
+            page: currentPage,
             type: typeAnimal,
             active: !noActiveAnimals,
             column: sortedColumn,
             descending: descending,
         });
+    };
+
+    const handlerChangeCurrentPagination = (page: number) => {
+        setCurrentPage(page);
+        getAnimals(page);
     };
 
     const buttons = [
@@ -147,7 +163,7 @@ export const AnimalAccountingPage = () => {
                     style={{ maxWidth: '285px', marginTop: '20px', marginBottom: '20px' }}
                 />
                 <Table<IAnimalTable>
-                    columns={getColumns(isEditTable)}
+                    columns={getColumns(isEditTable, data || [])}
                     style={{ width: '100%' }}
                     dataSource={animals.map((animal) => ({
                         ...animal,
@@ -156,9 +172,10 @@ export const AnimalAccountingPage = () => {
                     loading={isLoadingPageCount || isLoadingAnimals}
                     pagination={{
                         showSizeChanger: false,
-                        total: paginationInfo?.animalCount,
+                        current: currentPage,
+                        total: paginationInfo?.count,
                         pageSize: paginationInfo?.entriesPerPage,
-                        onChange: (page) => getAnimals(page),
+                        onChange: (page) => handlerChangeCurrentPagination(page),
                         showTotal: (total, range) =>
                             `${range[0]}-${range[1]} из ${total} элементов`,
                         className: styles['table__pagination'],

@@ -4,9 +4,10 @@ type Props = {
     onChange?: (e: CheckboxChangeEvent) => void;
     title: string;
     style?: React.CSSProperties;
+    defaultChecked?: boolean;
 };
 
-export const CheckboxCustom = ({ title, onChange, style }: Props) => {
+export const CheckboxCustom = ({ title, onChange, style, defaultChecked }: Props) => {
     return (
         <Checkbox
             onChange={onChange}
@@ -19,7 +20,7 @@ export const CheckboxCustom = ({ title, onChange, style }: Props) => {
                 background: 'var(--global-bg)',
                 ...style,
             }}
-            defaultChecked={false}
+            defaultChecked={defaultChecked}
         >
             {title}
         </Checkbox>

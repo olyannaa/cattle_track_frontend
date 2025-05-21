@@ -6,6 +6,10 @@
     width: 100%;
 }
 
+.title {
+    margin-bottom: 16px;
+}
+
 .title__button_first {
     width: 264px;
 }

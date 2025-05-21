@@ -1,6 +1,8 @@
 import { TableProps, TabsProps } from 'antd';
 import { FieldTable } from '../../components/FieldTable/FieldTable';
 import { IAnimalTable } from '../interfaces/animalTable';
+import { IdentificationFieldName } from '../types/animal';
+import { IdentificationFieldTable } from '../../components/IdentificationFieldTable/IdentificationFieldTable';
 
 export enum animalTableColumns {}
 
@@ -27,33 +29,36 @@ export const items: TabsProps['items'] = [
     },
 ];
 
-export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['columns'] => [
+export const getColumns = (
+    isEditTable: boolean,
+    fieldsName: IdentificationFieldName[]
+): TableProps<IAnimalTable>['columns'] => [
     {
         title: '№ бирки',
         dataIndex: 'tagNumber',
         key: 'tagNumber',
-        render: (_, animal) => (
+        render: (_, { identificationFields, ...animal }) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'tagNumber'}
                 isEditTable={isEditTable}
             />
         ),
-        minWidth: 80,
+        minWidth: 89,
         sorter: true,
     },
     {
         title: 'Дата рождения',
         dataIndex: 'birthDate',
         key: 'birthDate',
-        render: (_, animal) => (
+        render: (_, { identificationFields, ...animal }) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'birthDate'}
                 isEditTable={isEditTable}
             />
         ),
-        minWidth: 103,
+        minWidth: 116,
         sorter: true,
     },
     {
@@ -61,6 +66,9 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
         dataIndex: 'breed',
         key: 'breed',
         minWidth: 130,
+        render: (_, { identificationFields, ...animal }) => (
+            <FieldTable animal={animal} dataIndex={'breed'} isEditTable={isEditTable} />
+        ),
         sorter: true,
     },
     {
@@ -68,7 +76,7 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
         dataIndex: 'groupName',
         key: 'groupName',
         sorter: true,
-        render: (_, animal) => (
+        render: (_, { identificationFields, ...animal }) => (
             <FieldTable
                 animal={animal}
                 dataIndex={'groupName'}
@@ -81,7 +89,7 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
         title: 'Статус',
         dataIndex: 'status',
         key: 'status',
-        render: (_, animal) => (
+        render: (_, { identificationFields, ...animal }) => (
             <FieldTable animal={animal} dataIndex={'status'} isEditTable={isEditTable} />
         ),
         minWidth: 128,
@@ -91,7 +99,10 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
         title: 'Происхождение',
         dataIndex: 'origin',
         key: 'origin',
-        minWidth: 118,
+        minWidth: 157,
+        render: (_, { identificationFields, ...animal }) => (
+            <FieldTable animal={animal} dataIndex={'origin'} isEditTable={isEditTable} />
+        ),
         sorter: true,
     },
     {
@@ -99,6 +110,13 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
         dataIndex: 'originLocation',
         key: 'originLocation',
         minWidth: 159,
+        render: (_, { identificationFields, ...animal }) => (
+            <FieldTable
+                animal={animal}
+                dataIndex={'originLocation'}
+                isEditTable={isEditTable}
+            />
+        ),
         sorter: true,
     },
     {
@@ -106,6 +124,13 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
         dataIndex: 'motherTagNumber',
         key: 'motherTagNumber',
         minWidth: 78,
+        render: (_, { identificationFields, ...animal }) => (
+            <FieldTable
+                animal={animal}
+                dataIndex={'motherTagNumber'}
+                isEditTable={isEditTable}
+            />
+        ),
         sorter: true,
     },
     {
@@ -113,6 +138,31 @@ export const getColumns = (isEditTable: boolean): TableProps<IAnimalTable>['colu
         dataIndex: 'fatherTagNumber',
         key: 'fatherTagNumber',
         minWidth: 78,
+        render: (_, { identificationFields, ...animal }) => (
+            <FieldTable
+                animal={animal}
+                dataIndex={'fatherTagNumber'}
+                isEditTable={isEditTable}
+            />
+        ),
         sorter: true,
     },
+    ...fieldsName.map(({ name }) => ({
+        title: name,
+        dataIndex: name,
+        key: name,
+        minWidth: 100,
+        render: (_: unknown, animal: IAnimalTable) => {
+            const fieldValue =
+                animal.identificationFields?.find((f) => f.name === name)?.value ?? '';
+            return (
+                <IdentificationFieldTable
+                    isEditTable={isEditTable}
+                    nameField={name}
+                    value={fieldValue}
+                    id={animal.id}
+                />
+            );
+        },
+    })),
 ];
