@@ -61,19 +61,19 @@ export const InseminationForm = () => {
             <Form form={form} className='content-container' onFinish={registerNewInsemination}>
                 <h2 className='form-title'>Регистрация осеменения</h2>
                 <div>
-                    <InputLabel label='Выберите животное из списка' />
+                    <InputLabel label='Выберите животное из списка' required={true}/>
                     <Form.Item name='cowId' rules={requiredRule}>
                         <Select className='form-input_default' options={cows}></Select>
                     </Form.Item>
                 </div>
                 <div>
-                    <InputLabel label='Дата осеменения' />
-                    <Form.Item className='form-input_default' name='date' initialValue={dayjs()}>
+                    <InputLabel label='Дата осеменения' required={true}/>
+                    <Form.Item className='form-input_default' name='date' initialValue={dayjs()} rules={requiredRule}>
                         <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
                     </Form.Item>
                 </div>
                 <div>
-                    <InputLabel label='Тип осеменения' />
+                    <InputLabel label='Тип осеменения' required={true}/>
                     <Form.Item name='inseminationType'>
                         <Radio.Group className={styles['reproductive__radio-group']}>
                             <div className={styles['reproductive__radio-container']}>
