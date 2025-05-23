@@ -70,8 +70,8 @@ export const ManualRegistrationForm = () => {
                 additionalInfo[key] = value;
             } else if (key === 'Photo' && value?.fileList) {
                 formData.append('Photo', value.fileList[0]?.originFileObj);
-            } else if (key === 'BirthDate' || key === 'ExpectedCalvingDate' || key ===  'InseminationDate') {
-                formData.append(key, dayjs(value).format('YYYY-MM-DD'))
+            } else if (key === 'BirthDate' || key === 'ExpectedCalvingDate' || key === 'InseminationDate') {
+                formData.append(key, dayjs(value).format('YYYY-MM-DD'));
             } else {
                 formData.append(key, String(value ?? ''));
             }
@@ -108,9 +108,12 @@ export const ManualRegistrationForm = () => {
             <Form form={registerAnimalForm} requiredMark={false} onFinish={onFinish}>
                 <div>
                     <div>
-                        <InputLabel label='Номер бирки/RFID' />
+                        <InputLabel label='Номер бирки/RFID' required={true} />
                         <Form.Item name='TagNumber' rules={requiredRule}>
-                            <Input className={styles['manual-register__input']} placeholder='Введите номер бирки'></Input>
+                            <Input
+                                className={styles['manual-register__input']}
+                                placeholder='Введите номер бирки'
+                            ></Input>
                         </Form.Item>
                     </div>
                     <div>
@@ -119,20 +122,35 @@ export const ManualRegistrationForm = () => {
                             <Input className={styles['manual-register__input']} placeholder='Укажите породу'></Input>
                         </Form.Item>
                     </div>
-                    <Form.Item name='Type' rules={requiredRule} label={<InputLabel label='Половозрастная группа' />} labelCol={{ span: 24 }}>
+                    <Form.Item
+                        name='Type'
+                        rules={requiredRule}
+                        label={<InputLabel label='Половозрастная группа' required={true} />}
+                        labelCol={{ span: 24 }}
+                    >
                         <RadioGroupButton onChange={handleRadioChange} data={animalsOptions} />
                     </Form.Item>
                 </div>
                 {selectedAnimalType === 'Нетель' && <NetelFormRegister />}
                 <div className={styles['manual-register__changed-form']}>
                     <div>
-                        <InputLabel label='Дата рождения' />
-                        <Form.Item rules={requiredRule} name='BirthDate' className='form-input_default' initialValue={dayjs()}>
-                            <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
+                        <InputLabel label='Дата рождения' required={true} />
+                        <Form.Item
+                            rules={requiredRule}
+                            name='BirthDate'
+                            className='form-input_default'
+                            initialValue={dayjs()}
+                        >
+                            <DatePicker
+                                format='DD.MM.YYYY'
+                                type='date'
+                                className='form-input_default date'
+                                placeholder='xx.xx.xxxx'
+                            ></DatePicker>
                         </Form.Item>
                     </div>
                     <div>
-                        <InputLabel label='Происхождение' />
+                        <InputLabel label='Происхождение' required={true} />
                         <Form.Item name='Origin' rules={requiredRule}>
                             <Radio.Group onChange={handleOriginChange}>
                                 <div className={styles['manual-register__origin']}>
@@ -154,7 +172,10 @@ export const ManualRegistrationForm = () => {
                     <div>
                         <InputLabel label='Место происхождения' />
                         <Form.Item name='OriginLocation'>
-                            <Input className={styles['manual-register__input']} placeholder='Укажите место происхождения'></Input>
+                            <Input
+                                className={styles['manual-register__input']}
+                                placeholder='Укажите место происхождения'
+                            ></Input>
                         </Form.Item>
                     </div>
                 )}
@@ -174,7 +195,7 @@ export const ManualRegistrationForm = () => {
                 </div>
                 <div>
                     <InputLabel label='Группа содержания' />
-                    <Form.Item rules={requiredRule} name='GroupId'>
+                    <Form.Item name='GroupId'>
                         <Select options={animalGroups} className={styles['manual-register__input']}></Select>
                     </Form.Item>
                 </div>
@@ -187,11 +208,20 @@ export const ManualRegistrationForm = () => {
                                 <InboxOutlined />
                             </p>
                             <p className='ant-upload-text'>Выберите или перетащите файл</p>
-                            <p className='ant-upload-hint'>Максимальный размер изображения 200Mb. Формат JPG/JPEG/PNG</p>
+                            <p className='ant-upload-hint'>
+                                Максимальный размер изображения 200Mb. Формат JPG/JPEG/PNG
+                            </p>
                         </Dragger>
                     </Form.Item>
                 </div>
-                {visibleAlert && alert && <Alert className={styles['manual-register__alert']} message={alert.message} type={alert.type} showIcon />}
+                {visibleAlert && alert && (
+                    <Alert
+                        className={styles['manual-register__alert']}
+                        message={alert.message}
+                        type={alert.type}
+                        showIcon
+                    />
+                )}
                 <Button htmlType='submit' type='primary' loading={isLoading}>
                     Зарегистрировать животное
                 </Button>
