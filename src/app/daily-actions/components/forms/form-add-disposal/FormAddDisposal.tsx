@@ -45,13 +45,17 @@ export const FormAddDisposal = ({ isGroup, resetHistory }: Props) => {
                 wrap
             >
                 <div style={{ width: '100%' }}>
-                    <DatePickerForm name='dateCulling' label='Дата выбытия' required />
+                    <DatePickerForm
+                        name='dateCulling'
+                        label='Дата выбытия'
+                        required
+                        defaultValue={dayjs()}
+                    />
                 </div>
                 <InputForm
                     label='Кто проводил выбытие'
                     name='name'
                     placeholder='Введите ФИО'
-                    required
                 />
                 <SelectForm
                     label='Причина выбытия'

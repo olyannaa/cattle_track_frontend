@@ -57,7 +57,12 @@ export const FormAddTransfer = ({ isGroup, resetHistory }: Props) => {
                 }}
                 wrap
             >
-                <DatePickerForm name='dateTransfer' label='Дата перевода' required />
+                <DatePickerForm
+                    name='dateTransfer'
+                    label='Дата перевода'
+                    required
+                    defaultValue={dayjs()}
+                />
                 {!isGroup && (
                     <div style={{ maxWidth: '475px', width: '100%' }}>
                         <Label label={'Старая группа'} />
@@ -89,7 +94,6 @@ export const FormAddTransfer = ({ isGroup, resetHistory }: Props) => {
                     label='Кто проводил перевод'
                     name='name'
                     placeholder='Введите ФИО'
-                    required
                 />
                 <TextAreaForm
                     name='note'

@@ -86,7 +86,12 @@ export const FormAddResearch = ({
                     placeholder='Введите название'
                     required
                 />
-                <DatePickerForm name='date' label='Дата забора материала' required />
+                <DatePickerForm
+                    name='date'
+                    label='Дата забора материала'
+                    required
+                    defaultValue={dayjs()}
+                />
                 <SelectForm
                     label='Вид материала'
                     name='materialType'
@@ -98,7 +103,6 @@ export const FormAddResearch = ({
                     label='Кто проводил взятие'
                     name='performedBy'
                     placeholder='Введите ФИО'
-                    required
                 />
                 <Form.Item name='result' style={{ maxWidth: '475px', width: '100%' }}>
                     <CheckboxCustom

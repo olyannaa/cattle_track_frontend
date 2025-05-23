@@ -46,6 +46,10 @@ export const optionsDisposal = [
 
 export const optionsResearch = [
     {
+        label: 'Кровь',
+        value: 'Кровь',
+    },
+    {
         label: 'Молоко',
         value: 'Молоко',
     },

@@ -55,13 +55,9 @@ export const FormAddInspection = ({ isGroup, type, resetHistory }: Props) => {
                     name='dateInspection'
                     label={`Дата ${type === '1' ? 'осмотра' : 'обработки'}`}
                     required
+                    defaultValue={dayjs()}
                 />
-                <InputForm
-                    label='Кто проводил'
-                    name='name'
-                    placeholder='Введите ФИО'
-                    required
-                />
+                <InputForm label='Кто проводил' name='name' placeholder='Введите ФИО' />
                 {type === '1' ? (
                     <RadioGroupForm
                         label='Тип осмотра'
@@ -101,7 +97,6 @@ export const FormAddInspection = ({ isGroup, type, resetHistory }: Props) => {
                     label={`Дата ${
                         type === '1' ? 'следующего осмотра' : 'следующей обработки'
                     }`}
-                    required
                 />
             </Flex>
             <Button

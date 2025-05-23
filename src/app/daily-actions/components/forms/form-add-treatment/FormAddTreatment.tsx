@@ -58,17 +58,16 @@ export const FormAddTreatment = ({ isGroup, resetHistory }: Props) => {
                     label='Кто проводил лечение'
                     name='name'
                     placeholder='Введите ФИО'
-                    required
                 />
                 <DatePickerForm
                     name='dateStartTreatment'
                     label='Дата начала лечения'
                     required
+                    defaultValue={dayjs()}
                 />
                 <DatePickerForm
                     name='dateNextInspection'
                     label='Дата следующего осмотра'
-                    required
                 />
                 <InputForm
                     label='Препарат'

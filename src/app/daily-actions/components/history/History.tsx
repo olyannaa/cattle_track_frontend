@@ -84,17 +84,12 @@ export const History = ({ keyTab }: Props) => {
         } else {
             await deleteDailyActionsQuery(selectedDailyActions);
         }
-        if (selectedDailyActions.length === dailyActions.length) {
-            dispatch(
-                changeSortersDailyActions({
-                    ...sorters,
-                    page: sorters.page !== 1 ? sorters.page - 1 : 1,
-                })
-            );
-        } else {
-            getDailyActions();
-            getPaginationInfoDailyActivities();
-        }
+        dispatch(
+            changeSortersDailyActions({
+                ...sorters,
+                page: 1,
+            })
+        );
     };
 
     const onChangeTable = (
@@ -110,7 +105,7 @@ export const History = ({ keyTab }: Props) => {
                 changeSortersDailyActions({
                     page: newPagination.current,
                     column: '',
-                    descending: 'false',
+                    descending: true,
                 })
             );
         } else {
@@ -132,10 +127,11 @@ export const History = ({ keyTab }: Props) => {
         dispatch(
             changeSortersDailyActions({
                 column: '',
-                descending: false,
+                descending: true,
                 page: 1,
             })
         );
+        dispatch(deleteAllActions());
         setNameTab(newName);
     }, [keyTab]);
 

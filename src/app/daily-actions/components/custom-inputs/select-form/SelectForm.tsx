@@ -14,7 +14,7 @@ export const SelectForm = ({
 }: IFormItemSelect) => {
     return (
         <div style={{ maxWidth: '491px', width: '100%', ...style }}>
-            <Label label={label} />
+            <Label label={label} required={required} />
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Сделайте выбор' }]}

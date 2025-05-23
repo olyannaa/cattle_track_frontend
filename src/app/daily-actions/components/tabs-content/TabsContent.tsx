@@ -6,7 +6,7 @@ import { FormAddTreatment } from '../forms/form-add-treatment/FormAddTreatment';
 import { FormAddTransfer } from '../forms/form-add-transfer/FormAddTransfer';
 import { FormAddDisposal } from '../forms/form-add-disposal/FormAddDisposal';
 
-import { useAppSelector } from '../../../../app-service/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import { selectSelectedAnimals } from '../../service/animalsDailyActionsSlice';
 import { FormAddAssigmentNumber } from '../forms/form-add-assignment-number/FormAddAssigmentNumber';
 import { getNameTabs, items } from '../../data/const/tabs';
@@ -14,7 +14,10 @@ import {
     useLazyGetDailyActionsQuery,
     useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../service/dailyActions';
-import { selectSortersDailyActions } from '../../service/dailyActionsSlice';
+import {
+    deleteAllActions,
+    selectSortersDailyActions,
+} from '../../service/dailyActionsSlice';
 import { WrapperFormResearch } from '../wrapper-form-research/WrapperFormResearch';
 
 type Props = {
@@ -27,6 +30,8 @@ export const TabsContent = ({ keyTab }: Props) => {
     const [isGroupAction, setIsGroupAction] = useState<boolean>(false);
     const title = items && items.find((item) => item.key === keyTab)?.label?.toString();
 
+    const dispatch = useAppDispatch();
+
     const [getDailyActionsQuery] = useLazyGetDailyActionsQuery();
     const [getPaginationInfoDailyActionsQuery] =
         useLazyGetPaginationInfoDailyActionsQuery();
@@ -37,6 +42,7 @@ export const TabsContent = ({ keyTab }: Props) => {
             ...sorters,
             type: name,
         });
+        dispatch(deleteAllActions());
         await getPaginationInfoDailyActionsQuery(name);
     };
 

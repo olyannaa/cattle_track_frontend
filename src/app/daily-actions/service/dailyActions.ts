@@ -123,7 +123,8 @@ export const dailyActionsApi = api.injectEndpoints({
         getDailyActions: builder.query<IDailyAction[], IRequestGetDailyActions>({
             query: (data) => ({
                 url: `DailyActions?type=${data.type}&page=${data.page}&SortInfo.Column=${
-                    data.column || 'TagNumber'
+                    data.column ||
+                    (data.type === 'Исследования' ? 'CollectionDate' : 'Date')
                 }&SortInfo.Descending=${data.descending}`,
                 method: 'GET',
             }),

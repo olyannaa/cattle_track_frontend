@@ -23,7 +23,7 @@ export const columnsTableHistoryInspection = (
         title: 'Дата',
         dataIndex: 'date',
         key: 'date',
-        minWidth: 100,
+        minWidth: 105,
         sorter: true,
         sortOrder:
             sorters.column === 'Date'

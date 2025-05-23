@@ -59,7 +59,8 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
     const getFilterAnimals = async (
         data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
     ) => {
-        await getFilterAnimalsQuery(data);
+        const response = (await getFilterAnimalsQuery(data)).data;
+        return response;
     };
 
     const getPaginationInfoFilterAnimals = async (data: FiltersAnimalsType = filters) => {
@@ -77,12 +78,16 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
     };
 
     useEffect(() => {
-        getFilterAnimals();
+        const response = getFilterAnimals({
+            filters: filters,
+            sorters: { ...sorters, page: isGroup ? 1 : 0 },
+        });
         dispatch(resetSortersAnimals());
         if (isGroup) {
             getPaginationInfoFilterAnimals();
             dispatch(changeSortersAnimals({ ...sorters, page: 1 }));
         }
+        dispatch(deleteAllAnimals());
     }, [filters]);
 
     useEffect(() => {
@@ -133,7 +138,6 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
             }
         }
     };
-
     return (
         <>
             <Flex style={{ gap: '4px', rowGap: '12px' }} wrap>
@@ -161,7 +165,15 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
             <FormFilter isGroup={isGroup} filters={filters} />
             {isGroup && (
                 <>
-                    <Flex justify='flex-end' style={{ width: '100%' }}>
+                    <Flex
+                        justify='flex-end'
+                        style={{ width: '100%' }}
+                        gap={16}
+                        align='center'
+                    >
+                        <div
+                            style={{ fontWeight: '500' }}
+                        >{`Выбрано: ${selectedAnimals.length}`}</div>
                         <Checkbox
                             onChange={handlerChangeSelectedAllActions}
                             style={{

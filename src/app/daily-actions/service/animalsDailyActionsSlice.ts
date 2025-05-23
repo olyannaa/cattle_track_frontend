@@ -30,7 +30,7 @@ const initialState: InitialState = {
         identificationFieldValue: '',
     },
     sortersAnimals: {
-        column: 'TagNumber',
+        column: '',
         descending: false,
         page: 0,
     },
@@ -89,11 +89,11 @@ const slice = createSlice({
             dailyActionsApi.endpoints.getFilterAnimals.matchFulfilled,
             (state, action) => {
                 state.filterAnimals = [...action.payload];
-                if (action.payload.length === 1) {
-                    state.selectedAnimals = [action.payload[0].id];
-                } else {
-                    state.selectedAnimals = [];
-                }
+                // if (action.payload.length === 1) {
+                //     state.selectedAnimals = [action.payload[0].id];
+                // } else {
+                //     state.selectedAnimals = [];
+                // }
             }
         );
         builder.addMatcher(

@@ -37,7 +37,7 @@ export const getUrlFilterAnimals = (
 
     Object.keys(sorters).forEach((sorter) => {
         if (sorter === 'column') {
-            url += `SortInfo.Column=${sorters[sorter]}&`;
+            url += `SortInfo.Column=${sorters[sorter] || 'TagNumber'}&`;
         }
         if (sorter === 'descending') {
             url += `SortInfo.Descending=${sorters[sorter]}&`;

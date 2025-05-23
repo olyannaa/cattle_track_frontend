@@ -25,7 +25,7 @@ const initialState: InitialState = {
     },
     sorters: {
         column: '',
-        descending: false,
+        descending: true,
         page: 1,
     },
 };
@@ -73,7 +73,6 @@ const slice = createSlice({
             dailyActionsApi.endpoints.getDailyActions.matchFulfilled,
             (state, action) => {
                 state.dailyActions = [...action.payload];
-                state.selectedDailyActions = [];
             }
         );
         builder.addMatcher(
