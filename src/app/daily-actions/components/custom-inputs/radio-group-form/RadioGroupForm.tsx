@@ -11,7 +11,7 @@ export const RadioGroupForm = ({
 }: IFormItemRadioGroup) => {
     return (
         <div style={{ width: '100%' }}>
-            <Label label={label} />
+            <Label label={label} required={required} />
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Сделайте выбор' }]}

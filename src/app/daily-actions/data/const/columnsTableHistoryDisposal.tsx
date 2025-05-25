@@ -1,37 +1,75 @@
 import { TableProps } from 'antd';
 import { IDailyActionTable } from '../interface/IDailyActionTable';
 import { TableCheckbox } from '../../components/custom-inputs/TableCheckbox';
+import { SortersAnimalsType } from '../../service/dailyActions';
 
-export const columnsTableHistoryDisposal: TableProps<IDailyActionTable>['columns'] = [
+export const columnsTableHistoryDisposal = (
+    sorters: SortersAnimalsType
+): TableProps<IDailyActionTable>['columns'] => [
     {
         title: '№ животного',
         dataIndex: 'tagNumber',
         key: 'tagNumber',
-        width: 83,
+        minWidth: 140,
+        sorter: true,
+        sortOrder:
+            sorters.column === 'TagNumber'
+                ? sorters.descending
+                    ? 'descend'
+                    : 'ascend'
+                : null,
     },
     {
         title: 'Дата',
         dataIndex: 'date',
         key: 'date',
         minWidth: 100,
+        sorter: true,
+        sortOrder:
+            sorters.column === 'Date'
+                ? sorters.descending
+                    ? 'descend'
+                    : 'ascend'
+                : null,
     },
     {
         title: 'Исполнитель',
         dataIndex: 'performedBy',
         key: 'performedBy',
         minWidth: 180,
+        sorter: true,
+        sortOrder:
+            sorters.column === 'PerformedBy'
+                ? sorters.descending
+                    ? 'descend'
+                    : 'ascend'
+                : null,
     },
     {
         title: 'Примечания',
         dataIndex: 'notes',
         key: 'notes',
-        width: 159,
+        minWidth: 135,
+        sorter: true,
+        sortOrder:
+            sorters.column === 'Notes'
+                ? sorters.descending
+                    ? 'descend'
+                    : 'ascend'
+                : null,
     },
     {
         title: 'Тип выбытия',
         dataIndex: 'subtype',
         key: 'subtype',
-        width: 166,
+        minWidth: 130,
+        sorter: true,
+        sortOrder:
+            sorters.column === 'Subtype'
+                ? sorters.descending
+                    ? 'descend'
+                    : 'ascend'
+                : null,
     },
     {
         title: 'Выбрать',

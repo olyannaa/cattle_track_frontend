@@ -9,52 +9,52 @@ import {
 import { useAppSelector } from '../../../../../app-service/hooks';
 import {
     selectAnimals,
+    selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
-import { changeDate } from '../form-add-inspection/FormAddInspection';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import { useGetGroupQuery } from '../../../../../app-service/services/general';
 import { Label } from '../../custom-inputs/label/Label';
-import { useEffect } from 'react';
-import { selectReset } from '../../../service/dailyActionsSlice';
+import dayjs from 'dayjs';
+import { FormTypeTransfer } from '../../../data/types/FormTypes';
+import { useEffect, useState } from 'react';
 
 type Props = {
-    isGroup: boolean;
+    resetHistory: () => void;
 };
 
-type FormType = {
-    dateTransfer: string | undefined;
-    group: string | undefined;
-    name: string | undefined;
-    note: string | undefined;
-};
-
-export const FormAddTransfer = ({ isGroup }: Props) => {
+export const FormAddTransfer = ({ resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
+    const isGroup = useAppSelector(selectIsGroup)
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
+    const [oldGroup, setOldGroup] = useState<string>('')
+    const [form] = Form.useForm();
     const animals = useAppSelector(selectAnimals);
     const options = useGetGroupQuery().data?.map((group) => ({
         label: group.name,
         value: group.id,
-    }));
-    const addAction = async (dataForm: FormType) => {
+    })) || [];
+
+    useEffect(()=> {
+        if (!isGroup){
+            setOldGroup(animals.find((animal) => animal.id === selectedAnimals[0])?.groupId || '')
+        }
+    },[selectAnimals])
+
+    const addAction = async (dataForm: FormTypeTransfer) => {
         const data: newDailyAction[] = selectedAnimals.map((selectAnimal) => ({
             animalId: selectAnimal,
             type: 'Перевод',
-            date: changeDate(String(dataForm.dateTransfer)),
+            date: dayjs(dataForm.dateTransfer).format('YYYY-MM-DD'),
             performedBy: dataForm.name,
             notes: dataForm.note,
             newGroupId: dataForm.group,
             oldGroupId: animals.find((animal) => animal.id === selectAnimal)?.groupId,
         }));
         await createDailyActions(data);
-    };
-
-    const reset = useAppSelector(selectReset);
-    const [form] = Form.useForm();
-    useEffect(() => {
         form.resetFields();
-    }, [reset]);
+        resetHistory();
+    };
 
     return (
         <Form onFinish={addAction} form={form}>
@@ -67,7 +67,12 @@ export const FormAddTransfer = ({ isGroup }: Props) => {
                 }}
                 wrap
             >
-                <DatePickerForm name='dateTransfer' label='Дата перевода' required />
+                <DatePickerForm
+                    name='dateTransfer'
+                    label='Дата перевода'
+                    required
+                    defaultValue={dayjs()}
+                />
                 {!isGroup && (
                     <div style={{ maxWidth: '475px', width: '100%' }}>
                         <Label label={'Старая группа'} />
@@ -91,7 +96,7 @@ export const FormAddTransfer = ({ isGroup }: Props) => {
                     label='Новая группа'
                     name='group'
                     placeholder='Выберите группу '
-                    options={options || []}
+                    options={!isGroup ? options?.filter((option)=> option.value !== oldGroup) : options}
                     style={{ maxWidth: '475px' }}
                     required
                 />
@@ -99,7 +104,6 @@ export const FormAddTransfer = ({ isGroup }: Props) => {
                     label='Кто проводил перевод'
                     name='name'
                     placeholder='Введите ФИО'
-                    required
                 />
                 <TextAreaForm
                     name='note'

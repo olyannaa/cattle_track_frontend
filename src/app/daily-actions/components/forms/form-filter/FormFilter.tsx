@@ -1,9 +1,8 @@
 import { Flex, Form } from 'antd';
-import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
-import { InputSearchForm } from '../../custom-inputs/input-search-form/InputSearchForm';
+import { InputSearch } from '../../custom-inputs/input-search/InputSearchForm';
 import { CustomSelect } from '../../custom-inputs/custom-select/CustomSelect';
 import { useEffect, useState } from 'react';
-import { RadioGroupFormWithSwitch } from '../../custom-inputs/radio-group-with-switch/RadioGroupWithSwitch';
+import { RadioGroupWithSwitch } from '../../custom-inputs/radio-group-with-switch/RadioGroupWithSwitch';
 import {
     useGetGroupQuery,
     useGetIdentificationsFieldsQuery,
@@ -11,22 +10,20 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../../../app-service/hooks';
 import {
     addSelectedAnimal,
+    changeFiltersAnimals,
     selectAnimals,
+    selectFiltersAnimals,
+    selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
 import {
-    FiltersAnimalsType,
     useLazyGetFilterAnimalsQuery,
     useLazyGetIdentificationValuesQuery,
 } from '../../../service/dailyActions';
 
-type Props = {
-    isGroup: boolean;
-    filters: FiltersAnimalsType;
-    setFilters: React.Dispatch<React.SetStateAction<FiltersAnimalsType>>;
-};
-
-export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
+export const FormFilter = () => {
+    const filters = useAppSelector(selectFiltersAnimals);
+    const isGroup = useAppSelector(selectIsGroup)
     const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
     const [getIdentificationValuesQuery] = useLazyGetIdentificationValuesQuery();
     const [identificationValues, setIdentificationValues] =
@@ -53,10 +50,6 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
         await getFilterAnimalsQuery({ filters: { ...filters, tagNumber: value } });
     };
 
-    const handlerChangeSelectedAnimals = (value: string) => {
-        dispatch(addSelectedAnimal(value));
-    };
-
     const getIdentificationValues = async () => {
         const response = (
             await getIdentificationValuesQuery({
@@ -67,10 +60,12 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
             })
         ).data;
         setIdentificationValues(response?.map((el) => ({ label: el, value: el })));
-        setFilters((last) => ({
-            ...last,
-            identificationFieldValue: '',
-        }));
+        dispatch(
+            changeFiltersAnimals({
+                name: 'identificationFieldValue',
+                value: '',
+            })
+        );
     };
 
     useEffect(() => {
@@ -85,29 +80,48 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
             getIdentificationValues();
         }
     }, [filters.identificationFieldId]);
-    console.log(selectedAnimals[0]);
+
     return (
         <Form
             style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', rowGap: '24px' }}
             form={form}
         >
-            <SelectForm
+            <CustomSelect
                 label='Группа содержания'
-                name='group'
                 options={
                     groups?.length ? [{ label: 'Все группы', value: '' }, ...groups] : []
                 }
-                defaultValue=''
-                onChange={(value) => setFilters((last) => ({ ...last, groupId: value }))}
+                onChange={(value) =>
+                    dispatch(
+                        changeFiltersAnimals({
+                            name: 'groupId',
+                            value: value,
+                        })
+                    )
+                }
+                value={filters.groupId || ''}
             />
-            <RadioGroupFormWithSwitch
+            <RadioGroupWithSwitch
                 options={['Телка', 'Нетель', 'Корова', 'Бычок', 'Бык']}
                 label='Категория животного'
-                name='type'
-                form={form}
                 isGroup={isGroup}
-                onChange={(value) => setFilters((last) => ({ ...last, type: value }))}
-                onChangeAll={() => setFilters((last) => ({ ...last, type: '' }))}
+                onChange={(value) =>
+                    dispatch(
+                        changeFiltersAnimals({
+                            name: 'type',
+                            value: value,
+                        })
+                    )
+                }
+                onChangeAll={() =>
+                    dispatch(
+                        changeFiltersAnimals({
+                            name: 'type',
+                            value: '',
+                        })
+                    )
+                }
+                value={filters.type || ''}
             />
             {!isGroup && (
                 <>
@@ -124,34 +138,37 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
                             }
                             placeholder='Выберите способ'
                             onChange={(value) =>
-                                setFilters((last) => ({
-                                    ...last,
-                                    identificationFieldId: value,
-                                }))
+                                dispatch(
+                                    changeFiltersAnimals({
+                                        name: 'identificationFieldId',
+                                        value: value,
+                                    })
+                                )
                             }
                             value={filters.identificationFieldId || ''}
                         />
                         {filters.identificationFieldId && (
-                            <SelectForm
+                            <CustomSelect
                                 label={
                                     indentificationFields?.find(
                                         (field) =>
                                             filters.identificationFieldId === field.value
                                     )?.label || ''
                                 }
-                                name='identification_method'
                                 options={identificationValues || []}
                                 onChange={(value) =>
-                                    setFilters((last) => ({
-                                        ...last,
-                                        identificationFieldValue: value,
-                                    }))
+                                    dispatch(
+                                        changeFiltersAnimals({
+                                            name: 'identificationFieldValue',
+                                            value: value,
+                                        })
+                                    )
                                 }
+                                value={filters.identificationFieldValue || ''}
                             />
                         )}
                     </Flex>
-                    <InputSearchForm
-                        name='search-animal'
+                    <InputSearch
                         label='Поиск по номеру'
                         placeholder='Введите номер животного для фильтрации списка'
                         onSearch={handlerSearch}
@@ -162,7 +179,7 @@ export const FormFilter = ({ isGroup, filters, setFilters }: Props) => {
                         value={
                             animals.length === 1 ? animals[0].value : selectedAnimals[0]
                         }
-                        onChange={(value) => handlerChangeSelectedAnimals(value)}
+                        onChange={(value) => dispatch(addSelectedAnimal(value))}
                     />
                 </>
             )}

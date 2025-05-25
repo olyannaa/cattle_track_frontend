@@ -7,76 +7,68 @@ import { CheckboxCustom } from '../../../../../global-components/custom-inputs/c
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
+    useCreateDailyActionsWithoutResetFiltersMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
 import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
-import { changeDate } from '../form-add-inspection/FormAddInspection';
-import { selectReset } from '../../../service/dailyActionsSlice';
-import { useEffect } from 'react';
+import dayjs from 'dayjs';
+import { FormTypeResearch } from '../../../data/types/FormTypes';
+import { optionsResearch } from '../../../data/const/optionsSelect';
 
 type Props = {
     isGroup: boolean;
+    resetHistory: () => void;
+    num: number;
+    formsIdLength: number;
+    setFormsId: React.Dispatch<React.SetStateAction<string[]>>;
+    idForm: string;
 };
 
-type FormType = {
-    dateResearch: string | undefined;
-    name: string | undefined;
-    nameResearch: string | undefined;
-    note: string | undefined;
-    result: { target: { checked: boolean } } | undefined;
-    typeMaterial: string | undefined;
-};
-
-const options = [
-    {
-        label: 'Молоко',
-        value: 'Молоко',
-    },
-    {
-        label: 'Моча',
-        value: 'Моча',
-    },
-    {
-        label: 'Кал',
-        value: 'Кал',
-    },
-    {
-        label: 'Соскоб',
-        value: 'Соскоб',
-    },
-    {
-        label: 'Смыв',
-        value: 'Смыв',
-    },
-    {
-        label: 'Другое',
-        value: 'Другое',
-    },
-];
-
-export const FormAddResearch = ({ isGroup }: Props) => {
+export const FormAddResearch = ({
+    isGroup,
+    resetHistory,
+    num,
+    setFormsId,
+    formsIdLength,
+    idForm,
+}: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
+    const [createDailyActionsWithoutResetFilters] =
+        useCreateDailyActionsWithoutResetFiltersMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const reset = useAppSelector(selectReset);
     const [form] = Form.useForm();
-
-    const addAction = async (dataForm: FormType) => {
+    const addAction = async (dataForm: FormTypeResearch) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
             type: 'Исследования',
-            date: changeDate(String(dataForm.dateResearch)),
-            performedBy: dataForm.name,
-            notes: dataForm.note,
-            materialType: dataForm.typeMaterial,
+            date: dayjs(dataForm.date).format('YYYY-MM-DD'),
+            performedBy: dataForm.performedBy,
+            notes: dataForm.notes,
+            materialType: dataForm.materialType,
             result: dataForm.result?.target.checked ? 'true' : 'false',
-            researchName: dataForm.nameResearch,
+            researchName: dataForm.researchName,
         }));
-        await createDailyActions(data);
+        if (formsIdLength > 1) {
+            await createDailyActionsWithoutResetFilters(data);
+        } else {
+            await createDailyActions(data);
+        }
+        form.resetFields();
+        resetHistory();
+        setFormsId((last) => last.filter((id) => id !== idForm));
     };
 
-    useEffect(() => {
-        form.resetFields();
-    }, [reset]);
+    const addForm = () => {
+        setFormsId((last) => [
+            ...last,
+            Date.now().toString(36) + Math.random().toString(36).substring(2),
+        ]);
+    };
+
+    const deleteForms = () => {
+        setFormsId((last) => [last[0]]);
+    };
+
     return (
         <Form onFinish={addAction} form={form}>
             <Flex
@@ -90,27 +82,27 @@ export const FormAddResearch = ({ isGroup }: Props) => {
             >
                 <InputForm
                     label='Название исследования'
-                    name='nameResearch'
+                    name='researchName'
                     placeholder='Введите название'
                     required
                 />
                 <DatePickerForm
-                    name='dateResearch'
+                    name='date'
                     label='Дата забора материала'
                     required
+                    defaultValue={dayjs()}
                 />
                 <SelectForm
                     label='Вид материала'
-                    name='typeMaterial'
-                    options={options}
+                    name='materialType'
+                    options={optionsResearch}
                     style={{ maxWidth: '475px' }}
                     required
                 />
                 <InputForm
                     label='Кто проводил взятие'
-                    name='name'
+                    name='performedBy'
                     placeholder='Введите ФИО'
-                    required
                 />
                 <Form.Item name='result' style={{ maxWidth: '475px', width: '100%' }}>
                     <CheckboxCustom
@@ -119,20 +111,32 @@ export const FormAddResearch = ({ isGroup }: Props) => {
                     />
                 </Form.Item>
                 <TextAreaForm
-                    name='note'
+                    name='notes'
                     label='Примечания'
                     placeholder='Дополнительная информация'
                 />
             </Flex>
-            <Button
-                type='primary'
-                size='large'
-                color='default'
-                variant='solid'
-                htmlType='submit'
-            >
-                {isGroup ? 'Сохранить для выбранных животных' : 'Сохранить'}
-            </Button>
+            <Flex gap={16}>
+                <Button
+                    type='primary'
+                    size='large'
+                    color='default'
+                    variant='solid'
+                    htmlType='submit'
+                >
+                    {isGroup ? 'Сохранить для выбранных животных' : 'Сохранить'}
+                </Button>
+                {formsIdLength > 1 && formsIdLength === num && (
+                    <Button size='large' onClick={deleteForms}>
+                        Сбросить все групповые формы
+                    </Button>
+                )}
+                {num === 1 && isGroup && (
+                    <Button size='large' onClick={addForm}>
+                        Добавить еще одно групповое исследование
+                    </Button>
+                )}
+            </Flex>
         </Form>
     );
 };

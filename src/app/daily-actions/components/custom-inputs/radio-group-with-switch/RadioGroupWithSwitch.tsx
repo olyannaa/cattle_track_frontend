@@ -1,33 +1,30 @@
-import { Flex, Form, Radio, RadioChangeEvent, Switch } from 'antd';
+import { Flex, Radio, RadioChangeEvent, Switch } from 'antd';
 import { Label } from '../label/Label';
-import { IFormItemRadioGroupWithSwitch } from '../../../data/interface/IFormItem';
+import { IItemRadioGroupWithSwitch } from '../../../data/interface/IInputsItem';
 
-export const RadioGroupFormWithSwitch = ({
+export const RadioGroupWithSwitch = ({
     label,
     options,
-    name,
     styles,
-    form,
     isGroup,
     onChange,
     onChangeAll,
-}: IFormItemRadioGroupWithSwitch) => {
-    const handleSwitchChange = (checked: boolean) => {
+    value,
+}: IItemRadioGroupWithSwitch) => {
+    const handlerSwitchChange = (checked: boolean) => {
         if (checked) {
-            form.setFieldsValue({ [name]: null });
             onChangeAll();
         }
     };
 
     const handlerRadioChange = (e: RadioChangeEvent) => {
-        form.setFieldsValue({ [`${name}_all`]: false });
         onChange && onChange(e.target.value);
     };
 
     return (
         <div style={{ position: 'relative', width: '100%', maxWidth: '491px' }}>
             <Label label={label} />
-            <Form.Item style={{ maxWidth: '391px' }} name={name}>
+            <div style={{ maxWidth: '391px' }}>
                 <Radio.Group
                     style={{
                         display: 'flex',
@@ -37,8 +34,9 @@ export const RadioGroupFormWithSwitch = ({
                     options={options}
                     optionType='button'
                     onChange={handlerRadioChange}
+                    value={value}
                 />
-            </Form.Item>
+            </div>
             {isGroup && (
                 <Flex
                     style={{ position: 'absolute', top: '-5px', right: '0' }}
@@ -46,9 +44,9 @@ export const RadioGroupFormWithSwitch = ({
                     gap={8}
                 >
                     <div style={{ fontWeight: '500' }}>Выбрать всех</div>
-                    <Form.Item style={{ marginBottom: '0' }} name={`${name}_all`}>
-                        <Switch onChange={handleSwitchChange} />
-                    </Form.Item>
+                    <div style={{ marginBottom: '0' }}>
+                        <Switch onChange={handlerSwitchChange} checked={!value} />
+                    </div>
                 </Flex>
             )}
         </div>
