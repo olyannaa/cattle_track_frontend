@@ -1,4 +1,4 @@
-import { Alert, Checkbox, CheckboxChangeEvent, Flex, Table, TablePaginationConfig } from 'antd';
+import { Checkbox, CheckboxChangeEvent, Flex, Table, TablePaginationConfig } from 'antd';
 import { CheckboxCustom } from '../../../../global-components/custom-inputs/checkbox/Checkbox';
 import { FormFilter } from '../forms/form-filter/FormFilter';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,6 @@ import {
     FiltersAnimalsType,
     IRequestGetFilterAnimals,
     IResponsePaginationInfoDailyActions,
-    useLazyGetAllActionsIdQuery,
     useLazyGetAllAnimalsIdQuery,
     useLazyGetFilterAnimalsQuery,
     useLazyGetPaginationInfoFilterAnimalsQuery,

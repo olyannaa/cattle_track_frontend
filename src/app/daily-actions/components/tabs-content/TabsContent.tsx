@@ -1,5 +1,5 @@
 import { Flex, Typography } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { FilterAnimals } from '../filter-animals/FilterAnimals';
 import { FormAddInspection } from '../forms/form-add-inspection/FormAddInspection';
 import { FormAddTreatment } from '../forms/form-add-treatment/FormAddTreatment';
@@ -7,7 +7,7 @@ import { FormAddTransfer } from '../forms/form-add-transfer/FormAddTransfer';
 import { FormAddDisposal } from '../forms/form-add-disposal/FormAddDisposal';
 
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
-import { changeIsGroup, changeSortersAnimals, selectSelectedAnimals } from '../../service/animalsDailyActionsSlice';
+import { changeIsGroup, selectSelectedAnimals } from '../../service/animalsDailyActionsSlice';
 import { FormAddAssigmentNumber } from '../forms/form-add-assignment-number/FormAddAssigmentNumber';
 import { getNameTabs, items } from '../../data/const/tabs';
 import {

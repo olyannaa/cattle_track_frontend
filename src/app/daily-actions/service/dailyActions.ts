@@ -48,7 +48,7 @@ export type newDailyAction = {
     oldGroupId?: string;
     newGroupId?: string;
     date?: string;
-    nextDate?: string;
+    nextDate?: string | null;
     researchName?: string;
     materialType?: string;
     identificationValue?: string;

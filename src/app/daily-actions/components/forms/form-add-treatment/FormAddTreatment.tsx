@@ -27,7 +27,7 @@ export const FormAddTreatment = ({ resetHistory }: Props) => {
             date: dayjs(dataForm.dateStartTreatment).format('YYYY-MM-DD'),
             performedBy: dataForm.name,
             notes: dataForm.note,
-            nextDate: dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'),
+            nextDate: dataForm.dateNextInspection ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'): null,
             medicine: dataForm.preparation,
             dose: dataForm.dose,
             result: dataForm.diagnosis,

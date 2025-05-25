@@ -33,7 +33,7 @@ export const FormAddInspection = ({ type, resetHistory }: Props) => {
             performedBy: dataForm.name,
             result: dataForm.resultInspection,
             notes: dataForm.note,
-            nextDate: dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'),
+            nextDate: dataForm.dateNextInspection ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'): null,
         }));
         await createDailyActions(data);
         form.resetFields();
