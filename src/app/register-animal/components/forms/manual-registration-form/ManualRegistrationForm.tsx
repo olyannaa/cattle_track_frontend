@@ -6,12 +6,13 @@ import Dragger from 'antd/es/upload/Dragger';
 import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
 import styles from './ManualRegistration.module.css';
 import { AdditionalInfoForm } from './additional-info-form/AdditionalInfoForm';
-import { useGetAnimalGroupsQuery, useRegistrationAnimalMutation } from '../../../services/registration-animal';
+import { useGetAnimalGroupsQuery, useGetBreedQuery, useRegistrationAnimalMutation } from '../../../services/registration-animal';
 import { useEffect, useState } from 'react';
 import { IAlert } from '../../../../../utils/alertType';
 import { NetelFormRegister } from './netel-form/NetelForm';
 import { formatDataForSelectInput, SelectDataType } from '../../../../../utils/formatting-data';
 import dayjs from 'dayjs';
+import { useWatch } from 'antd/es/form/Form';
 
 const requiredRule = [{ required: true, message: 'Обязательное поле' }];
 const animalsOptions: IRadioGroup = {
@@ -31,6 +32,9 @@ export const ManualRegistrationForm = () => {
     const [selectedAnimalType, setSelectedAnimalType] = useState<string | undefined>('');
     const org_id: string = JSON.parse(localStorage.getItem('user') ?? '')?.organizationId;
     const [animalGroups, setAnimalGroups] = useState<SelectDataType[]>([]);
+    const { data: breed } = useGetBreedQuery();
+    const [breeds, setBreeds] = useState<SelectDataType[]>([]);
+    const selectedBreed = useWatch('Breed', registerAnimalForm);
 
     const [registerAnimal, { isLoading }] = useRegistrationAnimalMutation();
 
@@ -45,8 +49,11 @@ export const ManualRegistrationForm = () => {
     useEffect(() => {
         if (data) {
             setAnimalGroups(formatDataForSelectInput(data));
+        } 
+        if (breed) {
+            setBreeds([...formatDataForSelectInput(breed), {value: '0', label: 'Другая'}]);
         }
-    }, [data]);
+    }, [data, breed]);
 
     const handleRadioChange = (e: any) => {
         setSelectedAnimalType(e.target.value);
@@ -72,6 +79,14 @@ export const ManualRegistrationForm = () => {
                 formData.append('Photo', value.fileList[0]?.originFileObj);
             } else if (key === 'BirthDate' || key === 'ExpectedCalvingDate' || key === 'InseminationDate') {
                 formData.append(key, dayjs(value).format('YYYY-MM-DD'));
+            } else if (key === 'Breed') {
+                const selectBreed = breeds.find((breed) => breed.value === value)?.label;
+    
+                if (selectBreed && selectBreed !== 'Другая') {
+                    formData.append(key, selectBreed);
+                }
+            } else if(key === 'CustomBreed' && selectedBreed === '0') {
+                formData.append('Breed', value);
             } else {
                 formData.append(key, String(value ?? ''));
             }
@@ -116,11 +131,19 @@ export const ManualRegistrationForm = () => {
                             ></Input>
                         </Form.Item>
                     </div>
-                    <div>
-                        <InputLabel label='Порода' />
-                        <Form.Item name='Breed'>
-                            <Input className={styles['manual-register__input']} placeholder='Укажите породу'></Input>
-                        </Form.Item>
+                    <div className={styles['manual-register__changed-form']}>
+                        <div>
+                            <InputLabel label='Порода' />
+                            <Form.Item name='Breed'>
+                                <Select options={breeds} className={styles['manual-register__input']} placeholder='Укажите породу'></Select>
+                            </Form.Item>
+                        </div>
+                        {selectedBreed === '0' && <div>
+                            <InputLabel label='j' />
+                            <Form.Item name='CustomBreed'>
+                                <Input className={styles['manual-register__input']} placeholder='Введите название породы'></Input>
+                            </Form.Item>
+                        </div> }
                     </div>
                     <Form.Item
                         name='Type'
