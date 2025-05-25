@@ -10,6 +10,7 @@ import {
 import {
     useDeleteDailyActionsMutation,
     useDeleteDailyActionsResearchMutation,
+    useLazyGetAllActionsIdQuery,
     useLazyGetDailyActionsQuery,
     useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../service/dailyActions';
@@ -21,6 +22,7 @@ import {
     addAllActions,
     changeSortersDailyActions,
     deleteAllActions,
+    selectAllActionsId,
     selectDailyActions,
     selectPaginationInfoDailyActions,
     selectSelectedDailyActions,
@@ -40,6 +42,7 @@ export const History = ({ keyTab }: Props) => {
     const selectedDailyActions = useAppSelector(selectSelectedDailyActions);
     const paginationInfo = useAppSelector(selectPaginationInfoDailyActions);
     const dailyActions = useAppSelector(selectDailyActions);
+    const allActionsId = useAppSelector(selectAllActionsId)
 
     const [nameTab, setNameTab] = useState(getNameTabs(keyTab));
     const [isSelectedAllActions, setIsSelectedAllActions] = useState<boolean>(false);
@@ -54,6 +57,7 @@ export const History = ({ keyTab }: Props) => {
         getPaginationInfoDailyActionsQuery,
         { isLoading: isLoadingGetPaginationInfoDailyActions },
     ] = useLazyGetPaginationInfoDailyActionsQuery();
+    const [getAllActionsIdQuery] = useLazyGetAllActionsIdQuery()
 
     const getDailyActions = async () => {
         await getDailyActionsQuery({
@@ -66,10 +70,17 @@ export const History = ({ keyTab }: Props) => {
         await getPaginationInfoDailyActionsQuery(nameTab);
     };
 
+    const getAllActionsId = async () => {
+        await getAllActionsIdQuery({
+            ...sorters,
+            type: nameTab
+        })
+    }
+
     const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
         setIsSelectedAllActions(e.target.checked);
         if (e.target.checked) {
-            dispatch(addAllActions(dailyActions.map((action) => action.id)));
+            dispatch(addAllActions(allActionsId));
         } else {
             dispatch(deleteAllActions());
         }
@@ -142,8 +153,8 @@ export const History = ({ keyTab }: Props) => {
 
     useEffect(() => {
         if (
-            selectedDailyActions.length === dailyActions.length &&
-            dailyActions.length > 0
+            selectedDailyActions.length === allActionsId.length &&
+            allActionsId.length > 0
         ) {
             setIsSelectedAllActions(true);
         } else {
@@ -154,6 +165,7 @@ export const History = ({ keyTab }: Props) => {
     useEffect(() => {
         getDailyActions();
         getPaginationInfoDailyActivities();
+        getAllActionsId()
     }, [sorters]);
 
     return (

@@ -7,17 +7,17 @@ import {
     useCreateDailyActionsMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
+import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import dayjs from 'dayjs';
 import { FormTypeTreatment } from '../../../data/types/FormTypes';
 
 type Props = {
-    isGroup: boolean;
     resetHistory: () => void;
 };
 
-export const FormAddTreatment = ({ isGroup, resetHistory }: Props) => {
+export const FormAddTreatment = ({ resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
+    const isGroup = useAppSelector(selectIsGroup)
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [form] = Form.useForm();
     const addAction = async (dataForm: FormTypeTreatment) => {
@@ -73,9 +73,8 @@ export const FormAddTreatment = ({ isGroup, resetHistory }: Props) => {
                     label='Препарат'
                     name='preparation'
                     placeholder='Укажите препарат'
-                    required
                 />
-                <InputForm label='Доза' name='dose' placeholder='Укажите дозу' required />
+                <InputForm label='Доза' name='dose' placeholder='Укажите дозу'/>
                 <TextAreaForm
                     name='note'
                     label='Примечание'

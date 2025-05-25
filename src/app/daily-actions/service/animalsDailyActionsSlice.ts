@@ -16,6 +16,8 @@ type InitialState = {
     selectedAnimals: string[];
     filtersAnimals: FiltersAnimalsType;
     sortersAnimals: SortersAnimalsType;
+    allAnimalsIds: string[]
+    isGroup: boolean
 };
 
 const initialState: InitialState = {
@@ -34,6 +36,8 @@ const initialState: InitialState = {
         descending: false,
         page: 0,
     },
+    allAnimalsIds: [],
+    isGroup: false
 };
 
 const slice = createSlice({
@@ -83,23 +87,32 @@ const slice = createSlice({
                 ...initialState.sortersAnimals,
             };
         },
+        changeIsGroup: (state, action) => {
+            state.isGroup = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder.addMatcher(
             dailyActionsApi.endpoints.getFilterAnimals.matchFulfilled,
             (state, action) => {
                 state.filterAnimals = [...action.payload];
-                // if (action.payload.length === 1) {
-                //     state.selectedAnimals = [action.payload[0].id];
-                // } else {
-                //     state.selectedAnimals = [];
-                // }
+                if (action.payload.length === 1 && !state.isGroup) {
+                    state.selectedAnimals = [action.payload[0].id];
+                } else {
+                    state.selectedAnimals = [];
+                }
             }
         );
         builder.addMatcher(
             dailyActionsApi.endpoints.createDailyActions.matchFulfilled,
             (state) => {
                 state.filtersAnimals = { ...initialState.filtersAnimals };
+            }
+        );
+        builder.addMatcher(
+            dailyActionsApi.endpoints.getAllAnimalsId.matchFulfilled,
+            (state, action) => {
+                state.allAnimalsIds = [...action.payload];
             }
         );
     },
@@ -119,6 +132,12 @@ export const selectFiltersAnimals = (state: RootState) =>
 export const selectSortersAnimals = (state: RootState) =>
     state.animalsDailyActions.sortersAnimals;
 
+export const selectAnimalsId = (state: RootState) => 
+    state.animalsDailyActions.allAnimalsIds
+
+export const selectIsGroup = (state: RootState) =>
+    state.animalsDailyActions.isGroup
+
 export const {
     addSelectedAnimal,
     addSelectedAnimals,
@@ -129,4 +148,5 @@ export const {
     deleteAllAnimals,
     changeSortersAnimals,
     resetSortersAnimals,
+    changeIsGroup
 } = slice.actions;

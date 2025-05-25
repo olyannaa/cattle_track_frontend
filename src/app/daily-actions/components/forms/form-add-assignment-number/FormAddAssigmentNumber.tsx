@@ -8,7 +8,7 @@ import {
     useLazyGetAnimalByIdQuery,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
+import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import { useEffect, useState } from 'react';
 import { useGetIdentificationsFieldsQuery } from '../../../../../app-service/services/general';
@@ -16,13 +16,12 @@ import dayjs from 'dayjs';
 import { FormTypeAssigmentNumber } from '../../../data/types/FormTypes';
 
 type Props = {
-    isGroup: boolean;
     resetHistory: () => void;
 };
 
-export const FormAddAssigmentNumber = ({ isGroup, resetHistory }: Props) => {
+export const FormAddAssigmentNumber = ({ resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
-
+    const isGroup = useAppSelector(selectIsGroup)
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [animal, setAnimal] = useState<IAnimal>();
     const [form] = Form.useForm();
@@ -152,7 +151,6 @@ export const FormAddAssigmentNumber = ({ isGroup, resetHistory }: Props) => {
                         label='Кто присвоил'
                         name='name'
                         placeholder='Введите ФИО'
-                        required
                     />
                 </Flex>
                 <Button

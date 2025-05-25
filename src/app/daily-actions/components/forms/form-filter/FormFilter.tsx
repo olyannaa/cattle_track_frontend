@@ -13,21 +13,17 @@ import {
     changeFiltersAnimals,
     selectAnimals,
     selectFiltersAnimals,
+    selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
 import {
-    FiltersAnimalsType,
     useLazyGetFilterAnimalsQuery,
     useLazyGetIdentificationValuesQuery,
 } from '../../../service/dailyActions';
 
-type Props = {
-    isGroup: boolean;
-    filters: FiltersAnimalsType;
-};
-
-export const FormFilter = ({ isGroup }: Props) => {
+export const FormFilter = () => {
     const filters = useAppSelector(selectFiltersAnimals);
+    const isGroup = useAppSelector(selectIsGroup)
     const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
     const [getIdentificationValuesQuery] = useLazyGetIdentificationValuesQuery();
     const [identificationValues, setIdentificationValues] =

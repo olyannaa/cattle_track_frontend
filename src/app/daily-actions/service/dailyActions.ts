@@ -186,6 +186,21 @@ export const dailyActionsApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        getAllAnimalsId: builder.query<string[], IRequestGetFilterAnimals>({
+            query: (data) => ({
+                url:  getUrlFilterAnimals(data.filters, data.sorters, true),
+                method: 'GET',
+            })
+        }),
+        getAllActionsId: builder.query<string[], IRequestGetDailyActions>({
+            query: (data) => ({
+                url: `DailyActions/ids?type=${data.type}&SortInfo.Column=${
+                    data.column ||
+                    (data.type === 'Исследования' ? 'CollectionDate' : 'Date')
+                }&SortInfo.Descending=${data.descending}`,
+                method: 'GET',
+            }),
+        })
     }),
 });
 
@@ -201,4 +216,6 @@ export const {
     useDeleteDailyActionsResearchMutation,
     useLazyGetAnimalByIdQuery,
     useCreateDailyActionsWithoutResetFiltersMutation,
+    useLazyGetAllAnimalsIdQuery,
+    useLazyGetAllActionsIdQuery
 } = dailyActionsApi;

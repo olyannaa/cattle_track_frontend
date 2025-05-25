@@ -9,6 +9,7 @@ import {
 import { useAppSelector } from '../../../../../app-service/hooks';
 import {
     selectAnimals,
+    selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
@@ -16,21 +17,30 @@ import { useGetGroupQuery } from '../../../../../app-service/services/general';
 import { Label } from '../../custom-inputs/label/Label';
 import dayjs from 'dayjs';
 import { FormTypeTransfer } from '../../../data/types/FormTypes';
+import { useEffect, useState } from 'react';
 
 type Props = {
-    isGroup: boolean;
     resetHistory: () => void;
 };
 
-export const FormAddTransfer = ({ isGroup, resetHistory }: Props) => {
+export const FormAddTransfer = ({ resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
+    const isGroup = useAppSelector(selectIsGroup)
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
+    const [oldGroup, setOldGroup] = useState<string>('')
     const [form] = Form.useForm();
     const animals = useAppSelector(selectAnimals);
     const options = useGetGroupQuery().data?.map((group) => ({
         label: group.name,
         value: group.id,
-    }));
+    })) || [];
+
+    useEffect(()=> {
+        if (!isGroup){
+            setOldGroup(animals.find((animal) => animal.id === selectedAnimals[0])?.groupId || '')
+        }
+    },[selectAnimals])
+
     const addAction = async (dataForm: FormTypeTransfer) => {
         const data: newDailyAction[] = selectedAnimals.map((selectAnimal) => ({
             animalId: selectAnimal,
@@ -86,7 +96,7 @@ export const FormAddTransfer = ({ isGroup, resetHistory }: Props) => {
                     label='Новая группа'
                     name='group'
                     placeholder='Выберите группу '
-                    options={options || []}
+                    options={!isGroup ? options?.filter((option)=> option.value !== oldGroup) : options}
                     style={{ maxWidth: '475px' }}
                     required
                 />

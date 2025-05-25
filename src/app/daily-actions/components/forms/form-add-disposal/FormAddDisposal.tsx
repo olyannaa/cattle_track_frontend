@@ -6,18 +6,18 @@ import {
     useCreateDailyActionsMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
+import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import dayjs from 'dayjs';
 import { FormTypeDisposal } from '../../../data/types/FormTypes';
 import { optionsDisposal } from '../../../data/const/optionsSelect';
 
 type Props = {
-    isGroup: boolean;
     resetHistory: () => void;
 };
 
-export const FormAddDisposal = ({ isGroup, resetHistory }: Props) => {
+export const FormAddDisposal = ({ resetHistory }: Props) => {
+    const isGroup = useAppSelector(selectIsGroup)
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [form] = Form.useForm();

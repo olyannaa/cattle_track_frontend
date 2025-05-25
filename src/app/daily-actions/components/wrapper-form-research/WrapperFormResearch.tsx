@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { FormAddResearch } from '../forms/form-add-research/FormAddResearch';
+import { useAppSelector } from '../../../../app-service/hooks';
+import { selectIsGroup } from '../../service/animalsDailyActionsSlice';
 
 type Props = {
-    isGroup: boolean;
     resetHistory: () => void;
 };
 
-export const WrapperFormResearch = ({ isGroup, resetHistory }: Props) => {
+export const WrapperFormResearch = ({resetHistory }: Props) => {
+    const isGroup = useAppSelector(selectIsGroup)
     const [formsId, setFormsId] = useState<string[]>([
         Date.now().toString(36) + Math.random().toString(36).substring(2),
     ]);

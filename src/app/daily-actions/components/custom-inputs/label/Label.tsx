@@ -19,8 +19,8 @@ export const Label = ({
             gap={5}
             align='center'
         >
-            {required ? <div style={{ color: 'rgb(255, 66, 24)' }}>*</div> : ''}
             {label}
+            {required ? <div style={{ color: 'rgb(255, 66, 24)' }}>*</div> : ''}
         </Flex>
     );
 };

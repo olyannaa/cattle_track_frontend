@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxChangeEvent, Flex, Table, TablePaginationConfig } from 'antd';
+import { Alert, Checkbox, CheckboxChangeEvent, Flex, Table, TablePaginationConfig } from 'antd';
 import { CheckboxCustom } from '../../../../global-components/custom-inputs/checkbox/Checkbox';
 import { FormFilter } from '../forms/form-filter/FormFilter';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,8 @@ import {
     FiltersAnimalsType,
     IRequestGetFilterAnimals,
     IResponsePaginationInfoDailyActions,
+    useLazyGetAllActionsIdQuery,
+    useLazyGetAllAnimalsIdQuery,
     useLazyGetFilterAnimalsQuery,
     useLazyGetPaginationInfoFilterAnimalsQuery,
 } from '../../service/dailyActions';
@@ -15,20 +17,21 @@ import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import {
     addAllAnimals,
     changeFiltersAnimals,
+    changeIsGroup,
     changeSortersAnimals,
     deleteAllAnimals,
     resetFiltersAnimals,
     resetSortersAnimals,
     selectAnimals,
+    selectAnimalsId,
     selectFiltersAnimals,
+    selectIsGroup,
     selectSelectedAnimals,
     selectSortersAnimals,
 } from '../../service/animalsDailyActionsSlice';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
 
 type Props = {
-    isGroup: boolean;
-    setIsGroup: React.Dispatch<React.SetStateAction<boolean>>;
     keyTab: string;
 };
 
@@ -40,12 +43,16 @@ export type FiltersType = {
     isActive: boolean;
 };
 
-export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
+export const FilterAnimals = ({ keyTab }: Props) => {
     const filters = useAppSelector(selectFiltersAnimals);
     const animals = useAppSelector(selectAnimals);
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const dispatch = useAppDispatch();
     const sorters = useAppSelector(selectSortersAnimals);
+    const animalsId = useAppSelector(selectAnimalsId)
+    const isGroup = useAppSelector(selectIsGroup)
+
+    const dispatch = useAppDispatch();
+    
     const [paginationInfo, setPaginationInfo] =
         useState<IResponsePaginationInfoDailyActions>();
     const [isSelectedAllAnimals, setIsSelectedAllAnimals] = useState<boolean>(false);
@@ -55,12 +62,12 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
         getPaginationInfoFilterAnimalsQuery,
         { isLoading: isLoadingGetPaginationInfoFilterAnimals },
     ] = useLazyGetPaginationInfoFilterAnimalsQuery();
+    const [getAllAnimalsIdQuery] = useLazyGetAllAnimalsIdQuery()
 
     const getFilterAnimals = async (
         data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
     ) => {
-        const response = (await getFilterAnimalsQuery(data)).data;
-        return response;
+        await getFilterAnimalsQuery(data)
     };
 
     const getPaginationInfoFilterAnimals = async (data: FiltersAnimalsType = filters) => {
@@ -68,20 +75,28 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
         setPaginationInfo(response);
     };
 
+    const getAllAnimalsId = async (data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }) => {
+        await getAllAnimalsIdQuery(data)
+    }
+
     const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
         setIsSelectedAllAnimals(e.target.checked);
         if (e.target.checked) {
-            dispatch(addAllAnimals(animals.map((action) => action.id)));
+            dispatch(addAllAnimals(animalsId));
         } else {
             dispatch(deleteAllAnimals());
         }
     };
 
     useEffect(() => {
-        const response = getFilterAnimals({
+        getFilterAnimals({
             filters: filters,
             sorters: { ...sorters, page: isGroup ? 1 : 0 },
         });
+        getAllAnimalsId({
+            filters: filters,
+            sorters: { ...sorters, page: 0 },
+        })
         dispatch(resetSortersAnimals());
         if (isGroup) {
             getPaginationInfoFilterAnimals();
@@ -102,7 +117,7 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
     }, [isGroup]);
 
     useEffect(() => {
-        if (selectedAnimals.length === animals.length && animals.length > 0) {
+        if (selectedAnimals.length === animalsId.length && animalsId.length > 0) {
             setIsSelectedAllAnimals(true);
         } else {
             setIsSelectedAllAnimals(false);
@@ -145,7 +160,7 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
                     <>
                         <CheckboxCustom
                             title='Групповое действие'
-                            onChange={(e) => setIsGroup(e.target.checked)}
+                            onChange={(e) => dispatch(changeIsGroup(e.target.checked))}
                         />
                         <CheckboxCustom
                             title='Только активные животные'
@@ -162,7 +177,7 @@ export const FilterAnimals = ({ isGroup, setIsGroup, keyTab }: Props) => {
                     </>
                 )}
             </Flex>
-            <FormFilter isGroup={isGroup} filters={filters} />
+            <FormFilter />
             {isGroup && (
                 <>
                     <Flex

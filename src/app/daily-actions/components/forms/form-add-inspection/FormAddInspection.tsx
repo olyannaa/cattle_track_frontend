@@ -8,19 +8,19 @@ import {
     useCreateDailyActionsMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
+import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import dayjs from 'dayjs';
 import { FormTypeInspection } from '../../../data/types/FormTypes';
 import { optionsInspections } from '../../../data/const/optionsSelect';
 
 type Props = {
-    isGroup: boolean;
     type: string;
     resetHistory: () => void;
 };
 
-export const FormAddInspection = ({ isGroup, type, resetHistory }: Props) => {
+export const FormAddInspection = ({ type, resetHistory }: Props) => {
+    const isGroup = useAppSelector(selectIsGroup)
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [form] = Form.useForm();
@@ -90,7 +90,6 @@ export const FormAddInspection = ({ isGroup, type, resetHistory }: Props) => {
                     name='resultInspection'
                     label={`Результаты ${type === '1' ? 'осмотра' : 'обработки'}`}
                     placeholder='Дополнительная информация'
-                    required
                 />
                 <DatePickerForm
                     name='dateNextInspection'

@@ -10,9 +10,10 @@ export const getUrlFilterAnimals = (
         column: '',
         descending: false,
         page: 0,
-    }
+    }, 
+    isId: boolean = false
 ) => {
-    let url = 'DailyActions/animals?';
+    let url = isId ? 'DailyActions/animals/ids?' : 'DailyActions/animals?';
     Object.keys(filters).forEach((filter) => {
         if (filter === 'isActive') {
             url += `Filter.IsActive=${filters[filter] || false}&`;

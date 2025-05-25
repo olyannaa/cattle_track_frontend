@@ -13,6 +13,7 @@ type InitialState = {
     dailyActions: IDailyAction[];
     paginationInfoDailyActions: IResponsePaginationInfoDailyActions;
     sorters: SortersAnimalsType;
+    allActionsId: string[]
 };
 
 const initialState: InitialState = {
@@ -28,6 +29,7 @@ const initialState: InitialState = {
         descending: true,
         page: 1,
     },
+    allActionsId:[]
 };
 
 const slice = createSlice({
@@ -87,6 +89,12 @@ const slice = createSlice({
                 state.paginationInfoDailyActions = { ...action.payload };
             }
         );
+        builder.addMatcher(
+            dailyActionsApi.endpoints.getAllActionsId.matchFulfilled,
+            (state, action) => {
+                state.allActionsId = [ ...action.payload ];
+            }
+        )
     },
 });
 
@@ -103,6 +111,8 @@ export const selectPaginationInfoDailyActions = (state: RootState) =>
     state.dailyActions.paginationInfoDailyActions;
 
 export const selectSortersDailyActions = (state: RootState) => state.dailyActions.sorters;
+
+export const selectAllActionsId = (state: RootState) => state.dailyActions.allActionsId
 
 export const {
     addAction,
