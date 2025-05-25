@@ -1,10 +1,4 @@
-export const InputLabel = ({
-    label,
-    marginSize = '8px',
-}: {
-    label: string;
-    marginSize?: string;
-}) => {
+export const InputLabel = ({ label, required, marginSize = '8px' }: { label: string; required?: true; marginSize?: string }) => {
     return (
         <div
             style={{
@@ -15,7 +9,7 @@ export const InputLabel = ({
                 marginBottom: marginSize,
             }}
         >
-            {label}
+            {label} {required && <span style={{ color: '#FF4218' }}>*</span>}
         </div>
     );
 };

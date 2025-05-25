@@ -87,19 +87,19 @@ export const CalvingForm = () => {
                 <div className='content-container'>
                     <h2 className='form-title'>Регистрация отёлов</h2>
                     <div>
-                        <InputLabel label='Выберите корову' />
+                        <InputLabel label='Выберите корову' required={true}/>
                         <Form.Item name='cowId' rules={rules}>
                             <Select className='form-input_default' options={cows}></Select>
                         </Form.Item>
                     </div>
                     <div>
-                        <InputLabel label='Дата отёла' />
+                        <InputLabel label='Дата отёла' required={true}/>
                         <Form.Item className='form-input_default' name='date' rules={rules} initialValue={dayjs()}>
                             <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
                         </Form.Item>
                     </div>
                     <div>
-                        <InputLabel label='Тип отёла' />
+                        <InputLabel label='Тип отёла' required={true}/>
                         <Form.Item name='complication' rules={rules}>
                             <Radio.Group className={styles['reproductive__radio-group']}>
                                 <div className={styles['reproductive__radio-container']}>
@@ -120,7 +120,7 @@ export const CalvingForm = () => {
                         </Form.Item>
                     </div>
                     <div>
-                        <InputLabel label='Тип' />
+                        <InputLabel label='Тяжесть отёла' required={true}/>
                         <Form.Item name='type' rules={rules}>
                             <Radio.Group className={styles['reproductive__radio-group']}>
                                 <div className={styles['reproductive__radio-container']}>
@@ -165,13 +165,13 @@ export const CalvingForm = () => {
                     <div className='content-container'>
                         <h2 className='form-title'>Регистрация теленка</h2>
                         <div className='form-input_default'>
-                            <InputLabel label='Номер бирки' />
+                            <InputLabel label='Номер бирки' required={true}/>
                             <Form.Item name='calfTagNumber' rules={rules}>
                                 <Input placeholder='Введите номер бирки' />
                             </Form.Item>
                         </div>
                         <div style={{ maxWidth: '432px' }}>
-                            <InputLabel label='Теленок' />
+                            <InputLabel label='Теленок' required={true}/>
                             <Form.Item name='method' rules={rules}>
                                 <Radio.Group className={styles['reproductive__radio-group']}>
                                     <div className={styles['reproductive__radio-container']}>
@@ -187,7 +187,7 @@ export const CalvingForm = () => {
                         </div>
                         <div>
                             <InputLabel label='Вес при рождении' />
-                            <Form.Item name='weight' rules={rules}>
+                            <Form.Item name='weight'>
                                 <Input className='form-input_default' placeholder='Введите вес, кг' />
                             </Form.Item>
                         </div>

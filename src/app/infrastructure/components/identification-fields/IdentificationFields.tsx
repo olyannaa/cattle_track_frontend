@@ -64,7 +64,7 @@ export const IdentificationFields = () => {
             <Form form={form} className='content-container' onFinish={addNewField}>
                 <h2 className='form-title'>Добавить новое поле идентификации</h2>
                 <div>
-                    <InputLabel label='Название поля' />
+                    <InputLabel label='Название поля' required={true}/>
                     <Form.Item
                         name='name'
                         rules={[{ required: true, message: 'Обязательное поле' }]}

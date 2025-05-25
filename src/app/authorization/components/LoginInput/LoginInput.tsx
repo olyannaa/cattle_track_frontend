@@ -22,8 +22,8 @@ export const LoginInput = ({ name, placeholder, type = 'text', label }: Props) =
                         message: 'Обязательное поле',
                     },
                     {
-                        max: name === 'login' ? 12 : 15,
-                        message: `Максимальная длина ${name === 'login' ? 12 : 15}`,
+                        max: name === 'login' ? 50 : 15,
+                        message: `Максимальная длина ${name === 'login' ? 50 : 15}`,
                     },
                     {
                         min: name === 'login' ? 6 : 8,
