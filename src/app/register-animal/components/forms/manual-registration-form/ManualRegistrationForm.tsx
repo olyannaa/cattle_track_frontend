@@ -139,7 +139,7 @@ export const ManualRegistrationForm = () => {
                             </Form.Item>
                         </div>
                         {selectedBreed === '0' && <div>
-                            <InputLabel label='j' />
+                            <InputLabel label='Укажите породу' />
                             <Form.Item name='CustomBreed'>
                                 <Input className={styles['manual-register__input']} placeholder='Введите название породы'></Input>
                             </Form.Item>
