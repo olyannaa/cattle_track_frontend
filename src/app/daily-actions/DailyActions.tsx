@@ -1,9 +1,9 @@
 import { Flex } from 'antd';
 import { HeaderContent } from '../../global-components/header-content/HeaderContent';
-import { items } from './data';
 import { useState } from 'react';
 import { TabsContent } from './components/tabs-content/TabsContent';
 import { History } from './components/history/History';
+import { items } from './data/const/tabs';
 
 export const DailyActions = () => {
     const [activeTab, setActiveTab] = useState('1');

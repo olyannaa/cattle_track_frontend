@@ -8,90 +8,37 @@ import {
     useCreateDailyActionsMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
+import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
-import { useEffect } from 'react';
-import { selectReset } from '../../../service/dailyActionsSlice';
+import dayjs from 'dayjs';
+import { FormTypeInspection } from '../../../data/types/FormTypes';
+import { optionsInspections } from '../../../data/const/optionsSelect';
 
 type Props = {
-    isGroup: boolean;
     type: string;
+    resetHistory: () => void;
 };
 
-type FormType = {
-    dateInspection: string | undefined;
-    dateNextInspection: string | undefined;
-    name: string | undefined;
-    note: string | undefined;
-    resultInspection: string | undefined;
-    typeInspection: string | undefined;
-};
-
-const months: Record<string, string> = {
-    Jan: '01',
-    Feb: '02',
-    Mar: '03',
-    Apr: '04',
-    May: '05',
-    Jun: '06',
-    Jul: '07',
-    Aug: '08',
-    Sep: '09',
-    Oct: '10',
-    Nov: '11',
-    Dec: '12',
-};
-
-export const changeDate = (date: string) => {
-    const arr = date.split(' ');
-    return `${arr[3]}-${months[arr[2]]}-${
-        String(Number(arr[1]) + 1).length < 2
-            ? '0' + String(Number(arr[1]) + 1)
-            : String(Number(arr[1]) + 1)
-    }`;
-};
-
-const options = [
-    {
-        label: 'Вакцинация',
-        value: 'Вакцинация',
-    },
-    {
-        label: 'Дегельминтизация',
-        value: 'Дегельминтизация',
-    },
-    {
-        label: 'Обработка от эктопаразитов',
-        value: 'Обработка от эктопаразитов',
-    },
-    {
-        label: 'Другое',
-        value: 'Другое',
-    },
-];
-
-export const FormAddInspection = ({ isGroup, type }: Props) => {
+export const FormAddInspection = ({ type, resetHistory }: Props) => {
+    const isGroup = useAppSelector(selectIsGroup)
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const reset = useAppSelector(selectReset);
     const [form] = Form.useForm();
-    const addAction = async (dataForm: FormType) => {
+    const addAction = async (dataForm: FormTypeInspection) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
             type: type === '1' ? 'Осмотры' : 'Вакцинации и обработки',
-            date: changeDate(String(dataForm.dateInspection)),
+            date: dayjs(dataForm.dateInspection).format('YYYY-MM-DD'),
             subtype: dataForm.typeInspection,
             performedBy: dataForm.name,
             result: dataForm.resultInspection,
             notes: dataForm.note,
-            nextDate: changeDate(String(dataForm.dateNextInspection)),
+            nextDate: dataForm.dateNextInspection ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'): null,
         }));
         await createDailyActions(data);
-    };
-
-    useEffect(() => {
         form.resetFields();
-    }, [reset]);
+        resetHistory();
+    };
 
     return (
         <Form onFinish={addAction} form={form}>
@@ -108,13 +55,9 @@ export const FormAddInspection = ({ isGroup, type }: Props) => {
                     name='dateInspection'
                     label={`Дата ${type === '1' ? 'осмотра' : 'обработки'}`}
                     required
+                    defaultValue={dayjs()}
                 />
-                <InputForm
-                    label='Кто проводил'
-                    name='name'
-                    placeholder='Введите ФИО'
-                    required
-                />
+                <InputForm label='Кто проводил' name='name' placeholder='Введите ФИО' />
                 {type === '1' ? (
                     <RadioGroupForm
                         label='Тип осмотра'
@@ -132,7 +75,7 @@ export const FormAddInspection = ({ isGroup, type }: Props) => {
                     <SelectForm
                         label='Тип обработки'
                         name='typeInspection'
-                        options={options}
+                        options={optionsInspections}
                         style={{ maxWidth: '475px' }}
                         required
                     />
@@ -147,14 +90,12 @@ export const FormAddInspection = ({ isGroup, type }: Props) => {
                     name='resultInspection'
                     label={`Результаты ${type === '1' ? 'осмотра' : 'обработки'}`}
                     placeholder='Дополнительная информация'
-                    required
                 />
                 <DatePickerForm
                     name='dateNextInspection'
                     label={`Дата ${
                         type === '1' ? 'следующего осмотра' : 'следующей обработки'
                     }`}
-                    required
                 />
             </Flex>
             <Button

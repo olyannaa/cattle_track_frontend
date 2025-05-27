@@ -1,16 +1,20 @@
 import { DatePicker, Form } from 'antd';
 import { Label } from '../label/Label';
 import { IFormItem } from '../../../data/interface/IFormItem';
-import dayjs from 'dayjs';
 
-export const DatePickerForm = ({ name, label, required = false }: IFormItem) => {
+export const DatePickerForm = ({
+    name,
+    label,
+    required = false,
+    defaultValue,
+}: IFormItem) => {
     return (
         <div style={{ maxWidth: '475px', width: '100%' }}>
-            <Label label={label} />
+            <Label label={label} required={required} />
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Заполните дату' }]}
-                initialValue={dayjs()}
+                initialValue={defaultValue}
             >
                 <DatePicker
                     placeholder='xx.xx.xxxx'

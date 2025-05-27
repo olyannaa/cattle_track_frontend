@@ -18,6 +18,7 @@ export const GroupsForm = ({ isEmpty }: { isEmpty: boolean }) => {
     const [addGroup, { isLoading }] = useAddGroupMutation();
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
+    const rules = [{ required: true, message: 'Обязательное поле' }];
 
     useEffect(() => {
         if (data) {
@@ -59,22 +60,17 @@ export const GroupsForm = ({ isEmpty }: { isEmpty: boolean }) => {
                 <h2 className='form-title'>Управление группами</h2>
                 <div className='form-row-inputs'>
                     <div className='form-input_default'>
-                        <InputLabel label='Название группы' />
+                        <InputLabel label='Название группы' required={true}/>
                         <Form.Item
                             name='name'
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Обязательное поле',
-                                },
-                            ]}
+                            rules={rules}
                         >
                             <Input placeholder='Введите название'></Input>
                         </Form.Item>
                     </div>
                     <div className='form-input_default form-row-input__with-margin-xl'>
-                        <InputLabel label='Тип группы' />
-                        <Form.Item name='typeId'>
+                        <InputLabel label='Тип группы' required={true}/>
+                        <Form.Item name='typeId' rules={rules}>
                             <Select
                                 options={groupsTypes}
                                 placeholder='Выберите тип'

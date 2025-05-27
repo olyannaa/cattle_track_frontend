@@ -1,67 +1,160 @@
-import { Button, Checkbox, CheckboxChangeEvent, Flex, Table, Typography } from 'antd';
-import { columnsTableHistoryInspection } from '../../data/const/columnsTableHistoryInspection';
 import {
-    IDailyAction,
-    IResponsePaginationInfoDailyActions,
+    Button,
+    Checkbox,
+    CheckboxChangeEvent,
+    Flex,
+    Table,
+    TablePaginationConfig,
+    Typography,
+} from 'antd';
+import {
     useDeleteDailyActionsMutation,
     useDeleteDailyActionsResearchMutation,
+    useLazyGetAllActionsIdQuery,
     useLazyGetDailyActionsQuery,
     useLazyGetPaginationInfoDailyActionsQuery,
 } from '../../service/dailyActions';
-import { items } from '../../data';
+
 import { useEffect, useState } from 'react';
-import { columnsTableHistoryTreatment } from '../../data/const/columnsTableHistoryTreatment';
-import { columnsTableHistoryTransfer } from '../../data/const/columnsTableHistoryTransfer';
-import { columnsTableHistoryResearch } from '../../data/const/columnsTableHistoryResearch';
-import { columnsTableHistoryDisposal } from '../../data/const/columnsTableHistoryDisposal';
 import { IDailyActionTable } from '../../data/interface/IDailyActionTable';
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import {
     addAllActions,
+    changeSortersDailyActions,
     deleteAllActions,
-    selectReset,
+    selectAllActionsId,
+    selectDailyActions,
+    selectPaginationInfoDailyActions,
     selectSelectedDailyActions,
+    selectSortersDailyActions,
 } from '../../service/dailyActionsSlice';
-import { columnsTableHistoryAssignmentNumbers } from '../../data/const/columnsTableHistoryAssignmentNumbers';
+import { FilterValue, SorterResult } from 'antd/es/table/interface';
+import { getNameTabs } from '../../data/const/tabs';
+import { getColumnsTable } from '../../functions/getColumnsTableHistory';
+import styles from './History.module.css';
 
 type Props = {
     keyTab: string;
 };
 
 export const History = ({ keyTab }: Props) => {
-    const [nameTab, setNameTab] = useState(
-        items?.find((item) => item.key === keyTab)?.label?.toString() || ''
-    );
-
-    const reset = useAppSelector(selectReset);
-
+    const sorters = useAppSelector(selectSortersDailyActions);
     const selectedDailyActions = useAppSelector(selectSelectedDailyActions);
-    const [dailyActions, setDailyActions] = useState<IDailyAction[]>([]);
-    const [paginationInfo, setPaginationInfo] =
-        useState<IResponsePaginationInfoDailyActions>();
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const paginationInfo = useAppSelector(selectPaginationInfoDailyActions);
+    const dailyActions = useAppSelector(selectDailyActions);
+    const allActionsId = useAppSelector(selectAllActionsId)
+
+    const [nameTab, setNameTab] = useState(getNameTabs(keyTab));
     const [isSelectedAllActions, setIsSelectedAllActions] = useState<boolean>(false);
-    const [getDailyActionsQuery] = useLazyGetDailyActionsQuery();
-    const [deleteDailyActionsQuery] = useDeleteDailyActionsMutation();
-    const [deleteDailyActionsResearchQuery] = useDeleteDailyActionsResearchMutation();
-    const [getPaginationInfoDailyActionsQuery] =
-        useLazyGetPaginationInfoDailyActionsQuery();
 
     const dispatch = useAppDispatch();
+
+    const [getDailyActionsQuery, { isLoading: isLoadingGetDailyActions }] =
+        useLazyGetDailyActionsQuery();
+    const [deleteDailyActionsQuery] = useDeleteDailyActionsMutation();
+    const [deleteDailyActionsResearchQuery] = useDeleteDailyActionsResearchMutation();
+    const [
+        getPaginationInfoDailyActionsQuery,
+        { isLoading: isLoadingGetPaginationInfoDailyActions },
+    ] = useLazyGetPaginationInfoDailyActionsQuery();
+    const [getAllActionsIdQuery] = useLazyGetAllActionsIdQuery()
+
+    const getDailyActions = async () => {
+        await getDailyActionsQuery({
+            ...sorters,
+            type: nameTab,
+        });
+    };
+
+    const getPaginationInfoDailyActivities = async () => {
+        await getPaginationInfoDailyActionsQuery(nameTab);
+    };
+
+    const getAllActionsId = async () => {
+        await getAllActionsIdQuery({
+            ...sorters,
+            type: nameTab
+        })
+    }
+
+    const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
+        setIsSelectedAllActions(e.target.checked);
+        if (e.target.checked) {
+            dispatch(addAllActions(allActionsId));
+        } else {
+            dispatch(deleteAllActions());
+        }
+    };
+
+    const handlerDeleteActions = async () => {
+        if (selectedDailyActions.length === 0) {
+            return;
+        }
+        if (keyTab === '6') {
+            await deleteDailyActionsResearchQuery(selectedDailyActions);
+        } else {
+            await deleteDailyActionsQuery(selectedDailyActions);
+        }
+        dispatch(
+            changeSortersDailyActions({
+                ...sorters,
+                page: 1,
+            })
+        );
+    };
+
+    const onChangeTable = (
+        newPagination: TablePaginationConfig,
+        filters: Record<string, FilterValue | null>,
+        sorter: SorterResult<IDailyActionTable> | SorterResult<IDailyActionTable>[]
+    ) => {
+        newPagination;
+        filters;
+
+        if (!sorter || (!Array.isArray(sorter) && !sorter.field)) {
+            dispatch(
+                changeSortersDailyActions({
+                    page: newPagination.current,
+                    column: '',
+                    descending: true,
+                })
+            );
+        } else {
+            if (!Array.isArray(sorter)) {
+                const field = sorter.field as string;
+                dispatch(
+                    changeSortersDailyActions({
+                        page: newPagination.current,
+                        column: field.charAt(0).toUpperCase() + field.slice(1),
+                        descending: sorter.order === 'descend',
+                    })
+                );
+            }
+        }
+    };
+
     useEffect(() => {
-        setNameTab(items?.find((item) => item.key === keyTab)?.label?.toString() || '');
-        setCurrentPage(1);
+        const newName = getNameTabs(keyTab);
+        dispatch(
+            changeSortersDailyActions({
+                column: '',
+                descending: true,
+                page: 1,
+            })
+        );
+        dispatch(deleteAllActions());
+        setNameTab(newName);
     }, [keyTab]);
 
     useEffect(() => {
-        getDailyActivities();
+        getDailyActions();
         getPaginationInfoDailyActivities();
-    }, [nameTab, reset]);
+    }, [nameTab]);
 
     useEffect(() => {
         if (
-            selectedDailyActions.length === dailyActions.length &&
-            dailyActions.length > 0
+            selectedDailyActions.length === allActionsId.length &&
+            allActionsId.length > 0
         ) {
             setIsSelectedAllActions(true);
         } else {
@@ -70,65 +163,10 @@ export const History = ({ keyTab }: Props) => {
     }, [selectedDailyActions]);
 
     useEffect(() => {
-        getDailyActivities();
+        getDailyActions();
         getPaginationInfoDailyActivities();
-    }, [currentPage]);
-
-    const getDailyActivities = async () => {
-        const response = (
-            await getDailyActionsQuery({ page: currentPage, type: nameTab })
-        ).data;
-        setDailyActions(response || []);
-    };
-
-    const getPaginationInfoDailyActivities = async () => {
-        const response = (await getPaginationInfoDailyActionsQuery(nameTab)).data;
-        setPaginationInfo(response);
-    };
-
-    const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
-        setIsSelectedAllActions(e.target.checked);
-        if (e.target.checked) {
-            dispatch(addAllActions(dailyActions.map((action) => action.id)));
-        } else {
-            dispatch(deleteAllActions());
-        }
-    };
-
-    const handlerDeleteActions = async () => {
-        if (keyTab === '6') {
-            await deleteDailyActionsResearchQuery(selectedDailyActions);
-        } else {
-            await deleteDailyActionsQuery(selectedDailyActions);
-        }
-        getDailyActivities();
-        getPaginationInfoDailyActivities();
-    };
-
-    const handlerChangeCurrentPagination = (page: number) => {
-        setCurrentPage(page);
-    };
-
-    const getColumnsTable = () => {
-        switch (keyTab) {
-            case '1':
-                return columnsTableHistoryInspection;
-            case '2':
-                return columnsTableHistoryInspection;
-            case '3':
-                return columnsTableHistoryTreatment;
-            case '4':
-                return columnsTableHistoryTransfer;
-            case '5':
-                return columnsTableHistoryDisposal;
-            case '6':
-                return columnsTableHistoryResearch;
-            case '7':
-                return columnsTableHistoryAssignmentNumbers;
-            default:
-                break;
-        }
-    };
+        getAllActionsId()
+    }, [sorters]);
 
     return (
         <Flex
@@ -141,32 +179,45 @@ export const History = ({ keyTab }: Props) => {
             }}
         >
             <Typography.Title level={3}>История</Typography.Title>
-            <Flex justify='space-between'>
-                <Checkbox
-                    onChange={handlerChangeSelectedAllActions}
+            <Flex
+                justify='space-between'
+                className={styles['wrapper-delete-actions']}
+                wrap={'wrap-reverse'}
+                gap={8}
+            >
+                <Button
+                    onClick={handlerDeleteActions}
                     style={{
-                        width: '138px',
-                        padding: '8px 12px 10px',
-                        border: '1px solid var(--grey-border)',
-                        borderRadius: '2px',
-                        background: 'var(--global-bg)',
                         height: '40px',
                     }}
-                    checked={isSelectedAllActions}
+                    className={styles['delete-actions__button']}
                 >
-                    Выбрать все
-                </Checkbox>
-                <Flex align='center' gap={16}>
+                    Удалить выбранные записи
+                </Button>
+                <Flex align='center' gap={16} className={styles['wrapper-button']}>
                     <div
                         style={{ fontWeight: '500' }}
                     >{`Выбрано: ${selectedDailyActions.length}`}</div>
-                    <Button onClick={handlerDeleteActions}>
-                        Удалить выбранные записи
-                    </Button>
+
+                    <Checkbox
+                        onChange={handlerChangeSelectedAllActions}
+                        style={{
+                            width: '138px',
+                            padding: '8px 12px 10px',
+                            border: '1px solid var(--grey-border)',
+                            borderRadius: '2px',
+                            background: 'var(--global-bg)',
+                            height: '40px',
+                        }}
+                        checked={isSelectedAllActions}
+                    >
+                        Выбрать все
+                    </Checkbox>
                 </Flex>
             </Flex>
             <Table<IDailyActionTable>
-                columns={getColumnsTable()}
+                key={keyTab}
+                columns={getColumnsTable(keyTab, sorters)}
                 dataSource={dailyActions.map((dailyAction) => ({
                     ...dailyAction,
                     key: dailyAction.id,
@@ -174,14 +225,17 @@ export const History = ({ keyTab }: Props) => {
                 style={{ width: '100%', overflowX: 'auto' }}
                 pagination={{
                     showSizeChanger: false,
-                    current: currentPage,
+                    current: sorters.page,
                     total: paginationInfo?.count,
                     pageSize: paginationInfo?.entriesPerPage,
-                    onChange: (page) => handlerChangeCurrentPagination(page),
                     showTotal: (total, range) =>
                         `${range[0]}-${range[1]} из ${total} элементов`,
                     //className: styles['table__pagination'],
                 }}
+                onChange={onChangeTable}
+                loading={
+                    isLoadingGetDailyActions || isLoadingGetPaginationInfoDailyActions
+                }
             />
         </Flex>
     );

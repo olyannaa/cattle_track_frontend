@@ -57,7 +57,7 @@ export const TypesGroups = () => {
             >
                 <h2 className='form-title'>Управление типами групп</h2>
                 <div>
-                    <InputLabel label='Название группы' />
+                    <InputLabel label='Название группы' required={true}/>
                     <Form.Item
                         name='name'
                         rules={[

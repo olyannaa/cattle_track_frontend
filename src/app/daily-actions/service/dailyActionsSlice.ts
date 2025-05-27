@@ -1,15 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../../app-service/store';
-import { dailyActionsApi } from './dailyActions';
+import {
+    dailyActionsApi,
+    IDailyAction,
+    IResponsePaginationInfoDailyActions,
+    SortersAnimalsType,
+} from './dailyActions';
 
 type InitialState = {
     selectedDailyActions: string[];
     reset: boolean;
+    dailyActions: IDailyAction[];
+    paginationInfoDailyActions: IResponsePaginationInfoDailyActions;
+    sorters: SortersAnimalsType;
+    allActionsId: string[]
 };
 
 const initialState: InitialState = {
     selectedDailyActions: [],
     reset: false,
+    dailyActions: [],
+    paginationInfoDailyActions: {
+        count: 0,
+        entriesPerPage: 0,
+    },
+    sorters: {
+        column: '',
+        descending: true,
+        page: 1,
+    },
+    allActionsId:[]
 };
 
 const slice = createSlice({
@@ -37,6 +57,12 @@ const slice = createSlice({
         deleteAllActions: (state) => {
             state.selectedDailyActions = [];
         },
+
+        changeSortersDailyActions: (state, action) => {
+            state.sorters = {
+                ...action.payload,
+            };
+        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
@@ -47,8 +73,8 @@ const slice = createSlice({
         );
         builder.addMatcher(
             dailyActionsApi.endpoints.getDailyActions.matchFulfilled,
-            (state) => {
-                state.selectedDailyActions = [];
+            (state, action) => {
+                state.dailyActions = [...action.payload];
             }
         );
         builder.addMatcher(
@@ -57,6 +83,18 @@ const slice = createSlice({
                 state.reset = !state.reset;
             }
         );
+        builder.addMatcher(
+            dailyActionsApi.endpoints.getPaginationInfoDailyActions.matchFulfilled,
+            (state, action) => {
+                state.paginationInfoDailyActions = { ...action.payload };
+            }
+        );
+        builder.addMatcher(
+            dailyActionsApi.endpoints.getAllActionsId.matchFulfilled,
+            (state, action) => {
+                state.allActionsId = [ ...action.payload ];
+            }
+        )
     },
 });
 
@@ -65,6 +103,21 @@ export default slice.reducer;
 export const selectSelectedDailyActions = (state: RootState) =>
     state.dailyActions.selectedDailyActions;
 
+export const selectDailyActions = (state: RootState) => state.dailyActions.dailyActions;
+
 export const selectReset = (state: RootState) => state.dailyActions.reset;
 
-export const { addAction, deleteAction, addAllActions, deleteAllActions } = slice.actions;
+export const selectPaginationInfoDailyActions = (state: RootState) =>
+    state.dailyActions.paginationInfoDailyActions;
+
+export const selectSortersDailyActions = (state: RootState) => state.dailyActions.sorters;
+
+export const selectAllActionsId = (state: RootState) => state.dailyActions.allActionsId
+
+export const {
+    addAction,
+    deleteAction,
+    addAllActions,
+    deleteAllActions,
+    changeSortersDailyActions,
+} = slice.actions;

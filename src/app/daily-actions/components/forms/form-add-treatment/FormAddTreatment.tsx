@@ -7,48 +7,35 @@ import {
     useCreateDailyActionsMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
-import { changeDate } from '../form-add-inspection/FormAddInspection';
-import { selectReset } from '../../../service/dailyActionsSlice';
-import { useEffect } from 'react';
+import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
+import dayjs from 'dayjs';
+import { FormTypeTreatment } from '../../../data/types/FormTypes';
 
 type Props = {
-    isGroup: boolean;
+    resetHistory: () => void;
 };
 
-type FormType = {
-    dateNextInspection: string | undefined;
-    dateStartTreatment: string | undefined;
-    diagnosis: string | undefined;
-    dose: string | undefined;
-    name: string | undefined;
-    note: string | undefined;
-    preparation: string | undefined;
-};
-
-export const FormAddTreatment = ({ isGroup }: Props) => {
+export const FormAddTreatment = ({ resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
+    const isGroup = useAppSelector(selectIsGroup)
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const addAction = async (dataForm: FormType) => {
+    const [form] = Form.useForm();
+    const addAction = async (dataForm: FormTypeTreatment) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
             type: 'Лечение',
-            date: changeDate(String(dataForm.dateStartTreatment)),
+            date: dayjs(dataForm.dateStartTreatment).format('YYYY-MM-DD'),
             performedBy: dataForm.name,
             notes: dataForm.note,
-            nextDate: changeDate(String(dataForm.dateNextInspection)),
+            nextDate: dataForm.dateNextInspection ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'): null,
             medicine: dataForm.preparation,
             dose: dataForm.dose,
             result: dataForm.diagnosis,
         }));
         await createDailyActions(data);
-    };
-
-    const reset = useAppSelector(selectReset);
-    const [form] = Form.useForm();
-    useEffect(() => {
         form.resetFields();
-    }, [reset]);
+        resetHistory();
+    };
 
     return (
         <Form onFinish={addAction} form={form}>
@@ -71,25 +58,23 @@ export const FormAddTreatment = ({ isGroup }: Props) => {
                     label='Кто проводил лечение'
                     name='name'
                     placeholder='Введите ФИО'
-                    required
                 />
                 <DatePickerForm
                     name='dateStartTreatment'
                     label='Дата начала лечения'
                     required
+                    defaultValue={dayjs()}
                 />
                 <DatePickerForm
                     name='dateNextInspection'
                     label='Дата следующего осмотра'
-                    required
                 />
                 <InputForm
                     label='Препарат'
                     name='preparation'
                     placeholder='Укажите препарат'
-                    required
                 />
-                <InputForm label='Доза' name='dose' placeholder='Укажите дозу' required />
+                <InputForm label='Доза' name='dose' placeholder='Укажите дозу'/>
                 <TextAreaForm
                     name='note'
                     label='Примечание'

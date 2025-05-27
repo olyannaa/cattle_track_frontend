@@ -10,7 +10,7 @@ export const InputForm = ({
 }: IFormItemInput) => {
     return (
         <div style={{ maxWidth: '475px', width: '100%' }}>
-            <Label label={label} />
+            <Label label={label} required={required} />
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Заполните поле' }]}

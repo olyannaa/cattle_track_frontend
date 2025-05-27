@@ -82,20 +82,20 @@ export const PregnancyRateForm = () => {
             <Form form={form} className='content-container' onFinish={registerNewPregnancy}>
                 <h2 className='form-title'>Проверка стельности</h2>
                 <div>
-                    <InputLabel label='Выберите корову' />
+                    <InputLabel label='Выберите корову' required={true}/>
                     <Form.Item name='cowId' rules={rules}>
                         <Select className='form-input_default' options={cows}></Select>
                     </Form.Item>
                 </div>
                 <div>
-                    <InputLabel label='Дата проверки' />
+                    <InputLabel label='Дата проверки' required={true}/>
                     <Form.Item className='form-input_default' name='date' initialValue={dayjs()}>
                         <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
                     </Form.Item>
                 </div>
                 <div>
-                    <InputLabel label='Результат проверки' />
-                    <Form.Item name='status'>
+                    <InputLabel label='Результат проверки' required={true}/>
+                    <Form.Item name='status' rules={rules}>
                         <Radio.Group className={styles['reproductive__radio-group']}>
                             <div className={styles['reproductive__radio-container']}>
                                 <div className='radio-border'>

@@ -6,12 +6,13 @@ import Dragger from 'antd/es/upload/Dragger';
 import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
 import styles from './ManualRegistration.module.css';
 import { AdditionalInfoForm } from './additional-info-form/AdditionalInfoForm';
-import { useGetAnimalGroupsQuery, useRegistrationAnimalMutation } from '../../../services/registration-animal';
+import { useGetAnimalGroupsQuery, useGetBreedQuery, useRegistrationAnimalMutation } from '../../../services/registration-animal';
 import { useEffect, useState } from 'react';
 import { IAlert } from '../../../../../utils/alertType';
 import { NetelFormRegister } from './netel-form/NetelForm';
 import { formatDataForSelectInput, SelectDataType } from '../../../../../utils/formatting-data';
 import dayjs from 'dayjs';
+import { useWatch } from 'antd/es/form/Form';
 
 const requiredRule = [{ required: true, message: 'Обязательное поле' }];
 const animalsOptions: IRadioGroup = {
@@ -31,6 +32,9 @@ export const ManualRegistrationForm = () => {
     const [selectedAnimalType, setSelectedAnimalType] = useState<string | undefined>('');
     const org_id: string = JSON.parse(localStorage.getItem('user') ?? '')?.organizationId;
     const [animalGroups, setAnimalGroups] = useState<SelectDataType[]>([]);
+    const { data: breed } = useGetBreedQuery();
+    const [breeds, setBreeds] = useState<SelectDataType[]>([]);
+    const selectedBreed = useWatch('Breed', registerAnimalForm);
 
     const [registerAnimal, { isLoading }] = useRegistrationAnimalMutation();
 
@@ -45,8 +49,11 @@ export const ManualRegistrationForm = () => {
     useEffect(() => {
         if (data) {
             setAnimalGroups(formatDataForSelectInput(data));
+        } 
+        if (breed) {
+            setBreeds([...formatDataForSelectInput(breed), {value: '0', label: 'Другая'}]);
         }
-    }, [data]);
+    }, [data, breed]);
 
     const handleRadioChange = (e: any) => {
         setSelectedAnimalType(e.target.value);
@@ -70,8 +77,16 @@ export const ManualRegistrationForm = () => {
                 additionalInfo[key] = value;
             } else if (key === 'Photo' && value?.fileList) {
                 formData.append('Photo', value.fileList[0]?.originFileObj);
-            } else if (key === 'BirthDate' || key === 'ExpectedCalvingDate' || key ===  'InseminationDate') {
-                formData.append(key, dayjs(value).format('YYYY-MM-DD'))
+            } else if (key === 'BirthDate' || key === 'ExpectedCalvingDate' || key === 'InseminationDate') {
+                formData.append(key, dayjs(value).format('YYYY-MM-DD'));
+            } else if (key === 'Breed') {
+                const selectBreed = breeds.find((breed) => breed.value === value)?.label;
+    
+                if (selectBreed && selectBreed !== 'Другая') {
+                    formData.append(key, selectBreed);
+                }
+            } else if(key === 'CustomBreed' && selectedBreed === '0') {
+                formData.append('Breed', value);
             } else {
                 formData.append(key, String(value ?? ''));
             }
@@ -108,31 +123,57 @@ export const ManualRegistrationForm = () => {
             <Form form={registerAnimalForm} requiredMark={false} onFinish={onFinish}>
                 <div>
                     <div>
-                        <InputLabel label='Номер бирки/RFID' />
+                        <InputLabel label='Номер бирки/RFID' required={true} />
                         <Form.Item name='TagNumber' rules={requiredRule}>
-                            <Input className={styles['manual-register__input']} placeholder='Введите номер бирки'></Input>
+                            <Input
+                                className={styles['manual-register__input']}
+                                placeholder='Введите номер бирки'
+                            ></Input>
                         </Form.Item>
                     </div>
-                    <div>
-                        <InputLabel label='Порода' />
-                        <Form.Item name='Breed'>
-                            <Input className={styles['manual-register__input']} placeholder='Укажите породу'></Input>
-                        </Form.Item>
+                    <div className={styles['manual-register__changed-form']}>
+                        <div>
+                            <InputLabel label='Порода' />
+                            <Form.Item name='Breed'>
+                                <Select options={breeds} className={styles['manual-register__input']} placeholder='Укажите породу'></Select>
+                            </Form.Item>
+                        </div>
+                        {selectedBreed === '0' && <div>
+                            <InputLabel label='Укажите породу' />
+                            <Form.Item name='CustomBreed'>
+                                <Input className={styles['manual-register__input']} placeholder='Введите название породы'></Input>
+                            </Form.Item>
+                        </div> }
                     </div>
-                    <Form.Item name='Type' rules={requiredRule} label={<InputLabel label='Половозрастная группа' />} labelCol={{ span: 24 }}>
+                    <Form.Item
+                        name='Type'
+                        rules={requiredRule}
+                        label={<InputLabel label='Половозрастная группа' required={true} />}
+                        labelCol={{ span: 24 }}
+                    >
                         <RadioGroupButton onChange={handleRadioChange} data={animalsOptions} />
                     </Form.Item>
                 </div>
                 {selectedAnimalType === 'Нетель' && <NetelFormRegister />}
                 <div className={styles['manual-register__changed-form']}>
                     <div>
-                        <InputLabel label='Дата рождения' />
-                        <Form.Item rules={requiredRule} name='BirthDate' className='form-input_default' initialValue={dayjs()}>
-                            <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
+                        <InputLabel label='Дата рождения' required={true} />
+                        <Form.Item
+                            rules={requiredRule}
+                            name='BirthDate'
+                            className='form-input_default'
+                            initialValue={dayjs()}
+                        >
+                            <DatePicker
+                                format='DD.MM.YYYY'
+                                type='date'
+                                className='form-input_default date'
+                                placeholder='xx.xx.xxxx'
+                            ></DatePicker>
                         </Form.Item>
                     </div>
                     <div>
-                        <InputLabel label='Происхождение' />
+                        <InputLabel label='Происхождение' required={true} />
                         <Form.Item name='Origin' rules={requiredRule}>
                             <Radio.Group onChange={handleOriginChange}>
                                 <div className={styles['manual-register__origin']}>
@@ -154,7 +195,10 @@ export const ManualRegistrationForm = () => {
                     <div>
                         <InputLabel label='Место происхождения' />
                         <Form.Item name='OriginLocation'>
-                            <Input className={styles['manual-register__input']} placeholder='Укажите место происхождения'></Input>
+                            <Input
+                                className={styles['manual-register__input']}
+                                placeholder='Укажите место происхождения'
+                            ></Input>
                         </Form.Item>
                     </div>
                 )}
@@ -174,7 +218,7 @@ export const ManualRegistrationForm = () => {
                 </div>
                 <div>
                     <InputLabel label='Группа содержания' />
-                    <Form.Item rules={requiredRule} name='GroupId'>
+                    <Form.Item name='GroupId'>
                         <Select options={animalGroups} className={styles['manual-register__input']}></Select>
                     </Form.Item>
                 </div>
@@ -187,11 +231,20 @@ export const ManualRegistrationForm = () => {
                                 <InboxOutlined />
                             </p>
                             <p className='ant-upload-text'>Выберите или перетащите файл</p>
-                            <p className='ant-upload-hint'>Максимальный размер изображения 200Mb. Формат JPG/JPEG/PNG</p>
+                            <p className='ant-upload-hint'>
+                                Максимальный размер изображения 200Mb. Формат JPG/JPEG/PNG
+                            </p>
                         </Dragger>
                     </Form.Item>
                 </div>
-                {visibleAlert && alert && <Alert className={styles['manual-register__alert']} message={alert.message} type={alert.type} showIcon />}
+                {visibleAlert && alert && (
+                    <Alert
+                        className={styles['manual-register__alert']}
+                        message={alert.message}
+                        type={alert.type}
+                        showIcon
+                    />
+                )}
                 <Button htmlType='submit' type='primary' loading={isLoading}>
                     Зарегистрировать животное
                 </Button>

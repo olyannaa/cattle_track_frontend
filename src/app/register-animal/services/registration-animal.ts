@@ -23,6 +23,12 @@ export const registrationAnimalApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        getBreed: builder.query<SelectResponseType[], void>({
+            query: () => ({
+                url: `animals/breed`,
+                method: 'GET',
+            }),
+        }),
         registrationAnimal: builder.mutation<void, FormData>({
             query: (body) => ({
                 url: 'animals/registration',
@@ -45,6 +51,7 @@ export const {
     useGetAnimalGroupsQuery,
     useRegistrationAnimalMutation,
     useRegistrationAnimalFromCSVMutation,
+    useGetBreedQuery
 } = registrationAnimalApi;
 export const {
     endpoints: {
