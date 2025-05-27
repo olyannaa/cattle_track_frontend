@@ -10,7 +10,7 @@ export const columnsTableHistoryTreatment = (
         title: '№ животного',
         dataIndex: 'tagNumber',
         key: 'tagNumber',
-        minWidth: 140,
+        minWidth: 120,
         sorter: true,
         sortOrder:
             sorters.column === 'TagNumber'

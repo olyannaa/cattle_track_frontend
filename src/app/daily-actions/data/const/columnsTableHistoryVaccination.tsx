@@ -10,7 +10,7 @@ export const columnsTableHistoryVaccination = (
         title: '№ животного',
         dataIndex: 'tagNumber',
         key: 'tagNumber',
-        minWidth: 140,
+        minWidth: 120,
         sorter: true,
         sortOrder:
             sorters.column === 'TagNumber'
@@ -62,7 +62,7 @@ export const columnsTableHistoryVaccination = (
         title: 'Тип обработки',
         dataIndex: 'subtype',
         key: 'subtype',
-        minWidth: 140,
+        minWidth: 130,
         sorter: true,
         sortOrder:
             sorters.column === 'Subtype'

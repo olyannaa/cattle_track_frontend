@@ -8,7 +8,7 @@ import { items } from './data/const/tabs';
 export const DailyActions = () => {
     const [activeTab, setActiveTab] = useState('1');
     return (
-        <Flex vertical gap={16} style={{ maxWidth: '1038px' }}>
+        <Flex vertical gap={16} style={{ maxWidth: '1200px' }}>
             <HeaderContent
                 title='Учет ежедневных действий'
                 items={items}
