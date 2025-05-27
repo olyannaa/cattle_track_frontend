@@ -8,7 +8,10 @@ import {
     useLazyGetAnimalByIdQuery,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
+import {
+    selectIsGroup,
+    selectSelectedAnimals,
+} from '../../../service/animalsDailyActionsSlice';
 import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import { useEffect, useState } from 'react';
 import { useGetIdentificationsFieldsQuery } from '../../../../../app-service/services/general';
@@ -21,7 +24,7 @@ type Props = {
 
 export const FormAddAssigmentNumber = ({ resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
-    const isGroup = useAppSelector(selectIsGroup)
+    const isGroup = useAppSelector(selectIsGroup);
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [animal, setAnimal] = useState<IAnimal>();
     const [form] = Form.useForm();
@@ -83,7 +86,7 @@ export const FormAddAssigmentNumber = ({ resetHistory }: Props) => {
                     {animal?.identificationFields.map(
                         (field) =>
                             field.value && (
-                                <div>{`${field.name}: ${
+                                <div key={field.name}>{`${field.name}: ${
                                     field.value || 'Не назначено'
                                 }`}</div>
                             )

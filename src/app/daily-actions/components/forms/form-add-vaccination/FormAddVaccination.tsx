@@ -11,31 +11,33 @@ import {
     selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
+import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import dayjs from 'dayjs';
-import { FormTypeTreatment } from '../../../data/types/FormTypes';
+import { FormTypeVaccination } from '../../../data/types/FormTypes';
+import { optionsVaccination } from '../../../data/const/optionsSelect';
 
 type Props = {
     resetHistory: () => void;
 };
 
-export const FormAddTreatment = ({ resetHistory }: Props) => {
-    const [createDailyActions] = useCreateDailyActionsMutation();
+export const FormAddVaccination = ({ resetHistory }: Props) => {
     const isGroup = useAppSelector(selectIsGroup);
+    const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [form] = Form.useForm();
-    const addAction = async (dataForm: FormTypeTreatment) => {
+    const addAction = async (dataForm: FormTypeVaccination) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
-            type: 'Лечение',
-            date: dayjs(dataForm.dateStartTreatment).format('YYYY-MM-DD'),
+            type: 'Вакцинации и обработки',
+            date: dayjs(dataForm.date).format('YYYY-MM-DD'),
+            subtype: dataForm.type,
             performedBy: dataForm.name,
-            notes: dataForm.note,
-            nextDate: dataForm.dateNextInspection
-                ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD')
-                : null,
-            medicine: dataForm.preparation,
             dose: dataForm.dose,
-            result: dataForm.diagnosis,
+            medicine: dataForm.preparation,
+            notes: dataForm.note,
+            nextDate: dataForm.dateNext
+                ? dayjs(dataForm.dateNext).format('YYYY-MM-DD')
+                : null,
         }));
         await createDailyActions(data);
         form.resetFields();
@@ -53,26 +55,19 @@ export const FormAddTreatment = ({ resetHistory }: Props) => {
                 }}
                 wrap
             >
-                <InputForm
-                    label='Диагноз'
-                    name='diagnosis'
-                    placeholder='Укажите диагноз'
-                    required
-                />
-                <InputForm
-                    label='Кто проводил лечение'
-                    name='name'
-                    placeholder='Введите ФИО'
-                />
                 <DatePickerForm
-                    name='dateStartTreatment'
-                    label='Дата начала лечения'
+                    name='date'
+                    label='Дата обработки'
                     required
                     defaultValue={dayjs()}
                 />
-                <DatePickerForm
-                    name='dateNextInspection'
-                    label='Дата следующего осмотра'
+                <InputForm label='Кто проводил' name='name' placeholder='Введите ФИО' />
+                <SelectForm
+                    label='Тип обработки'
+                    name='type'
+                    options={optionsVaccination}
+                    style={{ maxWidth: '475px' }}
+                    required
                 />
                 <InputForm
                     label='Препарат'
@@ -85,6 +80,7 @@ export const FormAddTreatment = ({ resetHistory }: Props) => {
                     label='Примечание'
                     placeholder='Дополнительная информация'
                 />
+                <DatePickerForm name='dateNext' label='Дата следующей обработки' />
             </Flex>
             <Button
                 type='primary'

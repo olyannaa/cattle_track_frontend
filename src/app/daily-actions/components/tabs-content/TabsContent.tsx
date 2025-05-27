@@ -7,7 +7,10 @@ import { FormAddTransfer } from '../forms/form-add-transfer/FormAddTransfer';
 import { FormAddDisposal } from '../forms/form-add-disposal/FormAddDisposal';
 
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
-import { changeIsGroup, selectSelectedAnimals } from '../../service/animalsDailyActionsSlice';
+import {
+    changeIsGroup,
+    selectSelectedAnimals,
+} from '../../service/animalsDailyActionsSlice';
 import { FormAddAssigmentNumber } from '../forms/form-add-assignment-number/FormAddAssigmentNumber';
 import { getNameTabs, items } from '../../data/const/tabs';
 import {
@@ -19,6 +22,7 @@ import {
     selectSortersDailyActions,
 } from '../../service/dailyActionsSlice';
 import { WrapperFormResearch } from '../wrapper-form-research/WrapperFormResearch';
+import { FormAddVaccination } from '../forms/form-add-vaccination/FormAddVaccination';
 
 type Props = {
     keyTab: string;
@@ -45,54 +49,26 @@ export const TabsContent = ({ keyTab }: Props) => {
         await getPaginationInfoDailyActionsQuery(name);
     };
 
-    useEffect(()=> {
-        dispatch(changeIsGroup(false))
-    },[keyTab])
+    useEffect(() => {
+        dispatch(changeIsGroup(false));
+    }, [keyTab]);
 
     return (
         <Flex vertical style={{ width: '100%' }} gap={24}>
             <Typography.Title level={3}>{title}</Typography.Title>
-            <FilterAnimals
-                keyTab={keyTab}
-            />
+            <FilterAnimals keyTab={keyTab} />
             {selectedAnimals.length !== 0 && (
                 <>
-                    {keyTab === '1' && (
-                        <FormAddInspection
-                            type='1'
-                            resetHistory={resetHistory}
-                        />
-                    )}
-                    {keyTab === '2' && (
-                        <FormAddInspection
-                            type='2'
-                            resetHistory={resetHistory}
-                        />
-                    )}
-                    {keyTab === '3' && (
-                        <FormAddTreatment
-                            resetHistory={resetHistory}
-                        />
-                    )}
-                    {keyTab === '4' && (
-                        <FormAddTransfer
-                            resetHistory={resetHistory}
-                        />
-                    )}
-                    {keyTab === '5' && (
-                        <FormAddDisposal
-                            resetHistory={resetHistory}
-                        />
-                    )}
+                    {keyTab === '1' && <FormAddInspection resetHistory={resetHistory} />}
+                    {keyTab === '2' && <FormAddVaccination resetHistory={resetHistory} />}
+                    {keyTab === '3' && <FormAddTreatment resetHistory={resetHistory} />}
+                    {keyTab === '4' && <FormAddTransfer resetHistory={resetHistory} />}
+                    {keyTab === '5' && <FormAddDisposal resetHistory={resetHistory} />}
                     {keyTab === '6' && (
-                        <WrapperFormResearch
-                            resetHistory={resetHistory}
-                        />
+                        <WrapperFormResearch resetHistory={resetHistory} />
                     )}
                     {keyTab === '7' && (
-                        <FormAddAssigmentNumber
-                            resetHistory={resetHistory}
-                        />
+                        <FormAddAssigmentNumber resetHistory={resetHistory} />
                     )}
                 </>
             )}
