@@ -4,6 +4,7 @@ import { columnsTableHistoryInspection } from '../data/const/columnsTableHistory
 import { columnsTableHistoryResearch } from '../data/const/columnsTableHistoryResearch';
 import { columnsTableHistoryTransfer } from '../data/const/columnsTableHistoryTransfer';
 import { columnsTableHistoryTreatment } from '../data/const/columnsTableHistoryTreatment';
+import { columnsTableHistoryVaccination } from '../data/const/columnsTableHistoryVaccination';
 import { SortersAnimalsType } from '../service/dailyActions';
 
 export const getColumnsTable = (keyTab: string, sorters: SortersAnimalsType) => {
@@ -11,7 +12,7 @@ export const getColumnsTable = (keyTab: string, sorters: SortersAnimalsType) => 
         case '1':
             return columnsTableHistoryInspection(sorters);
         case '2':
-            return columnsTableHistoryInspection(sorters);
+            return columnsTableHistoryVaccination(sorters);
         case '3':
             return columnsTableHistoryTreatment(sorters);
         case '4':
