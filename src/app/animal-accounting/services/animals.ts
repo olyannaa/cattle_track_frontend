@@ -43,12 +43,25 @@ export const animalsApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        getIdentificationFieldsNames: builder.query<IdentificationFieldName[],void>({
-            query: ()=> ({
+        getIdentificationFieldsNames: builder.query<IdentificationFieldName[], void>({
+            query: () => ({
                 url: 'groups/identification',
-                method: 'GET'
-            })
-        })
+                method: 'GET',
+            }),
+        }),
+        getAllAnimalIds: builder.query<string[], boolean>({
+            query: (data) => ({
+                url: `animals/barren/ids?IsActive=${data}`,
+                method: 'GET',
+            }),
+        }),
+        deleteAnimals: builder.mutation<void, string[]>({
+            query: (data) => ({
+                url: 'animals/barren',
+                method: 'DELETE',
+                body: data,
+            }),
+        }),
     }),
 });
 
@@ -57,5 +70,7 @@ export const {
     useUpdateAnimalsMutation,
     useGetAnimalsGroupsQuery,
     useLazyGetPaginationInfoQuery,
-    useGetIdentificationFieldsNamesQuery
+    useGetIdentificationFieldsNamesQuery,
+    useLazyGetAllAnimalIdsQuery,
+    useDeleteAnimalsMutation,
 } = animalsApi;
