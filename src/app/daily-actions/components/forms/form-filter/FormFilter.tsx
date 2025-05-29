@@ -23,7 +23,7 @@ import {
 
 export const FormFilter = () => {
     const filters = useAppSelector(selectFiltersAnimals);
-    const isGroup = useAppSelector(selectIsGroup)
+    const isGroup = useAppSelector(selectIsGroup);
     const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
     const [getIdentificationValuesQuery] = useLazyGetIdentificationValuesQuery();
     const [identificationValues, setIdentificationValues] =
