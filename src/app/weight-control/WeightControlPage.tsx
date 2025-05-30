@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { items } from './data/const/tabs';
 import { Filters } from './components/filters/Filters';
 import { FormAddWeight } from './components/form-add-weight/FormAddWeight';
+import { AnalysisWeights } from './components/analysis-weights/AnalysisWeights';
 
 export const WeightControlPage = () => {
-    const [activeTab, setActiveTab] = useState('1');
+    const [activeTab, setActiveTab] = useState('Взвешивание');
     return (
         <Flex vertical gap={16} style={{ maxWidth: '920px' }}>
             <HeaderContent
@@ -28,7 +29,7 @@ export const WeightControlPage = () => {
                 </div>
                 <Filters keyTab={activeTab} />
                 {activeTab === 'Взвешивание' && <FormAddWeight />}
-                {activeTab === 'Анализ привесов' && ''}
+                {activeTab === 'Анализ привесов' && <AnalysisWeights />}
             </Flex>
         </Flex>
     );

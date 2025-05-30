@@ -1,23 +1,26 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
-import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
+import {
+    selectIsGroup,
+    selectSelectedAnimals,
+} from '../../../service/animalsDailyActionsSlice';
 import dayjs from 'dayjs';
 import { FormTypeDisposal } from '../../../data/types/FormTypes';
 import { optionsDisposal } from '../../../data/const/optionsSelect';
+import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
 
 type Props = {
     resetHistory: () => void;
 };
 
 export const FormAddDisposal = ({ resetHistory }: Props) => {
-    const isGroup = useAppSelector(selectIsGroup)
+    const isGroup = useAppSelector(selectIsGroup);
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [form] = Form.useForm();
@@ -61,7 +64,7 @@ export const FormAddDisposal = ({ resetHistory }: Props) => {
                     label='Причина выбытия'
                     name='reason'
                     options={optionsDisposal}
-                    style={{ maxWidth: '475px' }}
+                    styles={{ maxWidth: '475px' }}
                     placeholder='Выберите причину'
                     required
                 />

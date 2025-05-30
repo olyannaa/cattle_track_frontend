@@ -51,6 +51,17 @@ function App() {
                 hoverBorderColor: 'rgba(255, 75, 64, 1)',
                 controlHeight: 40,
             },
+            InputNumber: {
+                borderRadius: 2,
+                borderRadiusLG: 2,
+                borderRadiusSM: 2,
+                borderRadiusXS: 2,
+                fontSize: 16,
+                colorText: 'rgba(0, 0, 0, 0.85)',
+                activeBorderColor: 'rgba(255, 75, 64, 1)',
+                hoverBorderColor: 'rgba(255, 75, 64, 1)',
+                controlHeight: 40,
+            },
             Tabs: {
                 itemSelectedColor: 'rgba(255, 66, 24, 1)',
                 inkBarColor: 'rgba(255, 66, 24, 1)',

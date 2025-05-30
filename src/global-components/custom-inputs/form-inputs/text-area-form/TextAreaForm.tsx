@@ -1,6 +1,6 @@
 import { Form, Input } from 'antd';
-import { Label } from '../label/Label';
-import { IFormItemInput } from '../../../data/interface/IFormItem';
+import { IFormItemInput } from '../../../data/interface/FormInputs';
+import { Label } from '../../filter-inputs/Label';
 
 export const TextAreaForm = ({
     name,

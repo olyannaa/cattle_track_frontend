@@ -3,20 +3,30 @@ import { InputSearch } from '../../../../global-components/custom-inputs/filter-
 import { SelectFilters } from '../../../../global-components/custom-inputs/filter-inputs/SelectFilters';
 import {
     changeFiltersWeightControl,
+    changeSelectedAnimal,
+    selectAnimalsWeightControl,
     selectFiltersWeightControl,
+    selectSelectedAnimalWeightControl,
 } from '../../service/weightControlSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import {
     useGetGroupQuery,
     useGetIdentificationsFieldsQuery,
 } from '../../../../app-service/services/general';
-import { useState } from 'react';
-import { useLazyGetIdentificationValuesQuery } from '../../../daily-actions/service/dailyActions';
+import { useEffect, useState } from 'react';
 import { RadioGroupWithSwitch } from '../../../../global-components/custom-inputs/filter-inputs/RadioGroupWithSwitch';
+import {
+    useLazyGetFilterAnimalsQuery,
+    useLazyGetIdentificationValuesQuery,
+} from '../../service/weightControl';
 
 export const FormFilters = () => {
     const filters = useAppSelector(selectFiltersWeightControl);
-
+    const selectedAnimal = useAppSelector(selectSelectedAnimalWeightControl);
+    const animals = useAppSelector(selectAnimalsWeightControl).map((animal) => ({
+        label: animal.tagNumber,
+        value: animal.id,
+    }));
     const [identificationValues, setIdentificationValues] =
         useState<{ label: string; value: string }[]>();
 
@@ -36,6 +46,7 @@ export const FormFilters = () => {
     );
 
     const [getIdentificationValuesQuery] = useLazyGetIdentificationValuesQuery();
+    const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
 
     const getIdentificationValues = async () => {
         const response = (
@@ -56,8 +67,21 @@ export const FormFilters = () => {
     };
 
     const handlerSearch = async (value: string) => {
-        //await getFilterAnimalsQuery({ filters: { ...filters, tagNumber: value } });
+        await getFilterAnimalsQuery({ filters: { ...filters, tagNumber: value } });
     };
+
+    useEffect(() => {
+        if (filters.identificationFieldId) {
+            getIdentificationValues();
+        }
+    }, [filters.groupId, filters.identificationFieldId, filters.isActive, filters.type]);
+
+    useEffect(() => {
+        form.setFieldValue('identification_method', '');
+        if (filters.identificationFieldId) {
+            getIdentificationValues();
+        }
+    }, [filters.identificationFieldId]);
 
     return (
         <Form
@@ -145,12 +169,13 @@ export const FormFilters = () => {
                 onSearch={handlerSearch}
                 styles={{ maxWidth: '432px' }}
             />
-            {/* <SelectFilters
+            <SelectFilters
                 label='Выберите животное из списка'
                 options={animals}
-                value={animals.length === 1 ? animals[0].value : selectedAnimals[0]}
-                onChange={(value) => dispatch(addSelectedAnimal(value))}
-            /> */}
+                value={selectedAnimal}
+                onChange={(value) => dispatch(changeSelectedAnimal(value))}
+                styles={{ maxWidth: '432px' }}
+            />
         </Form>
     );
 };
