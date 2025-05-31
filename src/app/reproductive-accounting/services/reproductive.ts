@@ -17,6 +17,7 @@ export type RequestPregnancy = {
     cowId: string;
     date: string;
     status: string;
+    pregnancyId: string;
     expectedCalvingDate?: string;
 };
 
@@ -34,15 +35,19 @@ export type RequestCalving = {
     calfTagNumber?: string;
     method?: string;
     weight?: number;
+    inseminationId: string;
 };
 
 export type Animal = {
     id: string;
+    animalId: string;
     organizationId: string;
     tagNumber: string;
     type: string;
     birthDate: Date;
     status: string;
+    name: string;
+    pregnancyId: string;
 };
 
 export type FullPregnancyInfo = {
@@ -56,6 +61,8 @@ export type FullPregnancyInfo = {
     bullId: string;
     bullTagNumber?: string;
     name: string;
+    pregnancyId: string;
+    inseminationId: string;
 };
 
 export const reproductiveApi = api.injectEndpoints({
@@ -69,6 +76,12 @@ export const reproductiveApi = api.injectEndpoints({
         getBulls: builder.query<Animal[], void>({
             query: () => ({
                 url: `reproductive/bull`,
+                method: 'GET',
+            }),
+        }),
+        getInseminationAnimals: builder.query<Animal[], void>({
+            query: () => ({
+                url: `reproductive/insemination/animals`,
                 method: 'GET',
             }),
         }),
@@ -116,4 +129,5 @@ export const {
     useGetPregnanciesQuery,
     useRegisterCalvingMutation,
     useRegisterPregnancyMutation,
+    useGetInseminationAnimalsQuery,
 } = reproductiveApi;
