@@ -18,7 +18,7 @@ export const CalvingForm = () => {
 
     const { data, refetch } = useGetCalvingQuery();
     const [cows, setCows] = useState<SelectDataType[]>([]);
-    const [registerCalving] = useRegisterCalvingMutation();
+    const [registerCalving, { isLoading: loading }] = useRegisterCalvingMutation();
     const [modalResult, setModalResult] = useState<ResultCalvingModal | null>(null);
 
     useEffect(() => {
@@ -40,12 +40,13 @@ export const CalvingForm = () => {
             const value = data?.find((animal) => animal.id === values.cowId);
             if (value?.cowId) {
                 values.cowId = value.cowId;
+                values.inseminationId = value.inseminationId;
             }
             values.bullId = value?.bullId;
             values.cowTagNumber = value?.cowTagNumber;
             values.date = dayjs(values.date).format('YYYY-MM-DD');
             await registerCalving(values).unwrap();
-            if (values.type === 'Живой') {
+            if (values.type !== 'Аборт') {
                 setModalResult({
                     mother: values.cowTagNumber,
                     calfType: values.method,
@@ -87,19 +88,24 @@ export const CalvingForm = () => {
                 <div className='content-container'>
                     <h2 className='form-title'>Регистрация отёлов</h2>
                     <div>
-                        <InputLabel label='Выберите корову' required={true}/>
+                        <InputLabel label='Выберите корову' required={true} />
                         <Form.Item name='cowId' rules={rules}>
                             <Select className='form-input_default' options={cows}></Select>
                         </Form.Item>
                     </div>
                     <div>
-                        <InputLabel label='Дата отёла' required={true}/>
+                        <InputLabel label='Дата отёла' required={true} />
                         <Form.Item className='form-input_default' name='date' rules={rules} initialValue={dayjs()}>
-                            <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
+                            <DatePicker
+                                format='DD.MM.YYYY'
+                                type='date'
+                                className='form-input_default date'
+                                placeholder='xx.xx.xxxx'
+                            ></DatePicker>
                         </Form.Item>
                     </div>
                     <div>
-                        <InputLabel label='Тип отёла' required={true}/>
+                        <InputLabel label='Тяжесть отёла' required={true} />
                         <Form.Item name='complication' rules={rules}>
                             <Radio.Group className={styles['reproductive__radio-group']}>
                                 <div className={styles['reproductive__radio-container']}>
@@ -120,7 +126,7 @@ export const CalvingForm = () => {
                         </Form.Item>
                     </div>
                     <div>
-                        <InputLabel label='Тяжесть отёла' required={true}/>
+                        <InputLabel label='Тип отёла' required={true} />
                         <Form.Item name='type' rules={rules}>
                             <Radio.Group className={styles['reproductive__radio-group']}>
                                 <div className={styles['reproductive__radio-container']}>
@@ -156,22 +162,28 @@ export const CalvingForm = () => {
                         </Form.Item>
                     </div>
                     {calfType !== 'Живой' && (
-                        <Button type='primary' htmlType='submit' className='form-button form-button__margin-top-xl'>
+                        <Button
+                            type='primary'
+                            htmlType='submit'
+                            className='form-button form-button__margin-top-xl'
+                            loading={loading}
+                            disabled={loading}
+                        >
                             Зарегистрировать отёл
                         </Button>
                     )}
                 </div>
-                {calfType === 'Живой' && (
+                {(calfType === 'Живой' || calfType === 'Мертворожденный') && (
                     <div className='content-container'>
                         <h2 className='form-title'>Регистрация теленка</h2>
                         <div className='form-input_default'>
-                            <InputLabel label='Номер бирки' required={true}/>
+                            <InputLabel label='Номер бирки' required={true} />
                             <Form.Item name='calfTagNumber' rules={rules}>
                                 <Input placeholder='Введите номер бирки' />
                             </Form.Item>
                         </div>
                         <div style={{ maxWidth: '432px' }}>
-                            <InputLabel label='Теленок' required={true}/>
+                            <InputLabel label='Теленок' required={true} />
                             <Form.Item name='method' rules={rules}>
                                 <Radio.Group className={styles['reproductive__radio-group']}>
                                     <div className={styles['reproductive__radio-container']}>
@@ -191,7 +203,13 @@ export const CalvingForm = () => {
                                 <Input className='form-input_default' placeholder='Введите вес, кг' />
                             </Form.Item>
                         </div>
-                        <Button type='primary' htmlType='submit' className='form-button form-button__margin-top-xl'>
+                        <Button
+                            type='primary'
+                            htmlType='submit'
+                            className='form-button form-button__margin-top-xl'
+                            loading={loading}
+                            disabled={loading}
+                        >
                             Зарегистрировать отёл
                         </Button>
                     </div>
