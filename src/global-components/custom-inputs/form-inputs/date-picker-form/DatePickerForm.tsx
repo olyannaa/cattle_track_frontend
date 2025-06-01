@@ -1,15 +1,16 @@
 import { DatePicker, Form } from 'antd';
-import { Label } from '../label/Label';
-import { IFormItem } from '../../../data/interface/IFormItem';
+import { IFormItem } from '../../../data/interface/FormInputs';
+import { Label } from '../../filter-inputs/Label';
 
 export const DatePickerForm = ({
     name,
     label,
     required = false,
     defaultValue,
+    styles,
 }: IFormItem) => {
     return (
-        <div style={{ maxWidth: '475px', width: '100%' }}>
+        <div style={{ maxWidth: '475px', width: '100%', ...styles }}>
             <Label label={label} required={required} />
             <Form.Item
                 name={name}

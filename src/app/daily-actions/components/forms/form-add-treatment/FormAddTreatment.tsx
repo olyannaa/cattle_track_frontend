@@ -1,6 +1,6 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
-import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
+import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,

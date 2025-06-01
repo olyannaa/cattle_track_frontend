@@ -2,10 +2,9 @@ import { Flex, Typography } from 'antd';
 import { useEffect } from 'react';
 import { FilterAnimals } from '../filter-animals/FilterAnimals';
 import { FormAddInspection } from '../forms/form-add-inspection/FormAddInspection';
-import { FormAddTreatment } from '../forms/form-add-treatment/FormAddTreatment';
+
 import { FormAddTransfer } from '../forms/form-add-transfer/FormAddTransfer';
 import { FormAddDisposal } from '../forms/form-add-disposal/FormAddDisposal';
-
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import {
     changeIsGroup,
@@ -22,7 +21,9 @@ import {
     selectSortersDailyActions,
 } from '../../service/dailyActionsSlice';
 import { WrapperFormResearch } from '../wrapper-form-research/WrapperFormResearch';
+import { FormAddTreatment } from '../forms/form-add-treatment/FormAddTreatment';
 import { FormAddVaccination } from '../forms/form-add-vaccination/FormAddVaccination';
+
 
 type Props = {
     keyTab: string;

@@ -1,5 +1,5 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     IAnimal,
@@ -12,11 +12,11 @@ import {
     selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
-import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import { useEffect, useState } from 'react';
 import { useGetIdentificationsFieldsQuery } from '../../../../../app-service/services/general';
 import dayjs from 'dayjs';
 import { FormTypeAssigmentNumber } from '../../../data/types/FormTypes';
+import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
 
 type Props = {
     resetHistory: () => void;
@@ -108,7 +108,7 @@ export const FormAddAssigmentNumber = ({ resetHistory }: Props) => {
                         name='type'
                         options={identificationFields}
                         defaultValue={identificationFields[0]?.value || ''}
-                        style={{ maxWidth: '475px' }}
+                        styles={{ maxWidth: '475px' }}
                         placeholder='Выберите причину'
                         required
                         onChange={(value) => setSelectedField(value)}

@@ -1,7 +1,7 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
 import { RadioGroupForm } from '../../custom-inputs/radio-group-form/RadioGroupForm';
-import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
+import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
@@ -12,12 +12,17 @@ import {
     selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
+
 import dayjs from 'dayjs';
 import { FormTypeInspection } from '../../../data/types/FormTypes';
+import { optionsInspections } from '../../../data/const/optionsSelect';
+import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
+
 
 type Props = {
     resetHistory: () => void;
 };
+
 
 export const FormAddInspection = ({ resetHistory }: Props) => {
     const isGroup = useAppSelector(selectIsGroup);
@@ -60,6 +65,7 @@ export const FormAddInspection = ({ resetHistory }: Props) => {
                     defaultValue={dayjs()}
                 />
                 <InputForm label='Кто проводил' name='name' placeholder='Введите ФИО' />
+
                 <RadioGroupForm
                     label='Тип осмотра'
                     options={[
@@ -72,6 +78,7 @@ export const FormAddInspection = ({ resetHistory }: Props) => {
                     styles={{ gap: '16px' }}
                     required
                 />
+
                 <TextAreaForm
                     name='note'
                     label='Примечание'
