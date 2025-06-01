@@ -4,7 +4,11 @@ import { InputLabel } from '../../../../global-components/custom-inputs/input-la
 import TextArea from 'antd/es/input/TextArea';
 import styles from '../../ReproductiveAccountingPage.module.css';
 import { InseminationTypeForm } from './insemination-type-form/InseminationTypeForm';
-import { RequestInsemination, useGetCowsQuery, useRegistrationInseminationMutation } from '../../services/reproductive';
+import {
+    RequestInsemination,
+    useGetInseminationAnimalsQuery,
+    useRegistrationInseminationMutation,
+} from '../../services/reproductive';
 import { SelectDataType } from '../../../../utils/selectDataType';
 import { isErrorType } from '../../../../utils/errorType';
 import dayjs from 'dayjs';
@@ -12,9 +16,9 @@ import dayjs from 'dayjs';
 export const InseminationForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const requiredRule = [{ required: true, message: 'Обязательное поле' }];
-    const { data, refetch } = useGetCowsQuery();
+    const { data, refetch } = useGetInseminationAnimalsQuery();
     const [cows, setCows] = useState<SelectDataType[]>([]);
-    const [registerInsemination] = useRegistrationInseminationMutation();
+    const [registerInsemination, { isLoading }] = useRegistrationInseminationMutation();
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -24,8 +28,8 @@ export const InseminationForm = () => {
     useEffect(() => {
         if (data) {
             const selectOptions: SelectDataType[] = data.map((animal) => ({
-                value: animal.id,
-                label: `№${animal.tagNumber}, (${animal.type})`,
+                value: animal.animalId,
+                label: animal.name,
             }));
             setCows(selectOptions);
         }
@@ -61,19 +65,24 @@ export const InseminationForm = () => {
             <Form form={form} className='content-container' onFinish={registerNewInsemination}>
                 <h2 className='form-title'>Регистрация осеменения</h2>
                 <div>
-                    <InputLabel label='Выберите животное из списка' required={true}/>
+                    <InputLabel label='Выберите животное из списка' required={true} />
                     <Form.Item name='cowId' rules={requiredRule}>
                         <Select className='form-input_default' options={cows}></Select>
                     </Form.Item>
                 </div>
                 <div>
-                    <InputLabel label='Дата осеменения' required={true}/>
+                    <InputLabel label='Дата осеменения' required={true} />
                     <Form.Item className='form-input_default' name='date' initialValue={dayjs()} rules={requiredRule}>
-                        <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
+                        <DatePicker
+                            format='DD.MM.YYYY'
+                            type='date'
+                            className='form-input_default date'
+                            placeholder='xx.xx.xxxx'
+                        ></DatePicker>
                     </Form.Item>
                 </div>
                 <div>
-                    <InputLabel label='Тип осеменения' required={true}/>
+                    <InputLabel label='Тип осеменения' required={true} />
                     <Form.Item name='inseminationType'>
                         <Radio.Group className={styles['reproductive__radio-group']}>
                             <div className={styles['reproductive__radio-container']}>
@@ -103,7 +112,7 @@ export const InseminationForm = () => {
                         <TextArea className='form-input_default' placeholder='Дополнительная информация'></TextArea>
                     </Form.Item>
                 </div>
-                <Button type='primary' htmlType='submit'>
+                <Button type='primary' htmlType='submit' loading={isLoading} disabled={isLoading}>
                     Зарегистрировать осеменение
                 </Button>
             </Form>
