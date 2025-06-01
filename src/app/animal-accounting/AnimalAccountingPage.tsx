@@ -201,7 +201,14 @@ export const AnimalAccountingPage = () => {
             return;
         }
         await deleteAnimalsMutation(deleteAnimals);
-
+        setCurrentPage(1);
+        getAnimals(1);
+        getCountAnimals();
+        if (typeAnimal === 'Яловые') {
+            dispatch(resetDeleteAllAnimals());
+            getAllAnimalIds();
+            setIsSelectedAllAnimals(false);
+        }
         setNoActiveAnimals(false);
     };
 
