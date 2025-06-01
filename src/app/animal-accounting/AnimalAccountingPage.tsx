@@ -31,7 +31,6 @@ import { CheckPermissions, Permissions } from '../../utils/permissions';
 import { IAnimalTable } from './data/interfaces/animalTable';
 import { getColumns, items } from './data/const/tableAnimal';
 import { IAnimal, IResponsePaginationInfo } from './data/types/animal';
-import { CheckboxCustom } from '../../global-components/custom-inputs/checkbox/Checkbox';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
 
 export const AnimalAccountingPage = () => {

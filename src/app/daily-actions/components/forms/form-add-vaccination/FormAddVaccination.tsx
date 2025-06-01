@@ -1,6 +1,4 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
-import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
@@ -11,10 +9,12 @@ import {
     selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
-import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import dayjs from 'dayjs';
 import { FormTypeVaccination } from '../../../data/types/FormTypes';
 import { optionsVaccination } from '../../../data/const/optionsSelect';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
+import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
+import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
 
 type Props = {
     resetHistory: () => void;
@@ -66,7 +66,7 @@ export const FormAddVaccination = ({ resetHistory }: Props) => {
                     label='Тип обработки'
                     name='type'
                     options={optionsVaccination}
-                    style={{ maxWidth: '475px' }}
+                    styles={{ maxWidth: '475px' }}
                     required
                 />
                 <InputForm

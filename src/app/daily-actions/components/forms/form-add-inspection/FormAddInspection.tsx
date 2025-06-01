@@ -15,14 +15,10 @@ import {
 
 import dayjs from 'dayjs';
 import { FormTypeInspection } from '../../../data/types/FormTypes';
-import { optionsInspections } from '../../../data/const/optionsSelect';
-import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
-
 
 type Props = {
     resetHistory: () => void;
 };
-
 
 export const FormAddInspection = ({ resetHistory }: Props) => {
     const isGroup = useAppSelector(selectIsGroup);

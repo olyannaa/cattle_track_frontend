@@ -1,3 +1,4 @@
+import { SortersAnimalsType } from '../../../utils/sortersAnimals';
 import { columnsTableHistoryAssignmentNumbers } from '../data/const/columnsTableHistoryAssignmentNumbers';
 import { columnsTableHistoryDisposal } from '../data/const/columnsTableHistoryDisposal';
 import { columnsTableHistoryInspection } from '../data/const/columnsTableHistoryInspection';
@@ -5,7 +6,6 @@ import { columnsTableHistoryResearch } from '../data/const/columnsTableHistoryRe
 import { columnsTableHistoryTransfer } from '../data/const/columnsTableHistoryTransfer';
 import { columnsTableHistoryTreatment } from '../data/const/columnsTableHistoryTreatment';
 import { columnsTableHistoryVaccination } from '../data/const/columnsTableHistoryVaccination';
-import { SortersAnimalsType } from '../service/dailyActions';
 
 export const getColumnsTable = (keyTab: string, sorters: SortersAnimalsType) => {
     switch (keyTab) {

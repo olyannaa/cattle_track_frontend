@@ -3,7 +3,6 @@ import { FieldTable } from '../../components/FieldTable/FieldTable';
 import { IAnimalTable } from '../interfaces/animalTable';
 import { IdentificationFieldName } from '../types/animal';
 import { IdentificationFieldTable } from '../../components/IdentificationFieldTable/IdentificationFieldTable';
-import { TableCheckbox } from '../../../daily-actions/components/custom-inputs/TableCheckbox';
 import { TableCheckboxAccounting } from '../../components/TableCheckboxAccounting';
 
 export enum animalTableColumns {}
