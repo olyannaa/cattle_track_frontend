@@ -22,6 +22,8 @@ import {
 } from '../../service/dailyActionsSlice';
 import { WrapperFormResearch } from '../wrapper-form-research/WrapperFormResearch';
 import { FormAddTreatment } from '../forms/form-add-treatment/FormAddTreatment';
+import { FormAddVaccination } from '../forms/form-add-vaccination/FormAddVaccination';
+
 
 type Props = {
     keyTab: string;
@@ -58,12 +60,8 @@ export const TabsContent = ({ keyTab }: Props) => {
             <FilterAnimals keyTab={keyTab} />
             {selectedAnimals.length !== 0 && (
                 <>
-                    {keyTab === '1' && (
-                        <FormAddInspection type='1' resetHistory={resetHistory} />
-                    )}
-                    {keyTab === '2' && (
-                        <FormAddInspection type='2' resetHistory={resetHistory} />
-                    )}
+                    {keyTab === '1' && <FormAddInspection resetHistory={resetHistory} />}
+                    {keyTab === '2' && <FormAddVaccination resetHistory={resetHistory} />}
                     {keyTab === '3' && <FormAddTreatment resetHistory={resetHistory} />}
                     {keyTab === '4' && <FormAddTransfer resetHistory={resetHistory} />}
                     {keyTab === '5' && <FormAddDisposal resetHistory={resetHistory} />}

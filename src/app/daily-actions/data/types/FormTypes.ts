@@ -7,6 +7,16 @@ export type FormTypeInspection = {
     typeInspection: string | undefined;
 };
 
+export type FormTypeVaccination = {
+    date: string | undefined;
+    dateNext: string | undefined;
+    name: string | undefined;
+    note: string | undefined;
+    type: string | undefined;
+    dose: string | undefined;
+    preparation: string | undefined;
+};
+
 export type FormTypeTreatment = {
     dateNextInspection: string | undefined;
     dateStartTreatment: string | undefined;

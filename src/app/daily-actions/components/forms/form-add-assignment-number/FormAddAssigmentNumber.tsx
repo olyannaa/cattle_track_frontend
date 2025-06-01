@@ -86,7 +86,7 @@ export const FormAddAssigmentNumber = ({ resetHistory }: Props) => {
                     {animal?.identificationFields.map(
                         (field) =>
                             field.value && (
-                                <div>{`${field.name}: ${
+                                <div key={field.name}>{`${field.name}: ${
                                     field.value || 'Не назначено'
                                 }`}</div>
                             )

@@ -18,12 +18,13 @@ import { FormTypeInspection } from '../../../data/types/FormTypes';
 import { optionsInspections } from '../../../data/const/optionsSelect';
 import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
 
+
 type Props = {
-    type: string;
     resetHistory: () => void;
 };
 
-export const FormAddInspection = ({ type, resetHistory }: Props) => {
+
+export const FormAddInspection = ({ resetHistory }: Props) => {
     const isGroup = useAppSelector(selectIsGroup);
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
@@ -31,7 +32,7 @@ export const FormAddInspection = ({ type, resetHistory }: Props) => {
     const addAction = async (dataForm: FormTypeInspection) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
-            type: type === '1' ? 'Осмотры' : 'Вакцинации и обработки',
+            type: 'Осмотры',
             date: dayjs(dataForm.dateInspection).format('YYYY-MM-DD'),
             subtype: dataForm.typeInspection,
             performedBy: dataForm.name,
@@ -49,43 +50,34 @@ export const FormAddInspection = ({ type, resetHistory }: Props) => {
     return (
         <Form onFinish={addAction} form={form}>
             <Flex
-                gap='16px'
                 style={{
                     padding: '15px 16px',
                     background: '#F5F5F5',
                     marginBottom: '24px',
+                    columnGap: '16px',
                 }}
                 wrap
             >
                 <DatePickerForm
                     name='dateInspection'
-                    label={`Дата ${type === '1' ? 'осмотра' : 'обработки'}`}
+                    label='Дата осмотра'
                     required
                     defaultValue={dayjs()}
                 />
                 <InputForm label='Кто проводил' name='name' placeholder='Введите ФИО' />
-                {type === '1' ? (
-                    <RadioGroupForm
-                        label='Тип осмотра'
-                        options={[
-                            'Плановый',
-                            'Внеплановый',
-                            'Диагностический',
-                            'Предубойный',
-                        ]}
-                        name='typeInspection'
-                        styles={{ gap: '16px' }}
-                        required
-                    />
-                ) : (
-                    <SelectForm
-                        label='Тип обработки'
-                        name='typeInspection'
-                        options={optionsInspections}
-                        styles={{ maxWidth: '475px' }}
-                        required
-                    />
-                )}
+
+                <RadioGroupForm
+                    label='Тип осмотра'
+                    options={[
+                        'Плановый',
+                        'Внеплановый',
+                        'Диагностический',
+                        'Предубойный',
+                    ]}
+                    name='typeInspection'
+                    styles={{ gap: '16px' }}
+                    required
+                />
 
                 <TextAreaForm
                     name='note'
@@ -94,14 +86,12 @@ export const FormAddInspection = ({ type, resetHistory }: Props) => {
                 />
                 <TextAreaForm
                     name='resultInspection'
-                    label={`Результаты ${type === '1' ? 'осмотра' : 'обработки'}`}
+                    label='Результаты осмотра'
                     placeholder='Дополнительная информация'
                 />
                 <DatePickerForm
                     name='dateNextInspection'
-                    label={`Дата ${
-                        type === '1' ? 'следующего осмотра' : 'следующей обработки'
-                    }`}
+                    label='Дата следующего осмотра'
                 />
             </Flex>
             <Button

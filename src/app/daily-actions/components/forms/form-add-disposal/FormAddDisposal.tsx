@@ -39,11 +39,11 @@ export const FormAddDisposal = ({ resetHistory }: Props) => {
     return (
         <Form onFinish={addAction} form={form}>
             <Flex
-                gap='16px'
                 style={{
                     padding: '15px 16px',
                     background: '#F5F5F5',
                     marginBottom: '24px',
+                    columnGap: '16px',
                 }}
                 wrap
             >

@@ -1,9 +1,9 @@
 import { TableProps } from 'antd';
 import { IDailyActionTable } from '../interface/IDailyActionTable';
 import { TableCheckbox } from '../../components/custom-inputs/TableCheckbox';
-import { SortersAnimalsType } from '../../../../utils/sortersAnimals';
+import { SortersAnimalsType } from '../../service/dailyActions';
 
-export const columnsTableHistoryTreatment = (
+export const columnsTableHistoryVaccination = (
     sorters: SortersAnimalsType
 ): TableProps<IDailyActionTable>['columns'] => [
     {
@@ -59,13 +59,13 @@ export const columnsTableHistoryTreatment = (
                 : null,
     },
     {
-        title: 'Диагноз',
-        dataIndex: 'result',
-        key: 'result',
-        minWidth: 115,
+        title: 'Тип обработки',
+        dataIndex: 'subtype',
+        key: 'subtype',
+        minWidth: 130,
         sorter: true,
         sortOrder:
-            sorters.column === 'Result'
+            sorters.column === 'Subtype'
                 ? sorters.descending
                     ? 'descend'
                     : 'ascend'
@@ -98,7 +98,7 @@ export const columnsTableHistoryTreatment = (
                 : null,
     },
     {
-        title: 'Дата следующего осмотра',
+        title: 'Дата следующей обработки',
         dataIndex: 'nextDate',
         key: 'nextDate',
         minWidth: 133,
