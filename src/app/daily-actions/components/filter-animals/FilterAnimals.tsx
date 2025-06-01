@@ -47,26 +47,20 @@ export const FilterAnimals = ({ keyTab }: Props) => {
     const animals = useAppSelector(selectAnimals);
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const sorters = useAppSelector(selectSortersAnimals);
-    const animalsId = useAppSelector(selectAnimalsId)
-    const isGroup = useAppSelector(selectIsGroup)
+    const animalsId = useAppSelector(selectAnimalsId);
+    const isGroup = useAppSelector(selectIsGroup);
 
     const dispatch = useAppDispatch();
-    
-    const [paginationInfo, setPaginationInfo] =
-        useState<IResponsePaginationInfoDailyActions>();
-    const [isSelectedAllAnimals, setIsSelectedAllAnimals] = useState<boolean>(false);
-    const [getFilterAnimalsQuery, { isLoading: isLoadingGetFilterAnimals }] =
-        useLazyGetFilterAnimalsQuery();
-    const [
-        getPaginationInfoFilterAnimalsQuery,
-        { isLoading: isLoadingGetPaginationInfoFilterAnimals },
-    ] = useLazyGetPaginationInfoFilterAnimalsQuery();
-    const [getAllAnimalsIdQuery] = useLazyGetAllAnimalsIdQuery()
 
-    const getFilterAnimals = async (
-        data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
-    ) => {
-        await getFilterAnimalsQuery(data)
+    const [paginationInfo, setPaginationInfo] = useState<IResponsePaginationInfoDailyActions>();
+    const [isSelectedAllAnimals, setIsSelectedAllAnimals] = useState<boolean>(false);
+    const [getFilterAnimalsQuery, { isLoading: isLoadingGetFilterAnimals }] = useLazyGetFilterAnimalsQuery();
+    const [getPaginationInfoFilterAnimalsQuery, { isLoading: isLoadingGetPaginationInfoFilterAnimals }] =
+        useLazyGetPaginationInfoFilterAnimalsQuery();
+    const [getAllAnimalsIdQuery] = useLazyGetAllAnimalsIdQuery();
+
+    const getFilterAnimals = async (data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }) => {
+        await getFilterAnimalsQuery(data);
     };
 
     const getPaginationInfoFilterAnimals = async (data: FiltersAnimalsType = filters) => {
@@ -75,8 +69,8 @@ export const FilterAnimals = ({ keyTab }: Props) => {
     };
 
     const getAllAnimalsId = async (data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }) => {
-        await getAllAnimalsIdQuery(data)
-    }
+        await getAllAnimalsIdQuery(data);
+    };
 
     const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
         setIsSelectedAllAnimals(e.target.checked);
@@ -95,7 +89,7 @@ export const FilterAnimals = ({ keyTab }: Props) => {
         getAllAnimalsId({
             filters: filters,
             sorters: { ...sorters, page: 0 },
-        })
+        });
         dispatch(resetSortersAnimals());
         if (isGroup) {
             getPaginationInfoFilterAnimals();
@@ -126,9 +120,7 @@ export const FilterAnimals = ({ keyTab }: Props) => {
     const onChangeTable = (
         newPagination: TablePaginationConfig,
         filters: Record<string, FilterValue | null>,
-        sorter:
-            | SorterResult<IDailyActionAnimalsTable>
-            | SorterResult<IDailyActionAnimalsTable>[]
+        sorter: SorterResult<IDailyActionAnimalsTable> | SorterResult<IDailyActionAnimalsTable>[]
     ) => {
         filters;
         if (!sorter || (!Array.isArray(sorter) && !sorter.field)) {
@@ -179,15 +171,8 @@ export const FilterAnimals = ({ keyTab }: Props) => {
             <FormFilter />
             {isGroup && (
                 <>
-                    <Flex
-                        justify='flex-end'
-                        style={{ width: '100%' }}
-                        gap={16}
-                        align='center'
-                    >
-                        <div
-                            style={{ fontWeight: '500' }}
-                        >{`Выбрано: ${selectedAnimals.length}`}</div>
+                    <Flex justify='flex-end' style={{ width: '100%' }} gap={16} align='center'>
+                        <div style={{ fontWeight: '500' }}>{`Выбрано: ${selectedAnimals.length}`}</div>
                         <Checkbox
                             onChange={handlerChangeSelectedAllActions}
                             style={{
@@ -215,14 +200,10 @@ export const FilterAnimals = ({ keyTab }: Props) => {
                             current: sorters.page,
                             total: paginationInfo?.count,
                             pageSize: paginationInfo?.entriesPerPage,
-                            showTotal: (total, range) =>
-                                `${range[0]}-${range[1]} из ${total} элементов`,
+                            showTotal: (total, range) => `${range[0]}-${range[1]} из ${total} элементов`,
                         }}
                         onChange={onChangeTable}
-                        loading={
-                            isLoadingGetFilterAnimals ||
-                            isLoadingGetPaginationInfoFilterAnimals
-                        }
+                        loading={isLoadingGetFilterAnimals || isLoadingGetPaginationInfoFilterAnimals}
                     />
                 </>
             )}

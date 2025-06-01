@@ -55,26 +55,28 @@ export const AppMenu = () => {
         {
             key: '7',
             icon: <ClockCircleFilled />,
-            label: (
-                <Link to='reproductive-accounting'>Репродуктивный учет</Link>
-            ),
+            label: <Link to='reproductive-accounting'>Репродуктивный учет</Link>,
             danger: true,
         },
         {
             key: '8',
             icon: <BellFilled />,
-            label: 'Контроль провесов',
+            label: 'Контроль привесов',
             danger: true,
         },
         {
             key: '9',
+            icon: <BellFilled />,
+            label: <Link to='/animal-card'>Карточка животного</Link>,
+            danger: true,
+        },
+        {
+            key: '10',
             icon: <SettingOutlined />,
             label: 'Отчеты',
             danger: true,
         },
     ];
 
-    return (
-        <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />
-    );
+    return <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />;
 };

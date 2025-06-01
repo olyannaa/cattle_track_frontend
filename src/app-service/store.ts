@@ -3,7 +3,6 @@ import { api } from '../app-service/services/api';
 import animalsDailyActions from '../app/daily-actions/service/animalsDailyActionsSlice';
 import dailyActions from '../app/daily-actions/service/dailyActionsSlice';
 import animals from '../app/animal-accounting/services/animalsSlice';
-import registerAnimal from '../app/register-animal/services/registration-animal-slice';
 
 export const store = configureStore({
     reducer: {
@@ -11,17 +10,10 @@ export const store = configureStore({
         animalsDailyActions,
         dailyActions,
         animals,
-        registerAnimal,
     },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(api.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export type AppThunk<ReturnType = void> = ThunkAction<
-    ReturnType,
-    RootState,
-    unknown,
-    Action<string>
->;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;

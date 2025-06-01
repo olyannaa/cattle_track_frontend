@@ -9,6 +9,7 @@ import { InfrastructurePage } from './app/infrastructure/InfrastructurePage';
 import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
 import ruRU from 'antd/lib/locale/ru_RU';
 import { ReproductiveAccountingPage } from './app/reproductive-accounting/ReproductiveAccountingPage';
+import { AnimalCardPage } from './app/animal-card/AnimalCardPage';
 
 function App() {
     const theme: ThemeConfig = {
@@ -132,6 +133,7 @@ function App() {
                         <Route path='/infrastructure' element={<InfrastructurePage />} />
                         <Route path='/accounting' element={<AnimalAccountingPage />} />
                         <Route path='/reproductive-accounting' element={<ReproductiveAccountingPage />} />
+                        <Route path='/animal-card' element={<AnimalCardPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
