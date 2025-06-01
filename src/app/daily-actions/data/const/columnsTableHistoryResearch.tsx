@@ -1,7 +1,7 @@
 import { Checkbox, TableProps } from 'antd';
 import { IDailyActionTable } from '../interface/IDailyActionTable';
 import { TableCheckbox } from '../../components/custom-inputs/TableCheckbox';
-import { SortersAnimalsType } from '../../service/dailyActions';
+import { SortersAnimalsType } from '../../../../utils/sortersAnimals';
 
 export const columnsTableHistoryResearch = (
     sorters: SortersAnimalsType

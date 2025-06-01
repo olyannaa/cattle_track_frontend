@@ -4,7 +4,6 @@ import { FormFilter } from '../forms/form-filter/FormFilter';
 import { useEffect, useState } from 'react';
 import { columnsChoiceAnimalsTable } from '../../data/const/columnsChoiceAnimalsTable';
 import {
-    FiltersAnimalsType,
     IRequestGetFilterAnimals,
     IResponsePaginationInfoDailyActions,
     useLazyGetAllAnimalsIdQuery,
@@ -29,6 +28,8 @@ import {
     selectSortersAnimals,
 } from '../../service/animalsDailyActionsSlice';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
+import { FiltersAnimalsType } from '../../../../utils/filtersAnimals';
+import { AnimalFilters } from '../../../../utils/animals';
 
 type Props = {
     keyTab: string;
@@ -44,14 +45,14 @@ export type FiltersType = {
 
 export const FilterAnimals = ({ keyTab }: Props) => {
     const filters = useAppSelector(selectFiltersAnimals);
-    const animals = useAppSelector(selectAnimals);
+    const animals: AnimalFilters[] = useAppSelector(selectAnimals);
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const sorters = useAppSelector(selectSortersAnimals);
-    const animalsId = useAppSelector(selectAnimalsId)
-    const isGroup = useAppSelector(selectIsGroup)
+    const animalsId = useAppSelector(selectAnimalsId);
+    const isGroup = useAppSelector(selectIsGroup);
 
     const dispatch = useAppDispatch();
-    
+
     const [paginationInfo, setPaginationInfo] =
         useState<IResponsePaginationInfoDailyActions>();
     const [isSelectedAllAnimals, setIsSelectedAllAnimals] = useState<boolean>(false);
@@ -61,12 +62,12 @@ export const FilterAnimals = ({ keyTab }: Props) => {
         getPaginationInfoFilterAnimalsQuery,
         { isLoading: isLoadingGetPaginationInfoFilterAnimals },
     ] = useLazyGetPaginationInfoFilterAnimalsQuery();
-    const [getAllAnimalsIdQuery] = useLazyGetAllAnimalsIdQuery()
+    const [getAllAnimalsIdQuery] = useLazyGetAllAnimalsIdQuery();
 
     const getFilterAnimals = async (
         data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
     ) => {
-        await getFilterAnimalsQuery(data)
+        await getFilterAnimalsQuery(data);
     };
 
     const getPaginationInfoFilterAnimals = async (data: FiltersAnimalsType = filters) => {
@@ -74,9 +75,11 @@ export const FilterAnimals = ({ keyTab }: Props) => {
         setPaginationInfo(response);
     };
 
-    const getAllAnimalsId = async (data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }) => {
-        await getAllAnimalsIdQuery(data)
-    }
+    const getAllAnimalsId = async (
+        data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
+    ) => {
+        await getAllAnimalsIdQuery(data);
+    };
 
     const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
         setIsSelectedAllAnimals(e.target.checked);
@@ -95,7 +98,7 @@ export const FilterAnimals = ({ keyTab }: Props) => {
         getAllAnimalsId({
             filters: filters,
             sorters: { ...sorters, page: 0 },
-        })
+        });
         dispatch(resetSortersAnimals());
         if (isGroup) {
             getPaginationInfoFilterAnimals();

@@ -1,18 +1,22 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
 import { RadioGroupForm } from '../../custom-inputs/radio-group-form/RadioGroupForm';
-import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
+import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
-import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
+import {
+    selectIsGroup,
+    selectSelectedAnimals,
+} from '../../../service/animalsDailyActionsSlice';
+
 import dayjs from 'dayjs';
 import { FormTypeInspection } from '../../../data/types/FormTypes';
 import { optionsInspections } from '../../../data/const/optionsSelect';
+import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
 
 type Props = {
     type: string;
@@ -20,7 +24,7 @@ type Props = {
 };
 
 export const FormAddInspection = ({ type, resetHistory }: Props) => {
-    const isGroup = useAppSelector(selectIsGroup)
+    const isGroup = useAppSelector(selectIsGroup);
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [form] = Form.useForm();
@@ -33,7 +37,9 @@ export const FormAddInspection = ({ type, resetHistory }: Props) => {
             performedBy: dataForm.name,
             result: dataForm.resultInspection,
             notes: dataForm.note,
-            nextDate: dataForm.dateNextInspection ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'): null,
+            nextDate: dataForm.dateNextInspection
+                ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD')
+                : null,
         }));
         await createDailyActions(data);
         form.resetFields();
@@ -76,7 +82,7 @@ export const FormAddInspection = ({ type, resetHistory }: Props) => {
                         label='Тип обработки'
                         name='typeInspection'
                         options={optionsInspections}
-                        style={{ maxWidth: '475px' }}
+                        styles={{ maxWidth: '475px' }}
                         required
                     />
                 )}

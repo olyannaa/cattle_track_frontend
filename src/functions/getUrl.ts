@@ -1,8 +1,6 @@
-import {
-    FiltersAnimalsType,
-    IRequestGetIdentificationValues,
-    SortersAnimalsType,
-} from '../service/dailyActions';
+import { FiltersAnimalsType } from '../utils/filtersAnimals';
+import { IRequestGetIdentificationValues } from '../utils/requestType';
+import { SortersAnimalsType } from '../utils/sortersAnimals';
 
 export const getUrlFilterAnimals = (
     filters: FiltersAnimalsType,
@@ -10,7 +8,7 @@ export const getUrlFilterAnimals = (
         column: '',
         descending: false,
         page: 0,
-    }, 
+    },
     isId: boolean = false
 ) => {
     let url = isId ? 'DailyActions/animals/ids?' : 'DailyActions/animals?';

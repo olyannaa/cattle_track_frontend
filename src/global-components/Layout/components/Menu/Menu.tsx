@@ -55,15 +55,13 @@ export const AppMenu = () => {
         {
             key: '7',
             icon: <ClockCircleFilled />,
-            label: (
-                <Link to='reproductive-accounting'>Репродуктивный учет</Link>
-            ),
+            label: <Link to='reproductive-accounting'>Репродуктивный учет</Link>,
             danger: true,
         },
         {
             key: '8',
             icon: <BellFilled />,
-            label: 'Контроль провесов',
+            label: <Link to='/weight-control'>Контроль провесов</Link>,
             danger: true,
         },
         {
