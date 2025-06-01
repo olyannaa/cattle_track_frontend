@@ -80,11 +80,11 @@ export const TableWeights = () => {
             }
         }
     };
-    console.log(weights);
+
     return (
         <Table<TableWeight>
             columns={columnsTableWeights(sortersWeight)}
-            style={{ width: '100%' }}
+            style={{ width: '100%', overflowX: 'auto' }}
             dataSource={weights.map((weight) => ({
                 ...weight,
                 key: weight.id,
@@ -97,7 +97,6 @@ export const TableWeights = () => {
                 pageSize: paginationInfo?.entriesPerPage,
                 showTotal: (total, range) =>
                     `${range[0]}-${range[1]} из ${total} элементов`,
-                //className: styles['table__pagination'],
             }}
             onChange={onChangeTable}
         />

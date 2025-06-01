@@ -39,6 +39,42 @@ export type IRequestGetWeightsAnimal = {
     sorters: SortersAnimalsType;
 };
 
+export type FieldWeightByAge = {
+    age: number;
+    weight: number;
+};
+
+export type FieldWeightByDate = {
+    date: string;
+    weight: number;
+};
+
+export type FieldSUPByDate = {
+    date: string;
+    sup: number;
+};
+
+export type StatisticsAnimal = {
+    dataByAge: FieldWeightByAge[];
+    dataByDate: FieldWeightByDate[];
+    dataBySUP: FieldSUPByDate[];
+    minSUP: number;
+    maxSUP: number;
+    meanSUP: number;
+};
+
+export type IResponseCreateWeight = {
+    message: string;
+};
+
+export type IResponseGetLastWeight = {
+    id: string;
+    date: string | null;
+    age: number | null;
+    weight: number | null;
+    sup: number | null;
+};
+
 export const weightControlApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getFilterAnimals: builder.query<AnimalFilters[], IRequestGetFilterAnimals>({
@@ -77,18 +113,24 @@ export const weightControlApi = api.injectEndpoints({
             }),
         }),
 
-        getWeightsStatisticsAnimal: builder.query<any, string>({
+        getWeightsStatisticsAnimal: builder.query<StatisticsAnimal, string>({
             query: (id) => ({
                 url: `weights/${id}/statistics`,
                 method: 'GET',
             }),
         }),
 
-        createWeight: builder.mutation<any, newWeight>({
+        createWeight: builder.mutation<IResponseCreateWeight, newWeight>({
             query: (data) => ({
                 url: 'weights',
                 method: 'POST',
                 body: data,
+            }),
+        }),
+        getLastWeightAnimal: builder.query<IResponseGetLastWeight, string>({
+            query: (id) => ({
+                url: `weights/${id}/last`,
+                method: 'GET',
             }),
         }),
     }),
@@ -100,4 +142,6 @@ export const {
     useCreateWeightMutation,
     useLazyGetWeightsAnimalQuery,
     useLazyGetWeightsPaginationInfoQuery,
+    useLazyGetWeightsStatisticsAnimalQuery,
+    useLazyGetLastWeightAnimalQuery,
 } = weightControlApi;

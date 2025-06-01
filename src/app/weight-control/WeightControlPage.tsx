@@ -1,4 +1,4 @@
-import { Flex } from 'antd';
+import { Flex, message } from 'antd';
 import { HeaderContent } from '../../global-components/header-content/HeaderContent';
 import { useState } from 'react';
 import { items } from './data/const/tabs';
@@ -8,8 +8,16 @@ import { AnalysisWeights } from './components/analysis-weights/AnalysisWeights';
 
 export const WeightControlPage = () => {
     const [activeTab, setActiveTab] = useState('Взвешивание');
+    const [messageApi, contextHolder] = message.useMessage();
+    const success = (message: string) => {
+        messageApi.open({
+            type: 'success',
+            content: message,
+        });
+    };
     return (
         <Flex vertical gap={16} style={{ maxWidth: '920px' }}>
+            {contextHolder}
             <HeaderContent
                 title='Контроль привесов'
                 items={items}
@@ -28,7 +36,7 @@ export const WeightControlPage = () => {
                     {activeTab === 'Взвешивание' ? 'Регистрация взвешивания' : activeTab}
                 </div>
                 <Filters keyTab={activeTab} />
-                {activeTab === 'Взвешивание' && <FormAddWeight />}
+                {activeTab === 'Взвешивание' && <FormAddWeight success={success} />}
                 {activeTab === 'Анализ привесов' && <AnalysisWeights />}
             </Flex>
         </Flex>

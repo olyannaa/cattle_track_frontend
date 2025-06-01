@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { FiltersAnimalsType } from '../../../utils/filtersAnimals';
 import { RootState } from '../../../app-service/store';
 import { AnimalFilters } from '../../../utils/animals';
-import { weightControlApi } from './weightControl';
+import { StatisticsAnimal, weightControlApi } from './weightControl';
 import { SortersAnimalsType } from '../../../utils/sortersAnimals';
 
 type InitialState = {
@@ -10,6 +10,7 @@ type InitialState = {
     selectedAnimal: string;
     animals: AnimalFilters[];
     sortersWeight: SortersAnimalsType;
+    statisticsAnimal: StatisticsAnimal;
 };
 
 const initialState: InitialState = {
@@ -27,6 +28,14 @@ const initialState: InitialState = {
         column: '',
         descending: false,
         page: 1,
+    },
+    statisticsAnimal: {
+        dataByAge: [],
+        dataByDate: [],
+        dataBySUP: [],
+        maxSUP: 0,
+        meanSUP: 0,
+        minSUP: 0,
     },
 };
 
@@ -73,6 +82,16 @@ const slice = createSlice({
                 state.filters = { ...initialState.filters };
             }
         );
+        builder.addMatcher(
+            weightControlApi.endpoints.getWeightsStatisticsAnimal.matchFulfilled,
+            (state, action) => {
+                if (action.payload.dataByDate) {
+                    state.statisticsAnimal = { ...action.payload };
+                } else {
+                    state.statisticsAnimal = { ...initialState.statisticsAnimal };
+                }
+            }
+        );
     },
 });
 
@@ -97,3 +116,6 @@ export const selectAnimalsWeightControl = (state: RootState) =>
 
 export const selectSortersWeightControl = (state: RootState) =>
     state.weightControl.sortersWeight;
+
+export const selectStatisticsAnimal = (state: RootState) =>
+    state.weightControl.statisticsAnimal;
