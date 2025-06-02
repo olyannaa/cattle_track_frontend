@@ -1,6 +1,6 @@
 import { Form, Select } from 'antd';
-import { Label } from '../../filter-inputs/Label';
 import { IFormItemSelect } from '../../../data/interface/FormInputs';
+import { InputLabel } from '../../input-label/InputLabel';
 
 export const SelectForm = ({
     label,
@@ -14,7 +14,7 @@ export const SelectForm = ({
 }: IFormItemSelect) => {
     return (
         <div style={{ maxWidth: '491px', width: '100%', ...styles }}>
-            <Label label={label} required={required} />
+            <InputLabel label={label} required={required} />
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Сделайте выбор' }]}

@@ -1,6 +1,6 @@
 import { Flex, Radio, RadioChangeEvent, Switch } from 'antd';
-import { Label } from './Label';
 import { IItemRadioGroupWithSwitch } from '../../data/interface/InputsFilter';
+import { InputLabel } from '../input-label/InputLabel';
 
 export const RadioGroupWithSwitch = ({
     label,
@@ -25,7 +25,7 @@ export const RadioGroupWithSwitch = ({
         <div
             style={{ position: 'relative', width: '100%', maxWidth: '491px', ...styles }}
         >
-            <Label label={label} />
+            <InputLabel label={label} required={false} />
             <div style={{ maxWidth: '391px' }}>
                 <Radio.Group
                     style={{

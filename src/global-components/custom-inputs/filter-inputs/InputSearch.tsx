@@ -1,6 +1,7 @@
 import { Input } from 'antd';
-import { Label } from './Label';
+
 import { IInputFilterSearch } from '../../data/interface/InputsFilter';
+import { InputLabel } from '../input-label/InputLabel';
 
 export const InputSearch = ({
     label,
@@ -11,7 +12,7 @@ export const InputSearch = ({
     const { Search } = Input;
     return (
         <div style={{ maxWidth: '491px', width: '100%', ...styles }}>
-            <Label label={label} />
+            <InputLabel label={label} required={false} />
             <Search
                 placeholder={placeholder}
                 enterButton='Найти'
