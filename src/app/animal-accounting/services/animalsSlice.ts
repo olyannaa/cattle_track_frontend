@@ -11,11 +11,13 @@ export interface IAnimalGroup {
 type InitialState = {
     animalGroups: IAnimalGroup[];
     changedAnimals: IChangedAnimal[];
+    selectedAnimalsDelete: string[];
 };
 
 const initialState: InitialState = {
     animalGroups: [],
     changedAnimals: [],
+    selectedAnimalsDelete: [],
 };
 
 type ActionAnimals = {
@@ -148,6 +150,25 @@ const slice = createSlice({
                 });
             }
         },
+        addDeleteAnimals: (state, action) => {
+            const isAnimal = !!state.selectedAnimalsDelete.find(
+                (animal) => animal === action.payload
+            );
+            if (!isAnimal) {
+                state.selectedAnimalsDelete.push(action.payload);
+            }
+        },
+        addDeleteAllAnimals: (state, action) => {
+            state.selectedAnimalsDelete = [...action.payload];
+        },
+        resetDeleteAllAnimals: (state) => {
+            state.selectedAnimalsDelete = [];
+        },
+        deleteDeleteAnimals: (state, action) => {
+            state.selectedAnimalsDelete = state.selectedAnimalsDelete.filter(
+                (animal) => animal !== action.payload
+            );
+        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
@@ -165,5 +186,14 @@ const slice = createSlice({
 export default slice.reducer;
 export const selectAnimalGroups = (state: RootState) => state.animals.animalGroups;
 export const selectChangedAnimals = (state: RootState) => state.animals.changedAnimals;
+export const selectDeleteAnimals = (state: RootState) =>
+    state.animals.selectedAnimalsDelete;
 
-export const { updateChangedAnimals, updateChangedAnimalsMoreFields } = slice.actions;
+export const {
+    updateChangedAnimals,
+    updateChangedAnimalsMoreFields,
+    addDeleteAllAnimals,
+    addDeleteAnimals,
+    resetDeleteAllAnimals,
+    deleteDeleteAnimals,
+} = slice.actions;

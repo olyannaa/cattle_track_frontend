@@ -1,7 +1,17 @@
-import { Flex, message, Table, TablePaginationConfig } from 'antd';
+import {
+    Button,
+    Checkbox,
+    CheckboxChangeEvent,
+    Flex,
+    message,
+    Table,
+    TablePaginationConfig,
+} from 'antd';
 import { HeaderContent } from '../../global-components/header-content/HeaderContent';
 import styles from './AnimalAccountingPage.module.css';
 import {
+    useDeleteAnimalsMutation,
+    useLazyGetAllAnimalIdsQuery,
     useGetAnimalsGroupsQuery,
     useGetIdentificationFieldsNamesQuery,
     useLazyGetAnimalsQuery,
@@ -10,13 +20,17 @@ import {
 } from './services/animals';
 import { useEffect, useState } from 'react';
 import { downloadScvAnimals } from '../../functions/fetchFiles';
-import { useAppSelector } from '../../app-service/hooks';
-import { selectChangedAnimals } from './services/animalsSlice';
+import { useAppDispatch, useAppSelector } from '../../app-service/hooks';
+import {
+    addDeleteAllAnimals,
+    resetDeleteAllAnimals,
+    selectChangedAnimals,
+    selectDeleteAnimals,
+} from './services/animalsSlice';
 import { CheckPermissions, Permissions } from '../../utils/permissions';
 import { IAnimalTable } from './data/interfaces/animalTable';
 import { getColumns, items } from './data/const/tableAnimal';
 import { IAnimal, IResponsePaginationInfo } from './data/types/animal';
-import { CheckboxCustom } from '../../global-components/custom-inputs/checkbox/Checkbox';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
 
 export const AnimalAccountingPage = () => {
@@ -27,14 +41,22 @@ export const AnimalAccountingPage = () => {
     const [noActiveAnimals, setNoActiveAnimals] = useState<boolean>(false);
     const [sortedColumn, setSortedColumn] = useState<string | null>(null);
     const [descending, setDescending] = useState<boolean>(true);
+    const [isSelectedAllAnimals, setIsSelectedAllAnimals] = useState<boolean>(false);
     const changedAnimals = useAppSelector(selectChangedAnimals);
+    const deleteAnimals = useAppSelector(selectDeleteAnimals);
     const [paginationInfo, setPaginationInfo] = useState<IResponsePaginationInfo>();
+    const [allAnimalIds, setAllAnimalIds] = useState<string[]>([]);
+
     const [getPageCountQuery, { isLoading: isLoadingPageCount }] =
         useLazyGetPaginationInfoQuery();
     const [getAnimalsQuery, { isLoading: isLoadingAnimals }] = useLazyGetAnimalsQuery();
+    const [deleteAnimalsMutation] = useDeleteAnimalsMutation();
     const [updateAnimals] = useUpdateAnimalsMutation();
     useGetAnimalsGroupsQuery();
     const { data } = useGetIdentificationFieldsNamesQuery();
+    const dispatch = useAppDispatch();
+
+    const [getAllAnimalIdsQuery] = useLazyGetAllAnimalIdsQuery();
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -57,6 +79,11 @@ export const AnimalAccountingPage = () => {
             await getPageCountQuery({ type: typeAnimal, active: !noActiveAnimals })
         ).data;
         setPaginationInfo(res);
+    };
+
+    const getAllAnimalIds = async () => {
+        const res = (await getAllAnimalIdsQuery(!noActiveAnimals)).data;
+        setAllAnimalIds(res || []);
     };
 
     const onChangeTable = (
@@ -97,9 +124,32 @@ export const AnimalAccountingPage = () => {
     }, [sortedColumn, descending]);
 
     useEffect(() => {
+        setNoActiveAnimals(false);
+        if (isEditTable && typeAnimal !== 'Яловые') {
+            setButtons([
+                {
+                    text: 'Экспортировать таблицу (CSV)',
+                    buttonClick: handlerExportCSV,
+                },
+                {
+                    text: 'Сохранить таблицу',
+                    buttonClick: handlerClickSaveChange,
+                },
+            ]);
+        } else {
+            setButtons([]);
+        }
+    }, [typeAnimal]);
+
+    useEffect(() => {
         setCurrentPage(1);
         getAnimals(1);
         getCountAnimals();
+        if (typeAnimal === 'Яловые') {
+            dispatch(resetDeleteAllAnimals());
+            getAllAnimalIds();
+            setIsSelectedAllAnimals(false);
+        }
     }, [typeAnimal, noActiveAnimals]);
 
     const handlerClickSaveChange = async () => {
@@ -133,19 +183,34 @@ export const AnimalAccountingPage = () => {
         getAnimals(page);
     };
 
-    const buttons = [
-        {
-            text: 'Экспортировать таблицу (CSV)',
-            buttonClick: handlerExportCSV,
-        },
-    ];
+    const [buttons, setButtons] = useState<{ text: string; buttonClick: () => void }[]>(
+        []
+    );
 
-    if (isEditTable) {
-        buttons.push({
-            text: 'Сохранить таблицу',
-            buttonClick: handlerClickSaveChange,
-        });
-    }
+    const handlerChangeSelectedAllAnimals = (e: CheckboxChangeEvent) => {
+        setIsSelectedAllAnimals(e.target.checked);
+        if (e.target.checked) {
+            dispatch(addDeleteAllAnimals(allAnimalIds));
+        } else {
+            dispatch(resetDeleteAllAnimals());
+        }
+    };
+
+    const handlerDeleteAnimals = async () => {
+        if (deleteAnimals.length === 0) {
+            return;
+        }
+        await deleteAnimalsMutation(deleteAnimals);
+        setCurrentPage(1);
+        getAnimals(1);
+        getCountAnimals();
+        if (typeAnimal === 'Яловые') {
+            dispatch(resetDeleteAllAnimals());
+            getAllAnimalIds();
+            setIsSelectedAllAnimals(false);
+        }
+        setNoActiveAnimals(false);
+    };
 
     return (
         <Flex vertical gap={'16px'}>
@@ -156,15 +221,75 @@ export const AnimalAccountingPage = () => {
                 onChange={setTypeAnimal}
                 buttons={buttons}
             />
-            <Flex className={styles['table']} vertical>
-                <CheckboxCustom
-                    title='Отображать неактивных животных'
+            <Flex
+                className={styles['table']}
+                vertical
+                style={{ maxWidth: typeAnimal === 'Яловые' ? '848px' : '' }}
+            >
+                <Checkbox
                     onChange={(e) => setNoActiveAnimals(e.target.checked)}
-                    style={{ maxWidth: '285px', marginTop: '20px', marginBottom: '20px' }}
-                />
+                    style={{
+                        maxWidth: '285px',
+                        padding: '8px 12px 10px',
+                        border: '1px solid var(--grey-border)',
+                        borderRadius: '2px',
+                        background: 'var(--global-bg)',
+                        height: '40px',
+                        marginTop: '20px',
+                        marginBottom: '20px',
+                    }}
+                    checked={noActiveAnimals}
+                >
+                    Отображать неактивных животных
+                </Checkbox>
+                {typeAnimal === 'Яловые' && (
+                    <Flex
+                        justify='space-between'
+                        className={styles['wrapper-delete-actions']}
+                        wrap={'wrap-reverse'}
+                        gap={8}
+                    >
+                        <Button
+                            onClick={handlerDeleteAnimals}
+                            style={{
+                                height: '40px',
+                            }}
+                            className={styles['delete-actions__button']}
+                        >
+                            Удалить выбранные записи
+                        </Button>
+                        <Flex
+                            align='center'
+                            gap={16}
+                            className={styles['wrapper-button']}
+                        >
+                            <div
+                                style={{ fontWeight: '500' }}
+                            >{`Выбрано: ${deleteAnimals.length}`}</div>
+
+                            <Checkbox
+                                onChange={handlerChangeSelectedAllAnimals}
+                                style={{
+                                    width: '138px',
+                                    padding: '8px 12px 10px',
+                                    border: '1px solid var(--grey-border)',
+                                    borderRadius: '2px',
+                                    background: 'var(--global-bg)',
+                                    height: '40px',
+                                }}
+                                checked={isSelectedAllAnimals}
+                            >
+                                Выбрать все
+                            </Checkbox>
+                        </Flex>
+                    </Flex>
+                )}
                 <Table<IAnimalTable>
-                    columns={getColumns(isEditTable, data || [])}
-                    style={{ width: '100%' }}
+                    columns={getColumns(isEditTable, data || [], typeAnimal === 'Яловые')}
+                    style={{
+                        width: '100%',
+                        maxWidth: typeAnimal === 'Яловые' ? '800px' : '',
+                    }}
                     dataSource={animals.map((animal) => ({
                         ...animal,
                         key: animal.id,

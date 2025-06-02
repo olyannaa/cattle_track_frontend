@@ -1,20 +1,20 @@
-import { Button, DatePicker, Form, message, Radio, Select, Spin } from 'antd';
+import { Button, DatePicker, Form, message, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InputLabel } from '../../../../global-components/custom-inputs/input-label/InputLabel';
-import styles from '../../ReproductiveAccountingPage.module.css';
 import { CheckResultForm } from './check-result-form/CheckResultForm';
 import { RequestPregnancy, useGetPregnanciesQuery, useRegisterPregnancyMutation } from '../../services/reproductive';
 import { SelectDataType } from '../../../../utils/selectDataType';
 import { isErrorType } from '../../../../utils/errorType';
 import { LoadingOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import { StatusCheck } from './data/status-check';
 
 export const PregnancyRateForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const rules = [{ required: true, message: 'Обязательное поле' }];
     const { data, isLoading, refetch } = useGetPregnanciesQuery();
     const [cows, setCows] = useState<SelectDataType[]>([]);
-    const [registerPregnancy] = useRegisterPregnancyMutation();
+    const [registerPregnancy, { isLoading: loading }] = useRegisterPregnancyMutation();
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -33,7 +33,9 @@ export const PregnancyRateForm = () => {
 
     const registerNewPregnancy = async (values: RequestPregnancy) => {
         if (data) {
-            values.cowId = data.find((animal) => animal.id === values.cowId)?.cowId ?? '';
+            const value = data.find((animal) => animal.id === values.cowId);
+            values.cowId = value?.cowId ?? '';
+            values.pregnancyId = value?.pregnancyId ?? '';
         }
         values.date = dayjs(values.date).format('YYYY-MM-DD');
         if (values.expectedCalvingDate) {
@@ -82,37 +84,30 @@ export const PregnancyRateForm = () => {
             <Form form={form} className='content-container' onFinish={registerNewPregnancy}>
                 <h2 className='form-title'>Проверка стельности</h2>
                 <div>
-                    <InputLabel label='Выберите корову' required={true}/>
+                    <InputLabel label='Выберите корову' required={true} />
                     <Form.Item name='cowId' rules={rules}>
                         <Select className='form-input_default' options={cows}></Select>
                     </Form.Item>
                 </div>
                 <div>
-                    <InputLabel label='Дата проверки' required={true}/>
+                    <InputLabel label='Дата проверки' required={true} />
                     <Form.Item className='form-input_default' name='date' initialValue={dayjs()}>
-                        <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
+                        <DatePicker
+                            format='DD.MM.YYYY'
+                            type='date'
+                            className='form-input_default date'
+                            placeholder='xx.xx.xxxx'
+                        ></DatePicker>
                     </Form.Item>
                 </div>
                 <div>
-                    <InputLabel label='Результат проверки' required={true}/>
-                    <Form.Item name='status' rules={rules}>
-                        <Radio.Group className={styles['reproductive__radio-group']}>
-                            <div className={styles['reproductive__radio-container']}>
-                                <div className='radio-border'>
-                                    <Radio value='Подлежит проверке'>Подлежит проверке</Radio>
-                                </div>
-                                <div className='radio-border'>
-                                    <Radio value='Яловая'>Яловая</Radio>
-                                </div>
-                                <div className='radio-border'>
-                                    <Radio value='Стельная'>Стельная</Radio>
-                                </div>
-                            </div>
-                        </Radio.Group>
+                    <InputLabel label='Результат проверки' required={true} />
+                    <Form.Item className='form-input_default' name='status' rules={rules}>
+                        <Select options={StatusCheck} placeholder='Выберите результат проверки' />
                     </Form.Item>
                 </div>
                 {data && <CheckResultForm data={data} />}
-                <Button type='primary' htmlType='submit'>
+                <Button type='primary' htmlType='submit' loading={loading} disabled={loading}>
                     Сохранить результат проверки
                 </Button>
             </Form>

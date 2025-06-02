@@ -1,8 +1,5 @@
 import { Flex, Form } from 'antd';
-import { InputSearch } from '../../custom-inputs/input-search/InputSearchForm';
-import { CustomSelect } from '../../custom-inputs/custom-select/CustomSelect';
 import { useEffect, useState } from 'react';
-import { RadioGroupWithSwitch } from '../../custom-inputs/radio-group-with-switch/RadioGroupWithSwitch';
 import {
     useGetGroupQuery,
     useGetIdentificationsFieldsQuery,
@@ -20,10 +17,13 @@ import {
     useLazyGetFilterAnimalsQuery,
     useLazyGetIdentificationValuesQuery,
 } from '../../../service/dailyActions';
+import { SelectFilters } from '../../../../../global-components/custom-inputs/filter-inputs/SelectFilters';
+import { InputSearch } from '../../../../../global-components/custom-inputs/filter-inputs/InputSearch';
+import { RadioGroupWithSwitch } from '../../../../../global-components/custom-inputs/filter-inputs/RadioGroupWithSwitch';
 
 export const FormFilter = () => {
     const filters = useAppSelector(selectFiltersAnimals);
-    const isGroup = useAppSelector(selectIsGroup)
+    const isGroup = useAppSelector(selectIsGroup);
     const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
     const [getIdentificationValuesQuery] = useLazyGetIdentificationValuesQuery();
     const [identificationValues, setIdentificationValues] =
@@ -86,7 +86,7 @@ export const FormFilter = () => {
             style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', rowGap: '24px' }}
             form={form}
         >
-            <CustomSelect
+            <SelectFilters
                 label='Группа содержания'
                 options={
                     groups?.length ? [{ label: 'Все группы', value: '' }, ...groups] : []
@@ -126,7 +126,7 @@ export const FormFilter = () => {
             {!isGroup && (
                 <>
                     <Flex style={{ width: '100%', gap: '16px', rowGap: '24px' }} wrap>
-                        <CustomSelect
+                        <SelectFilters
                             label='Способ идентификации'
                             options={
                                 indentificationFields?.length
@@ -148,7 +148,7 @@ export const FormFilter = () => {
                             value={filters.identificationFieldId || ''}
                         />
                         {filters.identificationFieldId && (
-                            <CustomSelect
+                            <SelectFilters
                                 label={
                                     indentificationFields?.find(
                                         (field) =>
@@ -173,7 +173,7 @@ export const FormFilter = () => {
                         placeholder='Введите номер животного для фильтрации списка'
                         onSearch={handlerSearch}
                     />
-                    <CustomSelect
+                    <SelectFilters
                         label='Выберите животное из списка'
                         options={animals}
                         value={

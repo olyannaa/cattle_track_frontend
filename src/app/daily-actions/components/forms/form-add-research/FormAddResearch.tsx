@@ -1,8 +1,7 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
-import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
-import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
+import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
 import { CheckboxCustom } from '../../../../../global-components/custom-inputs/checkbox/Checkbox';
 import {
     newDailyAction,
@@ -14,6 +13,7 @@ import { selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice
 import dayjs from 'dayjs';
 import { FormTypeResearch } from '../../../data/types/FormTypes';
 import { optionsResearch } from '../../../data/const/optionsSelect';
+import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
 
 type Props = {
     isGroup: boolean;
@@ -72,11 +72,11 @@ export const FormAddResearch = ({
     return (
         <Form onFinish={addAction} form={form}>
             <Flex
-                gap='16px'
                 style={{
                     padding: '15px 16px',
                     background: '#F5F5F5',
                     marginBottom: '24px',
+                    columnGap: '16px',
                 }}
                 wrap
             >
@@ -96,7 +96,7 @@ export const FormAddResearch = ({
                     label='Вид материала'
                     name='materialType'
                     options={optionsResearch}
-                    style={{ maxWidth: '475px' }}
+                    styles={{ maxWidth: '475px' }}
                     required
                 />
                 <InputForm

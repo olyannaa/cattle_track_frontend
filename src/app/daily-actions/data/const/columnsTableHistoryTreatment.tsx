@@ -1,7 +1,7 @@
 import { TableProps } from 'antd';
 import { IDailyActionTable } from '../interface/IDailyActionTable';
 import { TableCheckbox } from '../../components/custom-inputs/TableCheckbox';
-import { SortersAnimalsType } from '../../service/dailyActions';
+import { SortersAnimalsType } from '../../../../utils/sortersAnimals';
 
 export const columnsTableHistoryTreatment = (
     sorters: SortersAnimalsType
@@ -10,7 +10,7 @@ export const columnsTableHistoryTreatment = (
         title: '№ животного',
         dataIndex: 'tagNumber',
         key: 'tagNumber',
-        minWidth: 140,
+        minWidth: 120,
         sorter: true,
         sortOrder:
             sorters.column === 'TagNumber'
