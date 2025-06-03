@@ -1,6 +1,7 @@
 import { Select } from 'antd';
-import { Label } from './Label';
+
 import { ISelectFilter } from '../../data/interface/InputsFilter';
+import { InputLabel } from '../input-label/InputLabel';
 
 export const SelectFilters = ({
     label,
@@ -12,7 +13,7 @@ export const SelectFilters = ({
 }: ISelectFilter) => {
     return (
         <div style={{ maxWidth: '491px', width: '100%', ...styles }}>
-            <Label label={label} />
+            <InputLabel label={label} />
             <Select
                 options={options}
                 placeholder={placeholder}

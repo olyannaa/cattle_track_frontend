@@ -1,7 +1,7 @@
 import { Button, Flex, Form } from 'antd';
 import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
 import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
-import { InputForm } from '../../custom-inputs/input-form/InputForm';
+import { InputForm } from '../../../../../global-components/custom-inputs/form-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
@@ -13,11 +13,11 @@ import {
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
 import { useGetGroupQuery } from '../../../../../app-service/services/general';
-import { Label } from '../../custom-inputs/label/Label';
 import dayjs from 'dayjs';
 import { FormTypeTransfer } from '../../../data/types/FormTypes';
 import { useEffect, useState } from 'react';
 import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
+import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
 
 type Props = {
     resetHistory: () => void;
@@ -78,7 +78,7 @@ export const FormAddTransfer = ({ resetHistory }: Props) => {
                 />
                 {!isGroup && (
                     <div style={{ maxWidth: '475px', width: '100%' }}>
-                        <Label label={'Старая группа'} />
+                        <InputLabel label={'Старая группа'} required={false} />
                         <Flex
                             style={{
                                 padding: '0 11px',
