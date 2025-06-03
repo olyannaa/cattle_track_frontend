@@ -3,36 +3,22 @@ import { useAppSelector } from '../../../../../../../app-service/hooks';
 import { selectStatisticsAnimal } from '../../../../../service/weightControlSlice';
 import { Flex } from 'antd';
 import styles from './ChartWeightGain.module.css';
+import { useEffect, useState } from 'react';
+import { useWindowSize } from '../../../../../../../hooks/useWindowSize';
+import { getCountItemsChart } from '../../../../../fuctions/getCountItemsChart';
+import { chartStyles } from '../../../../../../../styles/chart-styles';
 
 export const ChartWeightGain = () => {
     const statisticsAnimal = useAppSelector(selectStatisticsAnimal);
+    const widthWindow = useWindowSize();
+    const [countItem, setCountItem] = useState(getCountItemsChart('SUP', widthWindow));
+    useEffect(() => {
+        setCountItem(getCountItemsChart('SUP', widthWindow));
+    }, [widthWindow]);
+
     const config: LineConfig = {
         xField: 'date',
         yField: 'sup',
-        padding: 'auto',
-
-        axis: {
-            x: {
-                position: 'bottom',
-                grid: true,
-                gridLineWidth: 1,
-                gridStroke: 'rgb(0, 0, 26,0.15)',
-                gridStrokeOpacity: 1,
-                line: true,
-                lineLineWidth: 1,
-                lineStroke: 'rgb(0, 0, 26,1)',
-                label: true,
-                labelAlign: 'parallel',
-            },
-            y: {
-                position: 'left',
-                grid: true,
-                gridLineWidth: 1,
-                gridStroke: 'rgb(0, 0, 26,0.15)',
-                gridStrokeOpacity: 1,
-                label: true,
-            },
-        },
         point: {
             sizeField: 5,
             style: {
@@ -41,20 +27,28 @@ export const ChartWeightGain = () => {
                 lineWidth: 1,
             },
         },
-        line: {
-            style: {
-                stroke: '#FF4218',
-                strokeWidth: 8,
-            },
+        tooltip: {
+            title: (d) => d.date,
+            items: [
+                (d) => ({
+                    color: '#ff4218',
+                    name: 'СУП',
+                    value: d.sup,
+                }),
+            ],
         },
-        area: {
-            style: {
-                fill: 'linear-gradient(90deg, rgba(255, 66, 24, 0.3) 0%, rgba(255, 66, 24, 0.05) 100%)',
-            },
+        scrollbar: {
+            x:
+                statisticsAnimal.dataBySUP.length < countItem
+                    ? false
+                    : {
+                          ratio: countItem / statisticsAnimal.dataBySUP.length,
+                      },
         },
+        ...chartStyles,
     };
     return (
-        <Flex wrap={'wrap-reverse'} gap={24}>
+        <Flex wrap={'wrap-reverse'} gap={24} align='flex-end'>
             <div
                 style={{
                     height: '300px',
@@ -70,7 +64,7 @@ export const ChartWeightGain = () => {
                     style={{ overflowX: 'auto' }}
                 />
             </div>
-            <Flex wrap className={styles['statistics']}>
+            <Flex wrap className={styles['statistics']} gap={16}>
                 <div className={styles['statistics-item']}>
                     {`Средний СУП: ${statisticsAnimal.meanSUP} кг/сут`}
                 </div>
