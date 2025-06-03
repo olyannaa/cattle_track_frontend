@@ -12,7 +12,7 @@ export const InputSearch = ({
     const { Search } = Input;
     return (
         <div style={{ maxWidth: '491px', width: '100%', ...styles }}>
-            <InputLabel label={label} required={false} />
+            <InputLabel label={label} />
             <Search
                 placeholder={placeholder}
                 enterButton='Найти'

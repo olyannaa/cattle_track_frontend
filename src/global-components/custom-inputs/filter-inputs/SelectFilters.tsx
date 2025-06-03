@@ -13,7 +13,7 @@ export const SelectFilters = ({
 }: ISelectFilter) => {
     return (
         <div style={{ maxWidth: '491px', width: '100%', ...styles }}>
-            <InputLabel label={label} required={false} />
+            <InputLabel label={label} />
             <Select
                 options={options}
                 placeholder={placeholder}

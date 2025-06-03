@@ -1,6 +1,6 @@
 export const InputLabel = ({
     label,
-    required = true,
+    required = false,
     marginSize = '8px',
 }: {
     label: string;

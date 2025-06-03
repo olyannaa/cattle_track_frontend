@@ -25,7 +25,7 @@ export const RadioGroupWithSwitch = ({
         <div
             style={{ position: 'relative', width: '100%', maxWidth: '491px', ...styles }}
         >
-            <InputLabel label={label} required={false} />
+            <InputLabel label={label} />
             <div style={{ maxWidth: '391px' }}>
                 <Radio.Group
                     style={{
