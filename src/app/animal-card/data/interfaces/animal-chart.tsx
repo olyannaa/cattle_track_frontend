@@ -1,13 +1,13 @@
-export type EventType = 'Осмотры' | 'Вакцинации и обработки' | 'Выбытие' | 'Поступление' | 'Лечение'; // и другие возможные типы
+export type EventType = 'Осмотры' | 'Вакцинации и обработки' | 'Выбытие' | 'Поступление' | 'Лечение';
 
-interface HistoryEventPoint {
+export interface HistoryPoint {
     x: string;
-    y: EventType;
+    y: string;
 }
 
 // Остальная часть интерфейса остается без изменений
 export interface AnimalHistoryData {
-    points: HistoryEventPoint[];
+    points: HistoryPoint[];
     title: string;
     xAxisLabel: string;
     yAxisLabel: string;

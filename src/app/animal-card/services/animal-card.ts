@@ -12,7 +12,7 @@ export const animalCardApi = api.injectEndpoints({
                 params: { animalId },
             }),
         }),
-        getAnimalActions: builder.query<AnimalAction, string>({
+        getAnimalActions: builder.query<AnimalAction[], string>({
             query: (animalId: string) => ({
                 url: `animalCard/animal/actions`,
                 method: 'GET',
@@ -36,4 +36,9 @@ export const animalCardApi = api.injectEndpoints({
     }),
 });
 
-export const { useLazyGetAnimalActionsQuery, useLazyGetAnimalDetailQuery, useLazyGetChartInfoQuery } = animalCardApi;
+export const {
+    useLazyGetAnimalActionsQuery,
+    useLazyGetAnimalDetailQuery,
+    useLazyGetChartInfoQuery,
+    useLazyGetWeightInfoQuery,
+} = animalCardApi;

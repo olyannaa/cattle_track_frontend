@@ -6,6 +6,7 @@ import { useGetAnimalDetailQuery, useLazyGetAnimalDetailQuery } from './services
 import { AnimalDetail } from './data/interfaces/animal-details';
 import { BaseInfo } from './components/base-info/BaseInfo';
 import { HistoryEventWrapper } from './components/history-event/HistoryEventWrapper';
+import { HistoryWeightWrapper } from './components/history-weight/HistoryWeightWrapper';
 
 export const AnimalCardPage = () => {
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
@@ -33,6 +34,7 @@ export const AnimalCardPage = () => {
             <FilterFormInfo />
             {animalData && <BaseInfo animal={animalData} />}
             <HistoryEventWrapper />
+            <HistoryWeightWrapper />
         </div>
     );
 };

@@ -52,7 +52,7 @@ export const EventChart: React.FC = () => {
 
     const fetchChart = async () => {
         try {
-            const response = await getChartData('20059ef6-da1d-449d-8492-2a7e399b082e').unwrap();
+            const response = await getChartData(selectedAnimals[0]).unwrap();
             setChartData(response);
         } catch (err) {
             console.error(err);
