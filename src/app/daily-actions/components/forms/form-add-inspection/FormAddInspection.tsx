@@ -1,8 +1,8 @@
 import { Button, Flex, Form } from 'antd';
 import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
-import { RadioGroupForm } from '../../custom-inputs/radio-group-form/RadioGroupForm';
+import { RadioGroupForm } from '../../../../../global-components/custom-inputs/form-inputs/radio-group-form/RadioGroupForm';
 import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
-import { InputForm } from '../../custom-inputs/input-form/InputForm';
+import { InputForm } from '../../../../../global-components/custom-inputs/form-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,

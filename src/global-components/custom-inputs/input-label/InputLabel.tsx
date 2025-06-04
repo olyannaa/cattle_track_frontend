@@ -1,4 +1,12 @@
-export const InputLabel = ({ label, required, marginSize = '8px' }: { label: string; required?: true; marginSize?: string }) => {
+export const InputLabel = ({
+    label,
+    required = false,
+    marginSize = '8px',
+}: {
+    label: string;
+    required?: boolean;
+    marginSize?: string;
+}) => {
     return (
         <div
             style={{

@@ -234,7 +234,6 @@ export const AnimalAccountingPage = () => {
                         border: '1px solid var(--grey-border)',
                         borderRadius: '2px',
                         background: 'var(--global-bg)',
-                        height: '40px',
                         marginTop: '20px',
                         marginBottom: '20px',
                     }}
@@ -252,7 +251,7 @@ export const AnimalAccountingPage = () => {
                         <Button
                             onClick={handlerDeleteAnimals}
                             style={{
-                                height: '40px',
+                                height: '42px',
                             }}
                             className={styles['delete-actions__button']}
                         >
@@ -275,7 +274,6 @@ export const AnimalAccountingPage = () => {
                                     border: '1px solid var(--grey-border)',
                                     borderRadius: '2px',
                                     background: 'var(--global-bg)',
-                                    height: '40px',
                                 }}
                                 checked={isSelectedAllAnimals}
                             >

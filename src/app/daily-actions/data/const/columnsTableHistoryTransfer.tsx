@@ -1,6 +1,6 @@
 import { TableProps } from 'antd';
 import { IDailyActionTable } from '../interface/IDailyActionTable';
-import { TableCheckbox } from '../../components/custom-inputs/TableCheckbox';
+import { TableCheckbox } from '../../components/table-checkbox/TableCheckbox';
 import { SortersAnimalsType } from '../../../../utils/sortersAnimals';
 
 export const columnsTableHistoryTransfer = (
