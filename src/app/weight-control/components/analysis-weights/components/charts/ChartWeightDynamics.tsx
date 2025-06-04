@@ -4,7 +4,7 @@ import { selectStatisticsAnimal } from '../../../../service/weightControlSlice';
 import { Flex } from 'antd';
 import { useWindowSize } from '../../../../../../hooks/useWindowSize';
 import { useEffect, useState } from 'react';
-import { getCountItemsChart } from '../../../../fuctions/getCountItemsChart';
+import { getCountItemsChart } from '../../../../functions/getCountItemsChart';
 import { chartStyles } from '../../../../../../styles/chart-styles';
 
 type Props = {

@@ -5,7 +5,7 @@ import { Flex } from 'antd';
 import styles from './ChartWeightGain.module.css';
 import { useEffect, useState } from 'react';
 import { useWindowSize } from '../../../../../../../hooks/useWindowSize';
-import { getCountItemsChart } from '../../../../../fuctions/getCountItemsChart';
+import { getCountItemsChart } from '../../../../../functions/getCountItemsChart';
 import { chartStyles } from '../../../../../../../styles/chart-styles';
 
 export const ChartWeightGain = () => {
