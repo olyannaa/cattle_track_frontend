@@ -10,6 +10,7 @@ import { RegisterAnimalPage } from './app/register-animal/RegisterAnimalsPage';
 import ruRU from 'antd/lib/locale/ru_RU';
 import { ReproductiveAccountingPage } from './app/reproductive-accounting/ReproductiveAccountingPage';
 import { AnimalCardPage } from './app/animal-card/AnimalCardPage';
+import { WeightControlPage } from './app/weight-control/WeightControlPage';
 
 function App() {
     const theme: ThemeConfig = {
@@ -41,6 +42,17 @@ function App() {
                 colorLinkHover: 'rgba(255, 66, 24, 0.7)',
             },
             Input: {
+                borderRadius: 2,
+                borderRadiusLG: 2,
+                borderRadiusSM: 2,
+                borderRadiusXS: 2,
+                fontSize: 16,
+                colorText: 'rgba(0, 0, 0, 0.85)',
+                activeBorderColor: 'rgba(255, 75, 64, 1)',
+                hoverBorderColor: 'rgba(255, 75, 64, 1)',
+                controlHeight: 40,
+            },
+            InputNumber: {
                 borderRadius: 2,
                 borderRadiusLG: 2,
                 borderRadiusSM: 2,
@@ -132,7 +144,11 @@ function App() {
                         <Route path='/animalregister' element={<RegisterAnimalPage />} />
                         <Route path='/infrastructure' element={<InfrastructurePage />} />
                         <Route path='/accounting' element={<AnimalAccountingPage />} />
-                        <Route path='/reproductive-accounting' element={<ReproductiveAccountingPage />} />
+                        <Route
+                            path='/reproductive-accounting'
+                            element={<ReproductiveAccountingPage />}
+                        />
+                        <Route path='/weight-control' element={<WeightControlPage />} />
                         <Route path='/animal-card' element={<AnimalCardPage />} />
                     </Route>
                 </Routes>

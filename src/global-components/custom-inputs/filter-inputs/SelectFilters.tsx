@@ -1,16 +1,17 @@
 import { Select } from 'antd';
-import { Label } from '../label/Label';
-import { ISelect } from '../../../data/interface/IInputsItem';
+import { Label } from './Label';
+import { ISelectFilter } from '../../data/interface/InputsFilter';
 
-export const CustomSelect = ({
+export const SelectFilters = ({
     label,
     options,
     placeholder,
     value,
     onChange,
-}: ISelect) => {
+    styles,
+}: ISelectFilter) => {
     return (
-        <div style={{ maxWidth: '491px', width: '100%' }}>
+        <div style={{ maxWidth: '491px', width: '100%', ...styles }}>
             <Label label={label} />
             <Select
                 options={options}

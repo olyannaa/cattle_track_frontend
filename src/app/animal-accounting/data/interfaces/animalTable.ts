@@ -1,4 +1,4 @@
-import { IdentificationField } from "../types/animal";
+import { IdentificationField } from '../types/animal';
 
 export interface IAnimalTableBasic {
     key: string;
@@ -14,8 +14,6 @@ export interface IAnimalTableBasic {
     tagNumber: string;
 }
 
-export interface IAnimalTable extends IAnimalTableBasic{
-    identificationFields: IdentificationField[]
+export interface IAnimalTable extends IAnimalTableBasic {
+    identificationFields: IdentificationField[];
 }
-
-

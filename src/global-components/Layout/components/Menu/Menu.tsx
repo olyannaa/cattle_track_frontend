@@ -61,7 +61,7 @@ export const AppMenu = () => {
         {
             key: '8',
             icon: <BellFilled />,
-            label: 'Контроль привесов',
+            label: <Link to='/weight-control'>Контроль привесов</Link>,
             danger: true,
         },
         {

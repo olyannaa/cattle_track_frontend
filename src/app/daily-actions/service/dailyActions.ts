@@ -3,7 +3,11 @@ import {
     getUrlFilterAnimals,
     getUrlIdentificationValues,
     getUrlPaginationInfoFilterAnimals,
-} from '../functions/getUrl';
+} from '../../../functions/getUrl';
+import { AnimalFilters } from '../../../utils/animals';
+import { FiltersAnimalsType } from '../../../utils/filtersAnimals';
+import { IRequestGetIdentificationValues } from '../../../utils/requestType';
+import { SortersAnimalsType } from '../../../utils/sortersAnimals';
 
 export type IRequestGetDailyActions = {
     type: string;
@@ -12,30 +16,6 @@ export type IRequestGetDailyActions = {
     descending: boolean;
 };
 
-export type FiltersAnimalsType = {
-    groupId?: string;
-    type?: string;
-    tagNumber?: string;
-    isActive?: boolean;
-    identificationFieldId?: string;
-    identificationFieldValue?: string;
-    [key: string]: string | undefined | boolean;
-};
-
-export type SortersAnimalsType = {
-    column: string;
-    descending: boolean;
-    page: number;
-    [key: string]: string | undefined | boolean | number;
-};
-
-export type IRequestGetIdentificationValues = {
-    groupId?: string;
-    type?: string;
-    isActive?: boolean;
-    identificationId: string;
-    [key: string]: string | undefined | boolean;
-};
 export type newDailyAction = {
     animalId: string;
     type: string;
@@ -129,7 +109,7 @@ export const dailyActionsApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        getFilterAnimals: builder.query<any, IRequestGetFilterAnimals>({
+        getFilterAnimals: builder.query<AnimalFilters[], IRequestGetFilterAnimals>({
             query: (data) => ({
                 url: getUrlFilterAnimals(data.filters, data.sorters),
                 method: 'GET',
@@ -188,9 +168,9 @@ export const dailyActionsApi = api.injectEndpoints({
         }),
         getAllAnimalsId: builder.query<string[], IRequestGetFilterAnimals>({
             query: (data) => ({
-                url:  getUrlFilterAnimals(data.filters, data.sorters, true),
+                url: getUrlFilterAnimals(data.filters, data.sorters, true),
                 method: 'GET',
-            })
+            }),
         }),
         getAllActionsId: builder.query<string[], IRequestGetDailyActions>({
             query: (data) => ({
@@ -200,7 +180,7 @@ export const dailyActionsApi = api.injectEndpoints({
                 }&SortInfo.Descending=${data.descending}`,
                 method: 'GET',
             }),
-        })
+        }),
     }),
 });
 
@@ -217,5 +197,5 @@ export const {
     useLazyGetAnimalByIdQuery,
     useCreateDailyActionsWithoutResetFiltersMutation,
     useLazyGetAllAnimalsIdQuery,
-    useLazyGetAllActionsIdQuery
+    useLazyGetAllActionsIdQuery,
 } = dailyActionsApi;

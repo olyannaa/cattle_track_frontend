@@ -3,6 +3,7 @@ import { api } from '../app-service/services/api';
 import animalsDailyActions from '../app/daily-actions/service/animalsDailyActionsSlice';
 import dailyActions from '../app/daily-actions/service/dailyActionsSlice';
 import animals from '../app/animal-accounting/services/animalsSlice';
+import weightControl from '../app/weight-control/service/weightControlSlice';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         animalsDailyActions,
         dailyActions,
         animals,
+        weightControl,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 });

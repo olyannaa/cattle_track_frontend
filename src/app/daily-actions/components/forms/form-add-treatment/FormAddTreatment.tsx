@@ -1,13 +1,16 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
-import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
+import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
-import { selectIsGroup, selectSelectedAnimals } from '../../../service/animalsDailyActionsSlice';
+import {
+    selectIsGroup,
+    selectSelectedAnimals,
+} from '../../../service/animalsDailyActionsSlice';
 import dayjs from 'dayjs';
 import { FormTypeTreatment } from '../../../data/types/FormTypes';
 
@@ -17,7 +20,7 @@ type Props = {
 
 export const FormAddTreatment = ({ resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
-    const isGroup = useAppSelector(selectIsGroup)
+    const isGroup = useAppSelector(selectIsGroup);
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [form] = Form.useForm();
     const addAction = async (dataForm: FormTypeTreatment) => {
@@ -27,7 +30,9 @@ export const FormAddTreatment = ({ resetHistory }: Props) => {
             date: dayjs(dataForm.dateStartTreatment).format('YYYY-MM-DD'),
             performedBy: dataForm.name,
             notes: dataForm.note,
-            nextDate: dataForm.dateNextInspection ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD'): null,
+            nextDate: dataForm.dateNextInspection
+                ? dayjs(dataForm.dateNextInspection).format('YYYY-MM-DD')
+                : null,
             medicine: dataForm.preparation,
             dose: dataForm.dose,
             result: dataForm.diagnosis,
@@ -40,11 +45,11 @@ export const FormAddTreatment = ({ resetHistory }: Props) => {
     return (
         <Form onFinish={addAction} form={form}>
             <Flex
-                gap='16px'
                 style={{
                     padding: '15px 16px',
                     background: '#F5F5F5',
                     marginBottom: '24px',
+                    columnGap: '16px',
                 }}
                 wrap
             >
@@ -74,7 +79,7 @@ export const FormAddTreatment = ({ resetHistory }: Props) => {
                     name='preparation'
                     placeholder='Укажите препарат'
                 />
-                <InputForm label='Доза' name='dose' placeholder='Укажите дозу'/>
+                <InputForm label='Доза' name='dose' placeholder='Укажите дозу' />
                 <TextAreaForm
                     name='note'
                     label='Примечание'

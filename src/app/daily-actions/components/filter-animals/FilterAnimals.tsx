@@ -4,7 +4,6 @@ import { FormFilter } from '../forms/form-filter/FormFilter';
 import { useEffect, useState } from 'react';
 import { columnsChoiceAnimalsTable } from '../../data/const/columnsChoiceAnimalsTable';
 import {
-    FiltersAnimalsType,
     IRequestGetFilterAnimals,
     IResponsePaginationInfoDailyActions,
     useLazyGetAllAnimalsIdQuery,
@@ -29,6 +28,8 @@ import {
     selectSortersAnimals,
 } from '../../service/animalsDailyActionsSlice';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
+import { FiltersAnimalsType } from '../../../../utils/filtersAnimals';
+import { AnimalFilters } from '../../../../utils/animals';
 
 type Props = {
     keyTab: string;
@@ -44,7 +45,7 @@ export type FiltersType = {
 
 export const FilterAnimals = ({ keyTab }: Props) => {
     const filters = useAppSelector(selectFiltersAnimals);
-    const animals = useAppSelector(selectAnimals);
+    const animals: AnimalFilters[] = useAppSelector(selectAnimals);
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const sorters = useAppSelector(selectSortersAnimals);
     const animalsId = useAppSelector(selectAnimalsId);

@@ -11,6 +11,10 @@
     min-width: 600px;
 }
 
+.wrapper-delete-actions {
+    margin-bottom: 24px;
+}
+
 @media (max-width: 767px) {
     .table__pagination {
         padding: 0;
@@ -20,5 +24,20 @@
         justify-self: start;
         margin-left: 16px !important;
         justify-content: flex-start !important;
+    }
+}
+
+@media (max-width: 500px) {
+    .wrapper-delete-actions {
+        flex-wrap: wrap-reverse;
+    }
+
+    .delete-actions__button {
+        width: 100%;
+    }
+
+    .wrapper-button {
+        justify-content: space-between;
+        width: 100%;
     }
 }

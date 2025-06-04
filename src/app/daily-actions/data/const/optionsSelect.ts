@@ -1,4 +1,4 @@
-export const optionsInspections = [
+export const optionsVaccination = [
     {
         label: 'Вакцинация',
         value: 'Вакцинация',

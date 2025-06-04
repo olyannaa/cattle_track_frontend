@@ -1,11 +1,16 @@
 import { Input } from 'antd';
-import { Label } from '../label/Label';
-import { IItemSearch } from '../../../data/interface/IInputsItem';
+import { Label } from './Label';
+import { IInputFilterSearch } from '../../data/interface/InputsFilter';
 
-export const InputSearch = ({ label, placeholder, onSearch }: IItemSearch) => {
+export const InputSearch = ({
+    label,
+    placeholder,
+    onSearch,
+    styles,
+}: IInputFilterSearch) => {
     const { Search } = Input;
     return (
-        <div style={{ maxWidth: '491px', width: '100%' }}>
+        <div style={{ maxWidth: '491px', width: '100%', ...styles }}>
             <Label label={label} />
             <Search
                 placeholder={placeholder}

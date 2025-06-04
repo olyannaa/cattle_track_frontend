@@ -1,6 +1,6 @@
 import { Button, Flex, Form } from 'antd';
-import { DatePickerForm } from '../../custom-inputs/date-picker-form/DatePickerForm';
-import { TextAreaForm } from '../../custom-inputs/text-area-form/TextAreaForm';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
+import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
 import { InputForm } from '../../custom-inputs/input-form/InputForm';
 import {
     newDailyAction,
@@ -12,12 +12,12 @@ import {
     selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
-import { SelectForm } from '../../custom-inputs/select-form/SelectForm';
 import { useGetGroupQuery } from '../../../../../app-service/services/general';
 import { Label } from '../../custom-inputs/label/Label';
 import dayjs from 'dayjs';
 import { FormTypeTransfer } from '../../../data/types/FormTypes';
 import { useEffect, useState } from 'react';
+import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
 
 type Props = {
     resetHistory: () => void;
@@ -25,21 +25,24 @@ type Props = {
 
 export const FormAddTransfer = ({ resetHistory }: Props) => {
     const [createDailyActions] = useCreateDailyActionsMutation();
-    const isGroup = useAppSelector(selectIsGroup)
+    const isGroup = useAppSelector(selectIsGroup);
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const [oldGroup, setOldGroup] = useState<string>('')
+    const [oldGroup, setOldGroup] = useState<string>('');
     const [form] = Form.useForm();
     const animals = useAppSelector(selectAnimals);
-    const options = useGetGroupQuery().data?.map((group) => ({
-        label: group.name,
-        value: group.id,
-    })) || [];
+    const options =
+        useGetGroupQuery().data?.map((group) => ({
+            label: group.name,
+            value: group.id,
+        })) || [];
 
-    useEffect(()=> {
-        if (!isGroup){
-            setOldGroup(animals.find((animal) => animal.id === selectedAnimals[0])?.groupId || '')
+    useEffect(() => {
+        if (!isGroup) {
+            setOldGroup(
+                animals.find((animal) => animal.id === selectedAnimals[0])?.groupId || ''
+            );
         }
-    },[selectAnimals])
+    }, [selectAnimals]);
 
     const addAction = async (dataForm: FormTypeTransfer) => {
         const data: newDailyAction[] = selectedAnimals.map((selectAnimal) => ({
@@ -59,11 +62,11 @@ export const FormAddTransfer = ({ resetHistory }: Props) => {
     return (
         <Form onFinish={addAction} form={form}>
             <Flex
-                gap='16px'
                 style={{
                     padding: '15px 16px',
                     background: '#F5F5F5',
                     marginBottom: '24px',
+                    columnGap: '16px',
                 }}
                 wrap
             >
@@ -96,8 +99,12 @@ export const FormAddTransfer = ({ resetHistory }: Props) => {
                     label='Новая группа'
                     name='group'
                     placeholder='Выберите группу '
-                    options={!isGroup ? options?.filter((option)=> option.value !== oldGroup) : options}
-                    style={{ maxWidth: '475px' }}
+                    options={
+                        !isGroup
+                            ? options?.filter((option) => option.value !== oldGroup)
+                            : options
+                    }
+                    styles={{ maxWidth: '475px' }}
                     required
                 />
                 <InputForm

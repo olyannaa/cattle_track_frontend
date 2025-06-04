@@ -1,23 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dailyActionsApi, FiltersAnimalsType, SortersAnimalsType } from './dailyActions';
+import { dailyActionsApi } from './dailyActions';
 import { RootState } from '../../../app-service/store';
-
-type AnimalDailyActions = {
-    id: string;
-    tagNumber: string;
-    type: string;
-    status: string;
-    groupName: string;
-    groupId: string;
-};
+import { FiltersAnimalsType } from '../../../utils/filtersAnimals';
+import { SortersAnimalsType } from '../../../utils/sortersAnimals';
+import { AnimalFilters } from '../../../utils/animals';
 
 type InitialState = {
-    filterAnimals: AnimalDailyActions[];
+    filterAnimals: AnimalFilters[];
     selectedAnimals: string[];
     filtersAnimals: FiltersAnimalsType;
     sortersAnimals: SortersAnimalsType;
-    allAnimalsIds: string[]
-    isGroup: boolean
+    allAnimalsIds: string[];
+    isGroup: boolean;
 };
 
 const initialState: InitialState = {
@@ -37,7 +31,7 @@ const initialState: InitialState = {
         page: 0,
     },
     allAnimalsIds: [],
-    isGroup: false
+    isGroup: false,
 };
 
 const slice = createSlice({
@@ -88,8 +82,8 @@ const slice = createSlice({
             };
         },
         changeIsGroup: (state, action) => {
-            state.isGroup = action.payload
-        }
+            state.isGroup = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
@@ -132,11 +126,10 @@ export const selectFiltersAnimals = (state: RootState) =>
 export const selectSortersAnimals = (state: RootState) =>
     state.animalsDailyActions.sortersAnimals;
 
-export const selectAnimalsId = (state: RootState) => 
-    state.animalsDailyActions.allAnimalsIds
+export const selectAnimalsId = (state: RootState) =>
+    state.animalsDailyActions.allAnimalsIds;
 
-export const selectIsGroup = (state: RootState) =>
-    state.animalsDailyActions.isGroup
+export const selectIsGroup = (state: RootState) => state.animalsDailyActions.isGroup;
 
 export const {
     addSelectedAnimal,
@@ -148,5 +141,5 @@ export const {
     deleteAllAnimals,
     changeSortersAnimals,
     resetSortersAnimals,
-    changeIsGroup
+    changeIsGroup,
 } = slice.actions;
