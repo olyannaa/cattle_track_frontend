@@ -1,6 +1,6 @@
 import { Form, InputNumber } from 'antd';
-import { Label } from '../../filter-inputs/Label';
 import { IFormItemInputNumber } from '../../../data/interface/FormInputs';
+import { InputLabel } from '../../input-label/InputLabel';
 
 export const NumberInputForm = ({
     label,
@@ -12,7 +12,7 @@ export const NumberInputForm = ({
 }: IFormItemInputNumber) => {
     return (
         <div style={{ maxWidth: '416px', width: '100%', ...styles }}>
-            <Label label={label} required={required} />
+            <InputLabel label={label} required={required} />
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Введите значение' }]}

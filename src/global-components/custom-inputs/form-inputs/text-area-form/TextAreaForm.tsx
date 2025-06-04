@@ -1,6 +1,6 @@
 import { Form, Input } from 'antd';
 import { IFormItemInput } from '../../../data/interface/FormInputs';
-import { Label } from '../../filter-inputs/Label';
+import { InputLabel } from '../../input-label/InputLabel';
 
 export const TextAreaForm = ({
     name,
@@ -11,7 +11,7 @@ export const TextAreaForm = ({
     const { TextArea } = Input;
     return (
         <div style={{ width: '100%' }}>
-            <Label label={label} required={required} />
+            <InputLabel label={label} required={required} />
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Заполните поле' }]}

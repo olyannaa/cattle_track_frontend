@@ -1,6 +1,6 @@
 import { TableProps } from 'antd';
 import { IDailyActionAnimalsTable } from '../interface/IDailyActionAnimalsTable';
-import { TableCheckbox } from '../../components/custom-inputs/TableCheckbox';
+import { TableCheckbox } from '../../components/table-checkbox/TableCheckbox';
 
 export const columnsChoiceAnimalsTable: TableProps<IDailyActionAnimalsTable>['columns'] =
     [

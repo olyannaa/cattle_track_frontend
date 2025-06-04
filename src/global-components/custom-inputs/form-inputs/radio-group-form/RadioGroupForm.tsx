@@ -1,6 +1,7 @@
 import { Form, Radio } from 'antd';
-import { Label } from '../label/Label';
-import { IFormItemRadioGroup } from '../../../data/interface/IFormItem';
+
+import { InputLabel } from '../../input-label/InputLabel';
+import { IFormItemRadioGroup } from '../../../data/interface/FormInputs';
 
 export const RadioGroupForm = ({
     label,
@@ -11,7 +12,7 @@ export const RadioGroupForm = ({
 }: IFormItemRadioGroup) => {
     return (
         <div style={{ width: '100%' }}>
-            <Label label={label} required={required} />
+            <InputLabel label={label} required={required} />
             <Form.Item
                 name={name}
                 rules={[{ required: required, message: 'Сделайте выбор' }]}

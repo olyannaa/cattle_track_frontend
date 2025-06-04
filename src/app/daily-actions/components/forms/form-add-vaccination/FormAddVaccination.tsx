@@ -1,5 +1,5 @@
 import { Button, Flex, Form } from 'antd';
-import { InputForm } from '../../custom-inputs/input-form/InputForm';
+import { InputForm } from '../../../../../global-components/custom-inputs/form-inputs/input-form/InputForm';
 import {
     newDailyAction,
     useCreateDailyActionsMutation,

@@ -2,6 +2,10 @@ import { Line, LineConfig } from '@ant-design/charts';
 import { useAppSelector } from '../../../../../../app-service/hooks';
 import { selectStatisticsAnimal } from '../../../../service/weightControlSlice';
 import { Flex } from 'antd';
+import { useWindowSize } from '../../../../../../hooks/useWindowSize';
+import { useEffect, useState } from 'react';
+import { getCountItemsChart } from '../../../../functions/getCountItemsChart';
+import { chartStyles } from '../../../../../../styles/chart-styles';
 
 type Props = {
     byItem: 'date' | 'age';
@@ -9,88 +13,69 @@ type Props = {
 
 export const ChartWeightDynamics = ({ byItem }: Props) => {
     const statisticsAnimal = useAppSelector(selectStatisticsAnimal);
+    const widthWindow = useWindowSize();
+    const [countItem, setCountItem] = useState(getCountItemsChart(byItem, widthWindow));
+    useEffect(() => {
+        setCountItem(getCountItemsChart(byItem, widthWindow));
+    }, [widthWindow]);
+
     const config: LineConfig = {
         xField: byItem,
         yField: 'weight',
-        padding: 'auto',
-        axis: {
-            x: {
-                position: 'bottom',
-                grid: true,
-                gridLineWidth: 1,
-                gridStroke: 'rgb(0, 0, 26,0.15)',
-                gridStrokeOpacity: 1,
-                line: true,
-                lineLineWidth: 1,
-                lineStroke: 'rgb(0, 0, 26,1)',
-                label: true,
-                labelAlign: 'parallel',
-                labelFormatter:
-                    byItem === 'age'
-                        ? (value: number) => `${value} мес`
-                        : (value: string) => value,
-            },
-            y: {
-                position: 'left',
-                grid: true,
-                gridLineWidth: 1,
-                gridStroke: 'rgb(0, 0, 26,0.15)',
-                gridStrokeOpacity: 1,
-                label: true,
-            },
-        },
+        height: 300,
+
         point: {
             sizeField: 5,
             style: {
-                fill: '#ff4218', // Красная заливка
-                stroke: '#fff', // Белая обводка
-                lineWidth: 2, // Толщина обводки
-                shadowColor: 'rgba(255,66,24,1)', // Полупрозрачная тень
-                shadowBlur: 4, // Размытие тени
+                fill: '#ff4218',
+                stroke: '#fff',
+                lineWidth: 2,
+                shadowColor: 'rgba(255,66,24,1)',
+                shadowBlur: 4,
             },
         },
-        // tooltip: {
-        //     showMarkers: true,
-
-        //     marker: {
-        //         stroke: '#FF4218',
-        //     },
-        // },
-        line: {
-            style: {
-                stroke: '#FF4218',
-                strokeWidth: 8,
-            },
+        tooltip: {
+            title: (d) => (byItem === 'age' ? `${d.age} мес` : d.date),
+            items: [
+                (d) => ({
+                    color: '#ff4218',
+                    name: 'Вес',
+                    value: d.weight,
+                }),
+            ],
         },
-        area: {
-            style: {
-                fill: 'linear-gradient(90deg, rgba(255, 66, 24, 0.3) 0%, rgba(255, 66, 24, 0.05) 100%)',
-            },
+        scrollbar: {
+            x:
+                (byItem === 'age' && statisticsAnimal.dataByAge.length < countItem) ||
+                (byItem === 'date' && statisticsAnimal.dataByDate.length < countItem)
+                    ? false
+                    : {
+                          ratio:
+                              byItem === 'age'
+                                  ? countItem / statisticsAnimal.dataByAge.length
+                                  : countItem / statisticsAnimal.dataByDate.length,
+                      },
         },
+        ...chartStyles,
     };
     return (
         <Flex gap={24} vertical>
             <div style={{ fontSize: '16px', fontWeight: '500' }}>
                 {byItem === 'age' ? 'Вес по возрасту (месяцам)' : 'Вес по датам'}
             </div>
-            <div
-                style={{
-                    height: '300px',
-                    background: '#fff',
-                    borderRadius: 8,
-                    boxShadow: '0 1px 2px 0 rgba(0,0,0,0.03)',
-                }}
-            >
-                <Line
-                    {...config}
-                    style={{ overflowX: 'auto' }}
-                    data={
-                        byItem === 'age'
-                            ? statisticsAnimal.dataByAge
-                            : statisticsAnimal.dataByDate
-                    }
-                />
-            </div>
+
+            <Line
+                {...config}
+                style={{ overflowX: 'auto' }}
+                data={
+                    byItem === 'age'
+                        ? statisticsAnimal.dataByAge.map((item) => ({
+                              age: `${item.age} мес`,
+                              weight: item.weight,
+                          }))
+                        : statisticsAnimal.dataByDate
+                }
+            />
         </Flex>
     );
 };

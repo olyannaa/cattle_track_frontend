@@ -10,6 +10,7 @@
 .statistics {
     width: 256px;
     gap: 16px;
+    max-height: 146px;
 }
 
 .wrapper-chart {
