@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { FilterFormInfo } from './components/filter-form/FilterFormInfo';
 import { useAppSelector } from '../../app-service/hooks';
 import { selectSelectedAnimals } from '../daily-actions/service/animalsDailyActionsSlice';
-import { useGetAnimalDetailQuery, useLazyGetAnimalDetailQuery } from './services/animal-card';
+import { useLazyGetAnimalDetailQuery } from './services/animal-card';
 import { AnimalDetail } from './data/interfaces/animal-details';
 import { BaseInfo } from './components/base-info/BaseInfo';
 import { HistoryEventWrapper } from './components/history-event/HistoryEventWrapper';
 import { HistoryWeightWrapper } from './components/history-weight/HistoryWeightWrapper';
+import { Lineage } from './components/lineage/Lineage';
 
 export const AnimalCardPage = () => {
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
@@ -35,6 +36,7 @@ export const AnimalCardPage = () => {
             {animalData && <BaseInfo animal={animalData} />}
             <HistoryEventWrapper />
             <HistoryWeightWrapper />
+            <Lineage />
         </div>
     );
 };

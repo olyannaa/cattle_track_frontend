@@ -33,6 +33,13 @@ export const animalCardApi = api.injectEndpoints({
                 params: { animalId },
             }),
         }),
+        getParents: builder.query<AnimalDetail[], string>({
+            query: (animalId: string) => ({
+                url: `animalCard/animal/parent`,
+                method: 'GET',
+                params: { animalId },
+            }),
+        }),
     }),
 });
 
@@ -41,4 +48,5 @@ export const {
     useLazyGetAnimalDetailQuery,
     useLazyGetChartInfoQuery,
     useLazyGetWeightInfoQuery,
+    useLazyGetParentsQuery,
 } = animalCardApi;

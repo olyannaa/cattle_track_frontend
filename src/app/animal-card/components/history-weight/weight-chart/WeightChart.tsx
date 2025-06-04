@@ -1,5 +1,5 @@
 import { HistoryPoint } from '../../../data/interfaces/animal-chart';
-import { Area, Line } from '@ant-design/plots';
+import { Line } from '@ant-design/plots';
 
 export const WeightChart = ({ points }: { points: HistoryPoint[] }) => {
     const config = {
