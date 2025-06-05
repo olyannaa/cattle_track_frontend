@@ -11,6 +11,7 @@ import {
     selectAnimals,
     selectFiltersAnimals,
     selectIsGroup,
+    selectKeyTab,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
 import {
@@ -22,6 +23,7 @@ import { InputSearch } from '../../../../../global-components/custom-inputs/filt
 import { RadioGroupWithSwitch } from '../../../../../global-components/custom-inputs/filter-inputs/RadioGroupWithSwitch';
 
 export const FormFilter = () => {
+    const keyTab = useAppSelector(selectKeyTab);
     const filters = useAppSelector(selectFiltersAnimals);
     const isGroup = useAppSelector(selectIsGroup);
     const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
@@ -102,7 +104,11 @@ export const FormFilter = () => {
                 value={filters.groupId || ''}
             />
             <RadioGroupWithSwitch
-                options={['Телка', 'Нетель', 'Корова', 'Бычок', 'Бык']}
+                options={
+                    keyTab === '8'
+                        ? ['Телка', 'Бычок']
+                        : ['Телка', 'Нетель', 'Корова', 'Бычок', 'Бык']
+                }
                 label='Категория животного'
                 isGroup={isGroup}
                 onChange={(value) =>
@@ -113,13 +119,16 @@ export const FormFilter = () => {
                         })
                     )
                 }
-                onChangeAll={() =>
-                    dispatch(
-                        changeFiltersAnimals({
-                            name: 'type',
-                            value: '',
-                        })
-                    )
+                onChangeAll={
+                    keyTab !== '8'
+                        ? () =>
+                              dispatch(
+                                  changeFiltersAnimals({
+                                      name: 'type',
+                                      value: '',
+                                  })
+                              )
+                        : undefined
                 }
                 value={filters.type || ''}
             />

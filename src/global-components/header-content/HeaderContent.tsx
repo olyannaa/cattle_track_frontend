@@ -9,9 +9,16 @@ type Props = {
         buttonClick: () => void;
     }[];
     onChange?: (activeKey: string) => void;
+    activeKey?: string;
 };
 
-export const HeaderContent = ({ title, items, buttons = [], onChange }: Props) => {
+export const HeaderContent = ({
+    title,
+    items,
+    buttons = [],
+    onChange,
+    activeKey,
+}: Props) => {
     return (
         <Flex vertical className={styles['content-header']}>
             <Flex className={styles['title']} justify='space-between'>
@@ -36,7 +43,12 @@ export const HeaderContent = ({ title, items, buttons = [], onChange }: Props) =
                         : ''}
                 </Flex>
             </Flex>
-            <Tabs items={items} onChange={onChange} className={styles['tabs']} />
+            <Tabs
+                items={items}
+                onChange={onChange}
+                className={styles['tabs']}
+                activeKey={activeKey}
+            />
         </Flex>
     );
 };

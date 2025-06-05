@@ -24,16 +24,13 @@ import {
     selectAnimalsId,
     selectFiltersAnimals,
     selectIsGroup,
+    selectKeyTab,
     selectSelectedAnimals,
     selectSortersAnimals,
 } from '../../service/animalsDailyActionsSlice';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
 import { FiltersAnimalsType } from '../../../../utils/filtersAnimals';
 import { AnimalFilters } from '../../../../utils/animals';
-
-type Props = {
-    keyTab: string;
-};
 
 export type FiltersType = {
     group: string;
@@ -43,7 +40,8 @@ export type FiltersType = {
     isActive: boolean;
 };
 
-export const FilterAnimals = ({ keyTab }: Props) => {
+export const FilterAnimals = () => {
+    const keyTab = useAppSelector(selectKeyTab);
     const filters = useAppSelector(selectFiltersAnimals);
     const animals: AnimalFilters[] = useAppSelector(selectAnimals);
     const selectedAnimals = useAppSelector(selectSelectedAnimals);

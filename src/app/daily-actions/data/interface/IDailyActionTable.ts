@@ -21,4 +21,6 @@ export interface IDailyActionTable {
     materialType: string;
     collectionDate: string;
     collectedBy: string;
+    oldType: string;
+    newType: string;
 }

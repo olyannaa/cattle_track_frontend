@@ -1,5 +1,6 @@
 import { SortersAnimalsType } from '../../../utils/sortersAnimals';
 import { columnsTableHistoryAssignmentNumbers } from '../data/const/columnsTableHistoryAssignmentNumbers';
+import { columnsTableHistoryChangeGroup } from '../data/const/columnsTableHistoryChangeGroup';
 import { columnsTableHistoryDisposal } from '../data/const/columnsTableHistoryDisposal';
 import { columnsTableHistoryInspection } from '../data/const/columnsTableHistoryInspection';
 import { columnsTableHistoryResearch } from '../data/const/columnsTableHistoryResearch';
@@ -23,6 +24,8 @@ export const getColumnsTable = (keyTab: string, sorters: SortersAnimalsType) => 
             return columnsTableHistoryResearch(sorters);
         case '7':
             return columnsTableHistoryAssignmentNumbers(sorters);
+        case '8':
+            return columnsTableHistoryChangeGroup(sorters);
         default:
             break;
     }

@@ -55,3 +55,9 @@ export type FormTypeResearch = {
     result: { target: { checked: boolean } } | undefined;
     materialType: string | undefined;
 };
+
+export type FormTypeChangeAgeGenderGroup = {
+    date: string | undefined;
+    name: string | undefined;
+    notes: string | undefined;
+};

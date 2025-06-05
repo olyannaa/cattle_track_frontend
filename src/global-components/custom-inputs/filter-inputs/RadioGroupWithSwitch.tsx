@@ -39,7 +39,7 @@ export const RadioGroupWithSwitch = ({
                     value={value}
                 />
             </div>
-            {isGroup && (
+            {isGroup && onChangeAll && (
                 <Flex
                     style={{ position: 'absolute', top: '-5px', right: '0' }}
                     align='center'

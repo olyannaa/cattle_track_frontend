@@ -12,6 +12,7 @@ type InitialState = {
     sortersAnimals: SortersAnimalsType;
     allAnimalsIds: string[];
     isGroup: boolean;
+    keyTab: string;
 };
 
 const initialState: InitialState = {
@@ -32,6 +33,7 @@ const initialState: InitialState = {
     },
     allAnimalsIds: [],
     isGroup: false,
+    keyTab: '1',
 };
 
 const slice = createSlice({
@@ -69,6 +71,7 @@ const slice = createSlice({
         resetFiltersAnimals: (state) => {
             state.filtersAnimals = {
                 ...initialState.filtersAnimals,
+                type: state.keyTab === '8' ? 'Телка' : '',
             };
         },
         changeSortersAnimals: (state, action) => {
@@ -84,6 +87,9 @@ const slice = createSlice({
         changeIsGroup: (state, action) => {
             state.isGroup = action.payload;
         },
+        changeKeyTab: (state, action) => {
+            state.keyTab = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addMatcher(
@@ -92,15 +98,16 @@ const slice = createSlice({
                 state.filterAnimals = [...action.payload];
                 if (action.payload.length === 1 && !state.isGroup) {
                     state.selectedAnimals = [action.payload[0].id];
-                } else {
-                    state.selectedAnimals = [];
                 }
             }
         );
         builder.addMatcher(
             dailyActionsApi.endpoints.createDailyActions.matchFulfilled,
             (state) => {
-                state.filtersAnimals = { ...initialState.filtersAnimals };
+                state.filtersAnimals = {
+                    ...initialState.filtersAnimals,
+                    type: state.keyTab === '8' ? 'Телка' : '',
+                };
             }
         );
         builder.addMatcher(
@@ -131,6 +138,8 @@ export const selectAnimalsId = (state: RootState) =>
 
 export const selectIsGroup = (state: RootState) => state.animalsDailyActions.isGroup;
 
+export const selectKeyTab = (state: RootState) => state.animalsDailyActions.keyTab;
+
 export const {
     addSelectedAnimal,
     addSelectedAnimals,
@@ -142,4 +151,5 @@ export const {
     changeSortersAnimals,
     resetSortersAnimals,
     changeIsGroup,
+    changeKeyTab,
 } = slice.actions;
