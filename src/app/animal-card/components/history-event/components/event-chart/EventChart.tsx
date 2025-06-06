@@ -6,6 +6,8 @@ import { DatePicker, Spin } from 'antd';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import styles from '../Event.module.css';
+
 const { RangePicker } = DatePicker;
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -69,7 +71,6 @@ export const EventChart: React.FC = () => {
 
     const eventTypes = Array.from(new Set(filteredPoints.map((p) => p.y)));
 
-    // Формируем traces для Plotly
     const traces = eventTypes.map((eventType, index) => {
         const filteredData = filteredPoints.filter((p) => p.y === eventType);
         return {
@@ -91,9 +92,10 @@ export const EventChart: React.FC = () => {
     });
 
     return (
-        <div>
+        <div className={styles['event']}>
             <div>
                 <RangePicker
+                    className={styles['event__date']}
                     onChange={(dates) => {
                         if (dates) setDateRange(dates as [dayjs.Dayjs, dayjs.Dayjs]);
                         else setDateRange(null);

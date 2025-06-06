@@ -19,4 +19,5 @@ export interface AnimalDetail {
     reasonOfDisposal: string | null;
     identificationData: Record<string, unknown>;
     identificationDataJson: string;
+    name?: string;
 }

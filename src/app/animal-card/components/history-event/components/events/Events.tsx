@@ -5,6 +5,7 @@ import { useLazyGetAnimalActionsQuery } from '../../../../services/animal-card';
 import { AnimalAction } from '../../../../data/interfaces/animal-actions';
 import { Flex } from 'antd/lib';
 import { Collapse, CollapseProps } from 'antd';
+import styles from '../Event.module.css';
 
 interface EventsProps {
     loading: (isLoading: boolean) => void;
@@ -23,7 +24,7 @@ export const Events = ({ loading }: EventsProps) => {
 
     const fetchData = async () => {
         try {
-            const response = await getAnimalActions('20059ef6-da1d-449d-8492-2a7e399b082e').unwrap();
+            const response = await getAnimalActions(selectedAnimals[0]).unwrap();
             setData(response);
         } catch (err) {
             console.error(err);
@@ -57,7 +58,7 @@ export const Events = ({ loading }: EventsProps) => {
     }));
 
     return (
-        <Flex>
+        <Flex className={styles.event}>
             <Collapse items={collapseItems} style={{ width: '100%' }} />
         </Flex>
     );

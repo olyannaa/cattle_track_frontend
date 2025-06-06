@@ -36,7 +36,7 @@ export const AnimalCardPage = () => {
             {animalData && <BaseInfo animal={animalData} />}
             <HistoryEventWrapper />
             <HistoryWeightWrapper />
-            <Lineage />
+            {animalData && <Lineage animal={animalData} />}
         </div>
     );
 };

@@ -1,0 +1,7 @@
+.event {
+    margin-bottom: var(--spacing-xl);
+}
+
+.event__date {
+    margin-bottom: var(--spacing-xl);
+}

@@ -52,20 +52,24 @@ export const BaseInfo = ({ animal }: { animal: AnimalDetail }) => {
         <Flex vertical className={`${styles['base-info__wrapper']} form-additional`}>
             <h2 className='form-title'>Информация о животном №{animal.tagNumber}</h2>
             <div className={styles.gridContainer}>
-                {[leftColumn, rightColumn].map((column, colIdx) => (
-                    <div key={colIdx} className={styles.gridColumn}>
-                        {column.map((item, rowIdx) => {
-                            const key = Object.keys(item)[0];
-                            const value = item[key];
-                            return (
-                                <div key={rowIdx} className={styles.gridRow}>
-                                    <span className={styles.label}>{key}:</span>
-                                    <span className={styles.value}>{value || 'Не указано'}</span>
-                                </div>
-                            );
-                        })}
-                    </div>
-                ))}
+                {baseInfo.length ? (
+                    [leftColumn, rightColumn].map((column, colIdx) => (
+                        <div key={colIdx} className={styles.gridColumn}>
+                            {column.map((item, rowIdx) => {
+                                const key = Object.keys(item)[0];
+                                const value = item[key];
+                                return (
+                                    <div key={rowIdx} className={styles.gridRow}>
+                                        <span className={styles.label}>{key}:</span>
+                                        <span className={styles.value}>{value || 'Не указано'}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ))
+                ) : (
+                    <span>Нет данных</span>
+                )}
             </div>
             <h3>Дополнительные идентификаторы</h3>
             <div className={styles['base-info__add-container']}>
@@ -75,7 +79,7 @@ export const BaseInfo = ({ animal }: { animal: AnimalDetail }) => {
                         const value = item[key];
 
                         return (
-                            <div key={index} className={styles.gridRow}>
+                            <div key={index + key} className={styles.gridRow}>
                                 <span className={styles.label}>{key}:</span>
                                 <span className={styles.value}>{value || 'Не указано'}</span>
                             </div>
