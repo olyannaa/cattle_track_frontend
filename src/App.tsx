@@ -144,12 +144,10 @@ function App() {
                         <Route path='/animalregister' element={<RegisterAnimalPage />} />
                         <Route path='/infrastructure' element={<InfrastructurePage />} />
                         <Route path='/accounting' element={<AnimalAccountingPage />} />
-                        <Route
-                            path='/reproductive-accounting'
-                            element={<ReproductiveAccountingPage />}
-                        />
+                        <Route path='/reproductive-accounting' element={<ReproductiveAccountingPage />} />
                         <Route path='/weight-control' element={<WeightControlPage />} />
                         <Route path='/animal-card' element={<AnimalCardPage />} />
+                        <Route path='/animal-card/:id' element={<AnimalCardPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

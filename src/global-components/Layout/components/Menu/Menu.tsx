@@ -7,13 +7,34 @@ import {
     FolderOpenFilled,
     HomeFilled,
     IdcardFilled,
+    PicRightOutlined,
     SafetyCertificateFilled,
     SettingOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useMemo } from 'react';
 
 export const AppMenu = () => {
+    const location = useLocation();
+
+    // Сопоставление путей с ключами меню
+    const pathToKeyMap: Record<string, string> = {
+        '/main': '1',
+        '/accounting': '2',
+        '/animalregister': '3',
+        '/infrastructure': '4',
+        '/daily-activities': '5',
+        '/reproductive-accounting': '7',
+        '/weight-control': '8',
+        '/animal-card': '9',
+    };
+
+    const selectedKey = useMemo(() => {
+        const match = Object.entries(pathToKeyMap).find(([path]) => location.pathname.startsWith(path));
+        return match ? [match[1]] : ['1'];
+    }, [location.pathname]);
+
     const menuItems: ItemType<MenuItemType>[] = [
         {
             key: '1',
@@ -66,7 +87,7 @@ export const AppMenu = () => {
         },
         {
             key: '9',
-            icon: <BellFilled />,
+            icon: <PicRightOutlined />,
             label: <Link to='/animal-card'>Карточка животного</Link>,
             danger: true,
         },
@@ -78,5 +99,5 @@ export const AppMenu = () => {
         },
     ];
 
-    return <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />;
+    return <Menu theme='light' mode='inline' selectedKeys={selectedKey} items={menuItems} />;
 };

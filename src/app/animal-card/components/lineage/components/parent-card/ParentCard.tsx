@@ -6,6 +6,7 @@ import styles from './ParentCard.module.css';
 
 export const ParentCard = ({ parent }: { parent: AnimalDetail }) => {
     const dispatch = useDispatch();
+
     const handleSelectAnimal = (animalId: string) => {
         dispatch(setSelectedAnimal(animalId));
     };

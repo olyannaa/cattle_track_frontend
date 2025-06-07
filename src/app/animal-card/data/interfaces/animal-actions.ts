@@ -1,4 +1,5 @@
 export interface AnimalAction {
+    actionId: string;
     animalId: string;
     eventType: string;
     fields: {

@@ -5,3 +5,7 @@
 .event__date {
     margin-bottom: var(--spacing-xl);
 }
+
+.event__list {
+    border-radius: 1px;
+}

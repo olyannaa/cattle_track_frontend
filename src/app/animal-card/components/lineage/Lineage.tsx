@@ -9,7 +9,7 @@ import styles from './Lineage.module.css';
 
 export const Lineage = ({ animal }: { animal: AnimalDetail }) => {
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
-    const [getAnimalParents, { isLoading: loadEvents }] = useLazyGetParentsQuery();
+    const [getAnimalParents] = useLazyGetParentsQuery();
     const [data, setData] = useState<AnimalDetail[]>([]);
     const [leftColumn, setLeftColumn] = useState<AnimalDetail[]>([]);
     const [rightColumn, setRightColumn] = useState<AnimalDetail[]>([]);

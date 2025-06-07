@@ -1,20 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../../../../app-service/hooks';
-import { selectSelectedAnimals } from '../../../../../daily-actions/service/animalsDailyActionsSlice';
+import {
+    selectSelectedAnimals,
+    setSelectedAnimal,
+} from '../../../../../daily-actions/service/animalsDailyActionsSlice';
 import { useLazyGetAnimalActionsQuery } from '../../../../services/animal-card';
 import { AnimalAction } from '../../../../data/interfaces/animal-actions';
-import { Flex } from 'antd/lib';
-import { Collapse, CollapseProps } from 'antd';
+import { Button, Collapse, CollapseProps, Flex, Pagination, Skeleton } from 'antd';
 import styles from '../Event.module.css';
+import { useDispatch } from 'react-redux';
 
-interface EventsProps {
-    loading: (isLoading: boolean) => void;
-}
+const PAGE_SIZE = 5;
 
-export const Events = ({ loading }: EventsProps) => {
+export const Events = () => {
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [getAnimalActions, { isLoading: loadEvents }] = useLazyGetAnimalActionsQuery();
     const [data, setData] = useState<AnimalAction[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const dispatch = useDispatch();
+    const handleSelectAnimal = (animalId: string) => {
+        dispatch(setSelectedAnimal(animalId));
+    };
 
     useEffect(() => {
         if (selectedAnimals.length) {
@@ -26,17 +32,21 @@ export const Events = ({ loading }: EventsProps) => {
         try {
             const response = await getAnimalActions(selectedAnimals[0]).unwrap();
             setData(response);
+            setCurrentPage(1);
         } catch (err) {
             console.error(err);
         }
     };
+
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('ru-RU');
     };
 
-    const collapseItems: CollapseProps['items'] = data.map((action) => ({
-        key: action.animalId + action.eventDate,
+    const paginatedData = data.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+    const collapseItems: CollapseProps['items'] = paginatedData.map((action) => ({
+        key: action.actionId,
         label: (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>{action.eventType}</span>
@@ -46,20 +56,49 @@ export const Events = ({ loading }: EventsProps) => {
         children: (
             <div>
                 {Object.entries(action.fields).map(([key, value]) => (
-                    <p>
+                    <p key={key}>
                         <span>
                             {key}: {value || '—'}
                         </span>
                     </p>
                 ))}
                 {action.performedBy && <p>Выполнил: {action.performedBy}</p>}
+                {action.eventType === 'Отёл' && action.fields['ID телёнка'] && (
+                    <Button onClick={() => handleSelectAnimal(action.fields['ID телёнка'])}>
+                        Открыть карточку теленка
+                    </Button>
+                )}
+                {action.eventType === 'Осеменение' && action.fields['ID быка'] && (
+                    <Button onClick={() => handleSelectAnimal(action.fields['ID быка'])}>
+                        Открыть карточку теленка
+                    </Button>
+                )}
             </div>
         ),
     }));
 
+    if (loadEvents) {
+        return (
+            <Flex className={styles.event} vertical gap={4}>
+                <Skeleton.Input active={true} block={true} />
+                <Skeleton.Input active={true} block={true} />
+                <Skeleton.Input active={true} block={true} />
+            </Flex>
+        );
+    }
+
     return (
-        <Flex className={styles.event}>
-            <Collapse items={collapseItems} style={{ width: '100%' }} />
+        <Flex className={styles.event} vertical>
+            <Collapse className={styles.event__list} items={collapseItems} style={{ width: '100%' }} />
+            {data.length > PAGE_SIZE && (
+                <Pagination
+                    current={currentPage}
+                    pageSize={PAGE_SIZE}
+                    total={data.length}
+                    onChange={(page) => setCurrentPage(page)}
+                    style={{ marginTop: 16, alignSelf: 'center' }}
+                />
+            )}
         </Flex>
     );
 };

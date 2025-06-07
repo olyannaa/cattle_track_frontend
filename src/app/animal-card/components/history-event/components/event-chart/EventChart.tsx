@@ -12,6 +12,7 @@ const { RangePicker } = DatePicker;
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 import Plot from 'react-plotly.js';
+import { EmptyDataAlert } from '../../../../../../global-components/expty-data-alert/EmptyDataAlert';
 
 interface HistoryEventPoint {
     x: string;
@@ -61,7 +62,9 @@ export const EventChart: React.FC = () => {
         }
     };
 
-    if (!chartData) return null;
+    if (!chartData || !chartData.points.length) {
+        return <EmptyDataAlert />;
+    }
 
     const filteredPoints = dateRange
         ? chartData.points.filter(

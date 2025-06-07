@@ -18,6 +18,11 @@ export const BaseInfo = ({ animal }: { animal: AnimalDetail }) => {
         parseAdditionalInfo();
     }, [animal]);
 
+    useEffect(() => {
+        setLeftColumn(baseInfo.slice(0, 6));
+        setRightColumn(baseInfo.slice(6));
+    }, [baseInfo]);
+
     const fillInfo = () => {
         setBaseInfo([
             { Категория: animal.type },
@@ -31,8 +36,6 @@ export const BaseInfo = ({ animal }: { animal: AnimalDetail }) => {
             { Мать: animal.motherTagNumber },
             { Отец: animal.fatherTagNumber },
         ]);
-        setLeftColumn(baseInfo.slice(0, 6));
-        setRightColumn(baseInfo.slice(6));
     };
 
     const parseAdditionalInfo = () => {
@@ -52,7 +55,7 @@ export const BaseInfo = ({ animal }: { animal: AnimalDetail }) => {
         <Flex vertical className={`${styles['base-info__wrapper']} form-additional`}>
             <h2 className='form-title'>Информация о животном №{animal.tagNumber}</h2>
             <div className={styles.gridContainer}>
-                {baseInfo.length ? (
+                {baseInfo.length &&
                     [leftColumn, rightColumn].map((column, colIdx) => (
                         <div key={colIdx} className={styles.gridColumn}>
                             {column.map((item, rowIdx) => {
@@ -66,10 +69,7 @@ export const BaseInfo = ({ animal }: { animal: AnimalDetail }) => {
                                 );
                             })}
                         </div>
-                    ))
-                ) : (
-                    <span>Нет данных</span>
-                )}
+                    ))}
             </div>
             <h3>Дополнительные идентификаторы</h3>
             <div className={styles['base-info__add-container']}>

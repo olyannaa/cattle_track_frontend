@@ -4,6 +4,7 @@ import { Line } from '@ant-design/plots';
 import { getCountItemsChart } from '../../../../weight-control/functions/getCountItemsChart';
 import { useWindowSize } from '../../../../../hooks/useWindowSize';
 import { chartStyles } from '../../../../../styles/chart-styles';
+import { EmptyDataAlert } from '../../../../../global-components/expty-data-alert/EmptyDataAlert';
 
 export const WeightChart = ({ points }: { points: HistoryPoint[] }) => {
     const widthWindow = useWindowSize();
@@ -17,6 +18,16 @@ export const WeightChart = ({ points }: { points: HistoryPoint[] }) => {
         data: points,
         xField: 'x',
         yField: 'y',
+        point: {
+            sizeField: 5,
+            style: {
+                fill: '#ff4218',
+                stroke: '#fff',
+                lineWidth: 2,
+                shadowColor: 'rgba(255,66,24,1)',
+                shadowBlur: 4,
+            },
+        },
         tooltip: {
             title: (d: HistoryPoint) => d.x,
             items: [
@@ -37,6 +48,10 @@ export const WeightChart = ({ points }: { points: HistoryPoint[] }) => {
         },
         ...chartStyles,
     };
+
+    if (!points.length) {
+        return <EmptyDataAlert />;
+    }
 
     return <Line className='bottom-margin-xl' {...config} style={{ overflowX: 'auto' }} />;
 };

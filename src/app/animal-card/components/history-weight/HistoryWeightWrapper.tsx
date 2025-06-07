@@ -1,4 +1,4 @@
-import { Flex, Spin } from 'antd';
+import { Flex, Skeleton } from 'antd';
 import { WeightChart } from './weight-chart/WeightChart';
 import { WeightTable } from './weight-table/WeightTable';
 import { useAppSelector } from '../../../../app-service/hooks';
@@ -6,7 +6,6 @@ import { useLazyGetWeightInfoQuery } from '../../services/animal-card';
 import { selectSelectedAnimals } from '../../../daily-actions/service/animalsDailyActionsSlice';
 import { useEffect, useState } from 'react';
 import { AnimalHistoryData } from '../../data/interfaces/animal-chart';
-import { LoadingOutlined } from '@ant-design/icons';
 
 export const HistoryWeightWrapper = () => {
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
@@ -27,18 +26,22 @@ export const HistoryWeightWrapper = () => {
             console.error(err);
         }
     };
-    if (!chartData) {
-        return;
-    }
+
     if (isLoading) {
-        <Spin style={{ margin: 'auto' }} indicator={<LoadingOutlined spin style={{ color: '#ff4218' }} />} />;
+        return (
+            <Flex className='top-margin-xl bottom-margin-xl' vertical gap={4}>
+                <Skeleton.Input active={true} block={true} />
+                <Skeleton.Input active={true} block={true} />
+                <Skeleton.Input active={true} block={true} />
+            </Flex>
+        );
     }
 
     return (
         <Flex vertical>
             <h2 className='form-title'>Изменение веса</h2>
-            <WeightChart points={chartData.points}></WeightChart>
-            <WeightTable points={chartData.points} />
+            {chartData && <WeightChart points={chartData.points} />}
+            {chartData && <WeightTable points={chartData.points} />}
         </Flex>
     );
 };

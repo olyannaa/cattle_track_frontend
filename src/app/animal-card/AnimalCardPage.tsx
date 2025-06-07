@@ -1,18 +1,34 @@
 import { useEffect, useState } from 'react';
 import { FilterFormInfo } from './components/filter-form/FilterFormInfo';
 import { useAppSelector } from '../../app-service/hooks';
-import { selectSelectedAnimals } from '../daily-actions/service/animalsDailyActionsSlice';
+import { selectSelectedAnimals, setSelectedAnimal } from '../daily-actions/service/animalsDailyActionsSlice';
 import { useLazyGetAnimalDetailQuery } from './services/animal-card';
 import { AnimalDetail } from './data/interfaces/animal-details';
 import { BaseInfo } from './components/base-info/BaseInfo';
 import { HistoryEventWrapper } from './components/history-event/HistoryEventWrapper';
 import { HistoryWeightWrapper } from './components/history-weight/HistoryWeightWrapper';
 import { Lineage } from './components/lineage/Lineage';
+import { Flex } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd/lib';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 export const AnimalCardPage = () => {
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const [getAnimalDetails, { isLoading: loadBaseInfo }] = useLazyGetAnimalDetailQuery();
     const [animalData, setAnimalData] = useState<AnimalDetail | null>(null);
+    const { id } = useParams<{ id: string }>();
+    const dispatch = useDispatch();
+    const handleSelectAnimal = (animalId: string) => {
+        dispatch(setSelectedAnimal(animalId));
+    };
+
+    useEffect(() => {
+        if (id) {
+            handleSelectAnimal(id);
+        }
+    }, [id]);
 
     useEffect(() => {
         if (selectedAnimals.length) {
@@ -33,9 +49,14 @@ export const AnimalCardPage = () => {
         <div className='content-container'>
             <h1 className='form-title'>Карточка животного</h1>
             <FilterFormInfo />
+            {loadBaseInfo && (
+                <Flex className='top-margin-xl ' align='center' justify='center'>
+                    <Spin indicator={<LoadingOutlined style={{ color: '#FF4218', fontSize: 48 }} spin />} />
+                </Flex>
+            )}
             {animalData && <BaseInfo animal={animalData} />}
-            <HistoryEventWrapper />
-            <HistoryWeightWrapper />
+            {animalData && <HistoryEventWrapper />}
+            {animalData && <HistoryWeightWrapper />}
             {animalData && <Lineage animal={animalData} />}
         </div>
     );

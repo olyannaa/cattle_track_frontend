@@ -17,17 +17,24 @@ export const WeightTable = ({ points }: { points: HistoryPoint[] }) => {
             dataIndex: 'x',
             key: 'x',
             render: (date: string) => new Date(date).toLocaleDateString('ru-RU'),
-            sorter: (a, b) => new Date(a.x).getTime() - new Date(b.x).getTime(),
+            sorter: (a: HistoryPoint, b: HistoryPoint) => new Date(a.x).getTime() - new Date(b.x).getTime(),
             defaultSortOrder: 'descend',
         },
         {
             title: 'Вес, кг',
             dataIndex: 'y',
             key: 'y',
-            render: (weight: number) => `${weight} кг`,
-            sorter: (a, b) => a.y - b.y,
+            render: (weight: number | null) => (weight != null ? `${weight} кг` : '—'),
+            sorter: (a: HistoryPoint, b: HistoryPoint) => Number(a.y) - Number(b.y),
         },
     ];
 
-    return <Table<DataType> columns={columns} dataSource={dataSource} showSorterTooltip={{ target: 'sorter-icon' }} />;
+    return (
+        <Table<DataType>
+            className='bottom-margin-xl'
+            columns={columns}
+            dataSource={dataSource}
+            showSorterTooltip={{ target: 'sorter-icon' }}
+        />
+    );
 };
