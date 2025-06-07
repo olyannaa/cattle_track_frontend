@@ -29,6 +29,10 @@ export const items: TabsProps['items'] = [
         key: '7',
         label: 'Присвоение номеров',
     },
+    {
+        key: '8',
+        label: 'Изменение половозрастной группы',
+    },
 ];
 
 export const getNameTabs = (keyTab: string) => {

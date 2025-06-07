@@ -1,4 +1,5 @@
 import { Button, Flex, Form } from 'antd';
+import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
 import { InputForm } from '../../../../../global-components/custom-inputs/form-inputs/input-form/InputForm';
 import {
     newDailyAction,
@@ -6,39 +7,35 @@ import {
 } from '../../../service/dailyActions';
 import { useAppSelector } from '../../../../../app-service/hooks';
 import {
+    selectFiltersAnimals,
     selectIsGroup,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
 import dayjs from 'dayjs';
-import { FormTypeVaccination } from '../../../data/types/FormTypes';
-import { optionsVaccination } from '../../../data/const/optionsSelect';
-import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
-import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
+import { FormTypeChangeAgeGenderGroup } from '../../../data/types/FormTypes';
 import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
+import { FieldCustom } from '../../../../../global-components/custom-inputs/field/Field';
 import styles from '../../../styles/form-styles.module.css';
 
 type Props = {
     resetHistory: () => void;
 };
 
-export const FormAddVaccination = ({ resetHistory }: Props) => {
+export const FormChangeAgeGenderGroup = ({ resetHistory }: Props) => {
     const isGroup = useAppSelector(selectIsGroup);
     const [createDailyActions] = useCreateDailyActionsMutation();
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
+    const filters = useAppSelector(selectFiltersAnimals);
     const [form] = Form.useForm();
-    const addAction = async (dataForm: FormTypeVaccination) => {
+    const addAction = async (dataForm: FormTypeChangeAgeGenderGroup) => {
         const data: newDailyAction[] = selectedAnimals.map((animal) => ({
             animalId: animal,
-            type: 'Вакцинации и обработки',
+            type: 'Изменение половозрастной группы',
             date: dayjs(dataForm.date).format('YYYY-MM-DD'),
-            subtype: dataForm.type,
             performedBy: dataForm.name,
-            dose: dataForm.dose,
-            medicine: dataForm.preparation,
-            notes: dataForm.note,
-            nextDate: dataForm.dateNext
-                ? dayjs(dataForm.dateNext).format('YYYY-MM-DD')
-                : null,
+            notes: dataForm.notes,
+            oldType: filters.type,
+            newType: filters.type === 'Телка' ? 'Корова' : 'Бык',
         }));
         await createDailyActions(data);
         form.resetFields();
@@ -49,31 +46,29 @@ export const FormAddVaccination = ({ resetHistory }: Props) => {
         <Form onFinish={addAction} form={form}>
             <Flex className={styles['form-body']} wrap>
                 <DatePickerForm
-                    name='date'
-                    label='Дата обработки'
+                    name='dateCulling'
+                    label='Дата перевода'
                     required
                     defaultValue={dayjs()}
                 />
-                <InputForm label='Кто проводил' name='name' placeholder='Введите ФИО' />
-                <SelectForm
-                    label='Тип обработки'
-                    name='type'
-                    options={optionsVaccination}
-                    styles={{ maxWidth: '475px' }}
-                    required
+                <FieldCustom
+                    label='Старая половозрастная группа'
+                    value={filters.type || ''}
+                />
+                <FieldCustom
+                    label='Новая половозрастная группа'
+                    value={filters.type === 'Телка' ? 'Корова' : 'Бык'}
                 />
                 <InputForm
-                    label='Препарат'
-                    name='preparation'
-                    placeholder='Укажите препарат'
+                    label='Кто проводил перевод'
+                    name='name'
+                    placeholder='Введите ФИО'
                 />
-                <InputForm label='Доза' name='dose' placeholder='Укажите дозу' />
                 <TextAreaForm
-                    name='note'
-                    label='Примечание'
+                    name='notes'
+                    label='Примечания'
                     placeholder='Дополнительная информация'
                 />
-                <DatePickerForm name='dateNext' label='Дата следующей обработки' />
             </Flex>
             <Button
                 type='primary'

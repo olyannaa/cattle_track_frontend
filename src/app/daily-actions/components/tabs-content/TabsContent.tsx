@@ -8,6 +8,7 @@ import { FormAddDisposal } from '../forms/form-add-disposal/FormAddDisposal';
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import {
     changeIsGroup,
+    selectKeyTab,
     selectSelectedAnimals,
 } from '../../service/animalsDailyActionsSlice';
 import { FormAddAssigmentNumber } from '../forms/form-add-assignment-number/FormAddAssigmentNumber';
@@ -23,15 +24,12 @@ import {
 import { WrapperFormResearch } from '../wrapper-form-research/WrapperFormResearch';
 import { FormAddTreatment } from '../forms/form-add-treatment/FormAddTreatment';
 import { FormAddVaccination } from '../forms/form-add-vaccination/FormAddVaccination';
+import { FormChangeAgeGenderGroup } from '../forms/form-change-age-gender-group/FormChangeAgeGenderGroup';
 
-
-type Props = {
-    keyTab: string;
-};
-
-export const TabsContent = ({ keyTab }: Props) => {
+export const TabsContent = () => {
     const selectedAnimals = useAppSelector(selectSelectedAnimals);
     const sorters = useAppSelector(selectSortersDailyActions);
+    const keyTab = useAppSelector(selectKeyTab);
     const title = items && items.find((item) => item.key === keyTab)?.label?.toString();
 
     const dispatch = useAppDispatch();
@@ -57,7 +55,7 @@ export const TabsContent = ({ keyTab }: Props) => {
     return (
         <Flex vertical style={{ width: '100%' }} gap={24}>
             <Typography.Title level={3}>{title}</Typography.Title>
-            <FilterAnimals keyTab={keyTab} />
+            <FilterAnimals />
             {selectedAnimals.length !== 0 && (
                 <>
                     {keyTab === '1' && <FormAddInspection resetHistory={resetHistory} />}
@@ -70,6 +68,9 @@ export const TabsContent = ({ keyTab }: Props) => {
                     )}
                     {keyTab === '7' && (
                         <FormAddAssigmentNumber resetHistory={resetHistory} />
+                    )}
+                    {keyTab === '8' && (
+                        <FormChangeAgeGenderGroup resetHistory={resetHistory} />
                     )}
                 </>
             )}

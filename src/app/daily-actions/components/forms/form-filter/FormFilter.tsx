@@ -11,6 +11,7 @@ import {
     selectAnimals,
     selectFiltersAnimals,
     selectIsGroup,
+    selectKeyTab,
     selectSelectedAnimals,
 } from '../../../service/animalsDailyActionsSlice';
 import {
@@ -20,8 +21,10 @@ import {
 import { SelectFilters } from '../../../../../global-components/custom-inputs/filter-inputs/SelectFilters';
 import { InputSearch } from '../../../../../global-components/custom-inputs/filter-inputs/InputSearch';
 import { RadioGroupWithSwitch } from '../../../../../global-components/custom-inputs/filter-inputs/RadioGroupWithSwitch';
+import { getOptionsType } from '../../../data/const/optionsSelect';
 
 export const FormFilter = () => {
+    const keyTab = useAppSelector(selectKeyTab);
     const filters = useAppSelector(selectFiltersAnimals);
     const isGroup = useAppSelector(selectIsGroup);
     const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
@@ -68,6 +71,17 @@ export const FormFilter = () => {
         );
     };
 
+    const handlerChangeAllTypes = () => {
+        if (keyTab !== '8') {
+            dispatch(
+                changeFiltersAnimals({
+                    name: 'type',
+                    value: '',
+                })
+            );
+        }
+    };
+
     useEffect(() => {
         if (filters.identificationFieldId) {
             getIdentificationValues();
@@ -102,7 +116,7 @@ export const FormFilter = () => {
                 value={filters.groupId || ''}
             />
             <RadioGroupWithSwitch
-                options={['Телка', 'Нетель', 'Корова', 'Бычок', 'Бык']}
+                options={getOptionsType(keyTab)}
                 label='Категория животного'
                 isGroup={isGroup}
                 onChange={(value) =>
@@ -113,14 +127,7 @@ export const FormFilter = () => {
                         })
                     )
                 }
-                onChangeAll={() =>
-                    dispatch(
-                        changeFiltersAnimals({
-                            name: 'type',
-                            value: '',
-                        })
-                    )
-                }
+                onChangeAll={handlerChangeAllTypes}
                 value={filters.type || ''}
             />
             {!isGroup && (

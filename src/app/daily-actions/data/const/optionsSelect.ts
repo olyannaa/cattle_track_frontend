@@ -74,3 +74,9 @@ export const optionsResearch = [
         value: 'Другое',
     },
 ];
+
+export const getOptionsType = (keyTab: string) => {
+    return keyTab === '8'
+        ? ['Телка', 'Бычок']
+        : ['Телка', 'Нетель', 'Корова', 'Бычок', 'Бык'];
+};

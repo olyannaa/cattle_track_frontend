@@ -32,6 +32,8 @@ export type newDailyAction = {
     researchName?: string;
     materialType?: string;
     identificationValue?: string;
+    oldType?: string;
+    newType?: string;
 };
 
 export interface IDailyAction {
@@ -56,6 +58,8 @@ export interface IDailyAction {
     materialType: string;
     collectionDate: string;
     collectedBy: string;
+    oldType: string;
+    newType: string;
 }
 
 export type IResponsePaginationInfoDailyActions = {

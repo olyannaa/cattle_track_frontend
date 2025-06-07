@@ -17,6 +17,7 @@ import { useGetIdentificationsFieldsQuery } from '../../../../../app-service/ser
 import dayjs from 'dayjs';
 import { FormTypeAssigmentNumber } from '../../../data/types/FormTypes';
 import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
+import styles from '../../../styles/form-styles.module.css';
 
 type Props = {
     resetHistory: () => void;
@@ -94,15 +95,7 @@ export const FormAddAssigmentNumber = ({ resetHistory }: Props) => {
                 </Flex>
             </Flex>
             <Form onFinish={addAction} form={form}>
-                <Flex
-                    style={{
-                        padding: '15px 16px',
-                        background: '#F5F5F5',
-                        marginBottom: '24px',
-                        columnGap: '16px',
-                    }}
-                    wrap
-                >
+                <Flex className={styles['form-body']} wrap>
                     <SelectForm
                         label='Тип идентификации'
                         name='type'
