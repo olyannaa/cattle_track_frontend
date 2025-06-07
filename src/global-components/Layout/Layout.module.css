@@ -44,8 +44,18 @@
     overflow: initial;
 }
 
+.layout__logo {
+    width: 124px;
+}
+
 @media (max-width: 500px) {
     .layout__content {
         margin: 0;
+    }
+}
+
+@media (max-width: 348px) {
+    .layout__logo {
+        width: 54px;
     }
 }

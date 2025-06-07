@@ -7,13 +7,28 @@ import {
     FolderOpenFilled,
     HomeFilled,
     IdcardFilled,
+    LogoutOutlined,
     SafetyCertificateFilled,
     SettingOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '../../../../hooks/useIsMobile';
 
-export const AppMenu = () => {
+export const AppMenu = ({ logout }: { logout: () => Promise<void> }) => {
+    const isMobile = useIsMobile();
+    const mobileItems = isMobile
+        ? [
+              { type: 'divider' as const },
+              {
+                  key: 'logout',
+                  icon: <LogoutOutlined />,
+                  label: 'Выход',
+                  onClick: logout,
+                  danger: true,
+              },
+          ]
+        : [];
     const menuItems: ItemType<MenuItemType>[] = [
         {
             key: '1',
@@ -70,9 +85,8 @@ export const AppMenu = () => {
             label: 'Отчеты',
             danger: true,
         },
+        ...mobileItems,
     ];
 
-    return (
-        <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />
-    );
+    return <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />;
 };
