@@ -4,6 +4,7 @@ import { IAnimalTable } from '../interfaces/animalTable';
 import { IdentificationFieldName } from '../types/animal';
 import { IdentificationFieldTable } from '../../components/IdentificationFieldTable/IdentificationFieldTable';
 import { TableCheckboxAccounting } from '../../components/TableCheckboxAccounting';
+import { Link } from 'react-router-dom';
 
 export enum animalTableColumns {}
 
@@ -46,11 +47,9 @@ export const getColumns = (
                   dataIndex: 'tagNumber',
                   key: 'tagNumber',
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'tagNumber'}
-                          isEditTable={isEditTable}
-                      />
+                      <Link className='link' to={`/animal-card/${animal.id}`}>
+                          <FieldTable animal={animal} dataIndex={'tagNumber'} isEditTable={false} />
+                      </Link>
                   ),
                   minWidth: 89,
                   sorter: true,
@@ -60,11 +59,7 @@ export const getColumns = (
                   dataIndex: 'birthDate',
                   key: 'birthDate',
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'birthDate'}
-                          isEditTable={isEditTable}
-                      />
+                      <FieldTable animal={animal} dataIndex={'birthDate'} isEditTable={isEditTable} />
                   ),
                   minWidth: 116,
                   sorter: true,
@@ -75,11 +70,7 @@ export const getColumns = (
                   key: 'breed',
                   minWidth: 130,
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'breed'}
-                          isEditTable={isEditTable}
-                      />
+                      <FieldTable animal={animal} dataIndex={'breed'} isEditTable={isEditTable} />
                   ),
                   sorter: true,
               },
@@ -89,11 +80,7 @@ export const getColumns = (
                   key: 'groupName',
                   sorter: true,
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'groupName'}
-                          isEditTable={isEditTable}
-                      />
+                      <FieldTable animal={animal} dataIndex={'groupName'} isEditTable={isEditTable} />
                   ),
                   minWidth: 225,
               },
@@ -102,11 +89,7 @@ export const getColumns = (
                   dataIndex: 'status',
                   key: 'status',
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'status'}
-                          isEditTable={isEditTable}
-                      />
+                      <FieldTable animal={animal} dataIndex={'status'} isEditTable={isEditTable} />
                   ),
                   minWidth: 128,
                   sorter: true,
@@ -117,11 +100,7 @@ export const getColumns = (
                   key: 'origin',
                   minWidth: 157,
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'origin'}
-                          isEditTable={isEditTable}
-                      />
+                      <FieldTable animal={animal} dataIndex={'origin'} isEditTable={isEditTable} />
                   ),
                   sorter: true,
               },
@@ -131,11 +110,7 @@ export const getColumns = (
                   key: 'originLocation',
                   minWidth: 159,
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'originLocation'}
-                          isEditTable={isEditTable}
-                      />
+                      <FieldTable animal={animal} dataIndex={'originLocation'} isEditTable={isEditTable} />
                   ),
                   sorter: true,
               },
@@ -145,11 +120,7 @@ export const getColumns = (
                   key: 'motherTagNumber',
                   minWidth: 78,
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'motherTagNumber'}
-                          isEditTable={isEditTable}
-                      />
+                      <FieldTable animal={animal} dataIndex={'motherTagNumber'} isEditTable={isEditTable} />
                   ),
                   sorter: true,
               },
@@ -159,11 +130,7 @@ export const getColumns = (
                   key: 'fatherTagNumber',
                   minWidth: 78,
                   render: (_, { identificationFields, ...animal }) => (
-                      <FieldTable
-                          animal={animal}
-                          dataIndex={'fatherTagNumber'}
-                          isEditTable={isEditTable}
-                      />
+                      <FieldTable animal={animal} dataIndex={'fatherTagNumber'} isEditTable={isEditTable} />
                   ),
                   sorter: true,
               },
@@ -173,9 +140,7 @@ export const getColumns = (
                   key: name,
                   minWidth: 100,
                   render: (_: unknown, animal: IAnimalTable) => {
-                      const fieldValue =
-                          animal.identificationFields?.find((f) => f.name === name)
-                              ?.value ?? '';
+                      const fieldValue = animal.identificationFields?.find((f) => f.name === name)?.value ?? '';
                       return (
                           <IdentificationFieldTable
                               isEditTable={isEditTable}
@@ -207,10 +172,7 @@ export const getColumns = (
                   dataIndex: 'status',
                   key: 'status',
                   render: (_, { identificationFields, ...animal }) => (
-                      <Badge
-                          status={animal.status === 'Активное' ? 'success' : 'error'}
-                          text={animal.status}
-                      />
+                      <Badge status={animal.status === 'Активное' ? 'success' : 'error'} text={animal.status} />
                   ),
                   minWidth: 128,
                   sorter: true,
