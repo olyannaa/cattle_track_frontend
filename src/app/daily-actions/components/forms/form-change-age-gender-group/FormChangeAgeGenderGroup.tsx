@@ -13,10 +13,9 @@ import {
 } from '../../../service/animalsDailyActionsSlice';
 import dayjs from 'dayjs';
 import { FormTypeChangeAgeGenderGroup } from '../../../data/types/FormTypes';
-import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
 import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
 import { FieldCustom } from '../../../../../global-components/custom-inputs/field/Field';
-import { stylesFormDailyActions } from '../../../../../styles/form-action-daily-styles';
+import styles from '../../../styles/form-styles.module.css';
 
 type Props = {
     resetHistory: () => void;
@@ -45,7 +44,7 @@ export const FormChangeAgeGenderGroup = ({ resetHistory }: Props) => {
 
     return (
         <Form onFinish={addAction} form={form}>
-            <Flex style={{ ...stylesFormDailyActions }} wrap>
+            <Flex className={styles['form-body']} wrap>
                 <DatePickerForm
                     name='dateCulling'
                     label='Дата перевода'

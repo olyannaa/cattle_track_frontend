@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import { FormTypeDisposal } from '../../../data/types/FormTypes';
 import { optionsDisposal } from '../../../data/const/optionsSelect';
 import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
-import { stylesFormDailyActions } from '../../../../../styles/form-action-daily-styles';
+import styles from '../../../styles/form-styles.module.css';
 
 type Props = {
     resetHistory: () => void;
@@ -39,7 +39,7 @@ export const FormAddDisposal = ({ resetHistory }: Props) => {
     };
     return (
         <Form onFinish={addAction} form={form}>
-            <Flex style={{ ...stylesFormDailyActions }} wrap>
+            <Flex className={styles['form-body']} wrap>
                 <div style={{ width: '100%' }}>
                     <DatePickerForm
                         name='dateCulling'
