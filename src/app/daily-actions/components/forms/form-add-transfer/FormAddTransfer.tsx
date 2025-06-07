@@ -18,6 +18,8 @@ import { FormTypeTransfer } from '../../../data/types/FormTypes';
 import { useEffect, useState } from 'react';
 import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
 import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
+import { FieldCustom } from '../../../../../global-components/custom-inputs/field/Field';
+import { stylesFormDailyActions } from '../../../../../styles/form-action-daily-styles';
 
 type Props = {
     resetHistory: () => void;
@@ -61,15 +63,7 @@ export const FormAddTransfer = ({ resetHistory }: Props) => {
 
     return (
         <Form onFinish={addAction} form={form}>
-            <Flex
-                style={{
-                    padding: '15px 16px',
-                    background: '#F5F5F5',
-                    marginBottom: '24px',
-                    columnGap: '16px',
-                }}
-                wrap
-            >
+            <Flex style={{ ...stylesFormDailyActions }} wrap>
                 <DatePickerForm
                     name='dateTransfer'
                     label='Дата перевода'
@@ -77,23 +71,13 @@ export const FormAddTransfer = ({ resetHistory }: Props) => {
                     defaultValue={dayjs()}
                 />
                 {!isGroup && (
-                    <div style={{ maxWidth: '475px', width: '100%' }}>
-                        <InputLabel label={'Старая группа'} required={false} />
-                        <Flex
-                            style={{
-                                padding: '0 11px',
-                                background: '#FFFFFF',
-                                border: '1px solid #D9D9D9',
-                                height: '40px',
-                                fontSize: '16px',
-                                color: '#00000040',
-                            }}
-                            align='center'
-                        >
-                            {animals.find((animal) => animal.id === selectedAnimals[0])
-                                ?.groupName || ' '}
-                        </Flex>
-                    </div>
+                    <FieldCustom
+                        label='Старая группа'
+                        value={
+                            animals.find((animal) => animal.id === selectedAnimals[0])
+                                ?.groupName || ' '
+                        }
+                    />
                 )}
                 <SelectForm
                     label='Новая группа'

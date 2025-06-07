@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import { FormTypeResearch } from '../../../data/types/FormTypes';
 import { optionsResearch } from '../../../data/const/optionsSelect';
 import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
+import { stylesFormDailyActions } from '../../../../../styles/form-action-daily-styles';
 
 type Props = {
     isGroup: boolean;
@@ -71,15 +72,7 @@ export const FormAddResearch = ({
 
     return (
         <Form onFinish={addAction} form={form}>
-            <Flex
-                style={{
-                    padding: '15px 16px',
-                    background: '#F5F5F5',
-                    marginBottom: '24px',
-                    columnGap: '16px',
-                }}
-                wrap
-            >
+            <Flex style={{ ...stylesFormDailyActions }} wrap>
                 <InputForm
                     label='Название исследования'
                     name='researchName'

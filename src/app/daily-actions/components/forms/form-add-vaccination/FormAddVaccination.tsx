@@ -15,6 +15,7 @@ import { optionsVaccination } from '../../../data/const/optionsSelect';
 import { DatePickerForm } from '../../../../../global-components/custom-inputs/form-inputs/date-picker-form/DatePickerForm';
 import { SelectForm } from '../../../../../global-components/custom-inputs/form-inputs/select-form/SelectForm';
 import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
+import { stylesFormDailyActions } from '../../../../../styles/form-action-daily-styles';
 
 type Props = {
     resetHistory: () => void;
@@ -46,15 +47,7 @@ export const FormAddVaccination = ({ resetHistory }: Props) => {
 
     return (
         <Form onFinish={addAction} form={form}>
-            <Flex
-                style={{
-                    padding: '15px 16px',
-                    background: '#F5F5F5',
-                    marginBottom: '24px',
-                    columnGap: '16px',
-                }}
-                wrap
-            >
+            <Flex style={{ ...stylesFormDailyActions }} wrap>
                 <DatePickerForm
                     name='date'
                     label='Дата обработки'

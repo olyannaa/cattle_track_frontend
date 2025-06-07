@@ -15,6 +15,8 @@ import dayjs from 'dayjs';
 import { FormTypeChangeAgeGenderGroup } from '../../../data/types/FormTypes';
 import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
 import { TextAreaForm } from '../../../../../global-components/custom-inputs/form-inputs/text-area-form/TextAreaForm';
+import { FieldCustom } from '../../../../../global-components/custom-inputs/field/Field';
+import { stylesFormDailyActions } from '../../../../../styles/form-action-daily-styles';
 
 type Props = {
     resetHistory: () => void;
@@ -43,53 +45,21 @@ export const FormChangeAgeGenderGroup = ({ resetHistory }: Props) => {
 
     return (
         <Form onFinish={addAction} form={form}>
-            <Flex
-                style={{
-                    padding: '15px 16px',
-                    background: '#F5F5F5',
-                    marginBottom: '24px',
-                    columnGap: '16px',
-                }}
-                wrap
-            >
+            <Flex style={{ ...stylesFormDailyActions }} wrap>
                 <DatePickerForm
                     name='dateCulling'
                     label='Дата перевода'
                     required
                     defaultValue={dayjs()}
                 />
-                <div style={{ maxWidth: '475px', width: '100%', marginBottom: '24px' }}>
-                    <InputLabel label={'Старая половозрастная группа'} required={false} />
-                    <Flex
-                        style={{
-                            padding: '0 11px',
-                            background: '#FFFFFF',
-                            border: '1px solid #D9D9D9',
-                            height: '40px',
-                            fontSize: '16px',
-                            color: '#00000040',
-                        }}
-                        align='center'
-                    >
-                        {filters.type}
-                    </Flex>
-                </div>
-                <div style={{ maxWidth: '475px', width: '100%', marginBottom: '24px' }}>
-                    <InputLabel label={'Новая половозрастная группа'} required={false} />
-                    <Flex
-                        style={{
-                            padding: '0 11px',
-                            background: '#FFFFFF',
-                            border: '1px solid #D9D9D9',
-                            height: '40px',
-                            fontSize: '16px',
-                            color: '#00000040',
-                        }}
-                        align='center'
-                    >
-                        {filters.type === 'Телка' ? 'Корова' : 'Бык'}
-                    </Flex>
-                </div>
+                <FieldCustom
+                    label='Старая половозрастная группа'
+                    value={filters.type || ''}
+                />
+                <FieldCustom
+                    label='Новая половозрастная группа'
+                    value={filters.type === 'Телка' ? 'Корова' : 'Бык'}
+                />
                 <InputForm
                     label='Кто проводил перевод'
                     name='name'
