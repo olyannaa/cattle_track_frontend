@@ -7,4 +7,6 @@ export interface AnimalAction {
     };
     eventDate: string;
     performedBy: string | null;
+    bullId?: string;
+    calfId?: string;
 }

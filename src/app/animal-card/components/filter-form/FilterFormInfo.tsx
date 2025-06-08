@@ -5,7 +5,6 @@ import {
     changeIsGroup,
     deleteAllAnimals,
     selectFiltersAnimals,
-    selectSelectedAnimals,
 } from '../../../daily-actions/service/animalsDailyActionsSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app-service/hooks';
 import { useEffect } from 'react';
@@ -19,7 +18,7 @@ export const FilterFormInfo = () => {
     const dispatch = useAppDispatch();
     const filters = useAppSelector(selectFiltersAnimals);
 
-    const [getFilterAnimalsQuery, { isLoading: isLoadingGetFilterAnimals }] = useLazyGetFilterAnimalsQuery();
+    const [getFilterAnimalsQuery] = useLazyGetFilterAnimalsQuery();
     const [getAllAnimalsIdQuery] = useLazyGetAllAnimalsIdQuery();
 
     const getFilterAnimals = async (data: IRequestGetFilterAnimals = { filters: filters }) => {

@@ -18,8 +18,11 @@ export const Events = () => {
     const [data, setData] = useState<AnimalAction[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const dispatch = useDispatch();
-    const handleSelectAnimal = (animalId: string) => {
-        dispatch(setSelectedAnimal(animalId));
+
+    const handleSelectAnimal = (animalId?: string) => {
+        if (animalId) {
+            dispatch(setSelectedAnimal(animalId));
+        }
     };
 
     useEffect(() => {
@@ -63,14 +66,14 @@ export const Events = () => {
                     </p>
                 ))}
                 {action.performedBy && <p>Выполнил: {action.performedBy}</p>}
-                {action.eventType === 'Отёл' && action.fields['ID телёнка'] && (
-                    <Button onClick={() => handleSelectAnimal(action.fields['ID телёнка'])}>
-                        Открыть карточку теленка
+                {action.eventType === 'Отёл' && action.calfId && (
+                    <Button style={{ marginTop: '8px' }} onClick={() => handleSelectAnimal(action.calfId)}>
+                        Открыть карточку теленка #{action.fields['Номер телёнка']}
                     </Button>
                 )}
-                {action.eventType === 'Осеменение' && action.fields['ID быка'] && (
-                    <Button onClick={() => handleSelectAnimal(action.fields['ID быка'])}>
-                        Открыть карточку теленка
+                {action.eventType === 'Осеменение' && action.bullId && (
+                    <Button style={{ marginTop: '8px' }} onClick={() => handleSelectAnimal(action.bullId)}>
+                        Открыть карточку быка
                     </Button>
                 )}
             </div>

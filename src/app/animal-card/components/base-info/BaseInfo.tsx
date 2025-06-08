@@ -27,7 +27,11 @@ export const BaseInfo = ({ animal }: { animal: AnimalDetail }) => {
         setBaseInfo([
             { Категория: animal.type },
             { Статус: animal.status },
-            { 'Дата и причины выбытия': `${(animal.dateOfDisposal, animal.reasonOfDisposal)}` },
+            {
+                'Дата и причины выбытия': `${animal.dateOfDisposal ?? 'Не указано'}, ${
+                    animal.reasonOfDisposal ?? 'Не указано'
+                }`,
+            },
             { Группа: animal.groupName },
             { 'Дата рождения': animal.birthDate },
             { Порода: animal.breed },
@@ -41,11 +45,11 @@ export const BaseInfo = ({ animal }: { animal: AnimalDetail }) => {
     const parseAdditionalInfo = () => {
         try {
             const rawJson = animal.identificationDataJson;
-            if (rawJson) {
-                const parsed = JSON.parse(rawJson) as Record<string, string>;
-                const entries = Object.entries(parsed).map(([key, value]) => ({ [key]: value }));
-                setAdditionalIds(entries);
-            }
+            if (!rawJson) return;
+
+            const parsed = JSON.parse(rawJson) as Record<string, string>;
+            const entries = Object.entries(parsed).map(([key, value]) => ({ [key]: value }));
+            setAdditionalIds(entries);
         } catch (error) {
             console.error('Ошибка при парсинге identificationDataJson:', error);
         }

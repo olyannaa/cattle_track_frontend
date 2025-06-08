@@ -20,12 +20,15 @@ export const Lineage = ({ animal }: { animal: AnimalDetail }) => {
         }
     }, [selectedAnimals]);
 
+    useEffect(() => {
+        setLeftColumn(data.slice(0, data.length / 2));
+        setRightColumn(data.slice(data.length / 2));
+    }, [data]);
+
     const fetchData = async () => {
         try {
             const response = await getAnimalParents(selectedAnimals[0]).unwrap();
             setData(response);
-            setLeftColumn(response.slice(0, response.length / 2));
-            setRightColumn(response.slice(response.length / 2));
         } catch (err) {
             console.error(err);
         }
@@ -42,12 +45,12 @@ export const Lineage = ({ animal }: { animal: AnimalDetail }) => {
             </Flex>
             <Flex wrap={true} gap={16}>
                 <Flex className={styles.lineage__col} vertical gap={24}>
-                    {leftColumn.map((parent: AnimalDetail) => (
+                    {leftColumn.filter(Boolean).map((parent: AnimalDetail) => (
                         <ParentCard key={parent.id} parent={parent} />
                     ))}
                 </Flex>
                 <Flex className={styles.lineage__col} vertical gap={24}>
-                    {rightColumn.map((parent: AnimalDetail) => (
+                    {rightColumn.filter(Boolean).map((parent: AnimalDetail) => (
                         <ParentCard key={parent.id} parent={parent} />
                     ))}
                 </Flex>
