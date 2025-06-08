@@ -128,28 +128,28 @@ export const dailyActionsApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        createDailyActions: builder.mutation<any, newDailyAction[]>({
+        createDailyActions: builder.mutation<void, newDailyAction[]>({
             query: (data) => ({
                 url: 'DailyActions',
                 method: 'POST',
                 body: data,
             }),
         }),
-        createDailyActionsWithoutResetFilters: builder.mutation<any, newDailyAction[]>({
+        createDailyActionsWithoutResetFilters: builder.mutation<void, newDailyAction[]>({
             query: (data) => ({
                 url: 'DailyActions',
                 method: 'POST',
                 body: data,
             }),
         }),
-        deleteDailyActions: builder.mutation<any, string[]>({
+        deleteDailyActions: builder.mutation<void, string[]>({
             query: (data) => ({
                 url: 'DailyActions',
                 method: 'DELETE',
                 body: data,
             }),
         }),
-        deleteDailyActionsResearch: builder.mutation<any, string[]>({
+        deleteDailyActionsResearch: builder.mutation<void, string[]>({
             query: (data) => ({
                 url: 'DailyActions/researches',
                 method: 'DELETE',

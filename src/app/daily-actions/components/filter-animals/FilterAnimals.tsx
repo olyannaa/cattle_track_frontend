@@ -51,20 +51,14 @@ export const FilterAnimals = () => {
 
     const dispatch = useAppDispatch();
 
-    const [paginationInfo, setPaginationInfo] =
-        useState<IResponsePaginationInfoDailyActions>();
+    const [paginationInfo, setPaginationInfo] = useState<IResponsePaginationInfoDailyActions>();
     const [isSelectedAllAnimals, setIsSelectedAllAnimals] = useState<boolean>(false);
-    const [getFilterAnimalsQuery, { isLoading: isLoadingGetFilterAnimals }] =
-        useLazyGetFilterAnimalsQuery();
-    const [
-        getPaginationInfoFilterAnimalsQuery,
-        { isLoading: isLoadingGetPaginationInfoFilterAnimals },
-    ] = useLazyGetPaginationInfoFilterAnimalsQuery();
+    const [getFilterAnimalsQuery, { isLoading: isLoadingGetFilterAnimals }] = useLazyGetFilterAnimalsQuery();
+    const [getPaginationInfoFilterAnimalsQuery, { isLoading: isLoadingGetPaginationInfoFilterAnimals }] =
+        useLazyGetPaginationInfoFilterAnimalsQuery();
     const [getAllAnimalsIdQuery] = useLazyGetAllAnimalsIdQuery();
 
-    const getFilterAnimals = async (
-        data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
-    ) => {
+    const getFilterAnimals = async (data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }) => {
         await getFilterAnimalsQuery(data);
     };
 
@@ -73,9 +67,7 @@ export const FilterAnimals = () => {
         setPaginationInfo(response);
     };
 
-    const getAllAnimalsId = async (
-        data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }
-    ) => {
+    const getAllAnimalsId = async (data: IRequestGetFilterAnimals = { filters: filters, sorters: sorters }) => {
         await getAllAnimalsIdQuery(data);
     };
 
@@ -127,9 +119,7 @@ export const FilterAnimals = () => {
     const onChangeTable = (
         newPagination: TablePaginationConfig,
         filters: Record<string, FilterValue | null>,
-        sorter:
-            | SorterResult<IDailyActionAnimalsTable>
-            | SorterResult<IDailyActionAnimalsTable>[]
+        sorter: SorterResult<IDailyActionAnimalsTable> | SorterResult<IDailyActionAnimalsTable>[]
     ) => {
         filters;
         if (!sorter || (!Array.isArray(sorter) && !sorter.field)) {
@@ -180,15 +170,8 @@ export const FilterAnimals = () => {
             <FormFilter />
             {isGroup && (
                 <>
-                    <Flex
-                        justify='flex-end'
-                        style={{ width: '100%' }}
-                        gap={16}
-                        align='center'
-                    >
-                        <div
-                            style={{ fontWeight: '500' }}
-                        >{`Выбрано: ${selectedAnimals.length}`}</div>
+                    <Flex justify='flex-end' style={{ width: '100%' }} gap={16} align='center'>
+                        <div style={{ fontWeight: '500' }}>{`Выбрано: ${selectedAnimals.length}`}</div>
                         <Checkbox
                             onChange={handlerChangeSelectedAllActions}
                             style={{
@@ -216,14 +199,10 @@ export const FilterAnimals = () => {
                             current: sorters.page,
                             total: paginationInfo?.count,
                             pageSize: paginationInfo?.entriesPerPage,
-                            showTotal: (total, range) =>
-                                `${range[0]}-${range[1]} из ${total} элементов`,
+                            showTotal: (total, range) => `${range[0]}-${range[1]} из ${total} элементов`,
                         }}
                         onChange={onChangeTable}
-                        loading={
-                            isLoadingGetFilterAnimals ||
-                            isLoadingGetPaginationInfoFilterAnimals
-                        }
+                        loading={isLoadingGetFilterAnimals || isLoadingGetPaginationInfoFilterAnimals}
                     />
                 </>
             )}
