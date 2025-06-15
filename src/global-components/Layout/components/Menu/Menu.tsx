@@ -7,13 +7,49 @@ import {
     FolderOpenFilled,
     HomeFilled,
     IdcardFilled,
+    LogoutOutlined,
+    PicRightOutlined,
     SafetyCertificateFilled,
     SettingOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useMemo } from 'react';
+import { useIsMobile } from '../../../../hooks/useIsMobile';
 
-export const AppMenu = () => {
+export const AppMenu = ({ logout }: { logout: () => Promise<void> }) => {
+    const isMobile = useIsMobile();
+    const mobileItems = isMobile
+        ? [
+              { type: 'divider' as const },
+              {
+                  key: 'logout',
+                  icon: <LogoutOutlined />,
+                  label: 'Выход',
+                  onClick: logout,
+                  danger: true,
+              },
+          ]
+        : [];
+    const location = useLocation();
+
+    // Сопоставление путей с ключами меню
+    const pathToKeyMap: Record<string, string> = {
+        '/main': '1',
+        '/accounting': '2',
+        '/animalregister': '3',
+        '/infrastructure': '4',
+        '/daily-activities': '5',
+        '/reproductive-accounting': '7',
+        '/weight-control': '8',
+        '/animal-card': '9',
+    };
+
+    const selectedKey = useMemo(() => {
+        const match = Object.entries(pathToKeyMap).find(([path]) => location.pathname.startsWith(path));
+        return match ? [match[1]] : ['1'];
+    }, [location.pathname]);
+
     const menuItems: ItemType<MenuItemType>[] = [
         {
             key: '1',
@@ -61,18 +97,23 @@ export const AppMenu = () => {
         {
             key: '8',
             icon: <BellFilled />,
-            label: <Link to='/weight-control'>Контроль провесов</Link>,
+            label: <Link to='/weight-control'>Контроль привесов</Link>,
             danger: true,
         },
         {
             key: '9',
+            icon: <PicRightOutlined />,
+            label: <Link to='/animal-card'>Карточка животного</Link>,
+            danger: true,
+        },
+        {
+            key: '10',
             icon: <SettingOutlined />,
             label: 'Отчеты',
             danger: true,
         },
+        ...mobileItems,
     ];
 
-    return (
-        <Menu theme='light' mode='inline' defaultSelectedKeys={['1']} items={menuItems} />
-    );
+    return <Menu theme='light' mode='inline' selectedKeys={selectedKey} items={menuItems} />;
 };

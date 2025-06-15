@@ -15,6 +15,7 @@ import {
 
 import dayjs from 'dayjs';
 import { FormTypeInspection } from '../../../data/types/FormTypes';
+import styles from '../../../styles/form-styles.module.css';
 
 type Props = {
     resetHistory: () => void;
@@ -45,15 +46,7 @@ export const FormAddInspection = ({ resetHistory }: Props) => {
 
     return (
         <Form onFinish={addAction} form={form}>
-            <Flex
-                style={{
-                    padding: '15px 16px',
-                    background: '#F5F5F5',
-                    marginBottom: '24px',
-                    columnGap: '16px',
-                }}
-                wrap
-            >
+            <Flex className={styles['form-body']} wrap>
                 <DatePickerForm
                     name='dateInspection'
                     label='Дата осмотра'

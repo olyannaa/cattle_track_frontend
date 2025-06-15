@@ -189,3 +189,13 @@ input[type='file'] {
 .ant-drawer .ant-drawer-footer {
     border-top: none;
 }
+
+.link {
+    color: unset;
+    cursor: pointer;
+}
+
+.link:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}

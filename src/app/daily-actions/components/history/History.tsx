@@ -32,17 +32,15 @@ import { FilterValue, SorterResult } from 'antd/es/table/interface';
 import { getNameTabs } from '../../data/const/tabs';
 import { getColumnsTable } from '../../functions/getColumnsTableHistory';
 import styles from './History.module.css';
+import { selectKeyTab } from '../../service/animalsDailyActionsSlice';
 
-type Props = {
-    keyTab: string;
-};
-
-export const History = ({ keyTab }: Props) => {
+export const History = () => {
     const sorters = useAppSelector(selectSortersDailyActions);
+    const keyTab = useAppSelector(selectKeyTab);
     const selectedDailyActions = useAppSelector(selectSelectedDailyActions);
     const paginationInfo = useAppSelector(selectPaginationInfoDailyActions);
     const dailyActions = useAppSelector(selectDailyActions);
-    const allActionsId = useAppSelector(selectAllActionsId)
+    const allActionsId = useAppSelector(selectAllActionsId);
 
     const [nameTab, setNameTab] = useState(getNameTabs(keyTab));
     const [isSelectedAllActions, setIsSelectedAllActions] = useState<boolean>(false);
@@ -57,7 +55,7 @@ export const History = ({ keyTab }: Props) => {
         getPaginationInfoDailyActionsQuery,
         { isLoading: isLoadingGetPaginationInfoDailyActions },
     ] = useLazyGetPaginationInfoDailyActionsQuery();
-    const [getAllActionsIdQuery] = useLazyGetAllActionsIdQuery()
+    const [getAllActionsIdQuery] = useLazyGetAllActionsIdQuery();
 
     const getDailyActions = async () => {
         await getDailyActionsQuery({
@@ -73,9 +71,9 @@ export const History = ({ keyTab }: Props) => {
     const getAllActionsId = async () => {
         await getAllActionsIdQuery({
             ...sorters,
-            type: nameTab
-        })
-    }
+            type: nameTab,
+        });
+    };
 
     const handlerChangeSelectedAllActions = (e: CheckboxChangeEvent) => {
         setIsSelectedAllActions(e.target.checked);
@@ -147,11 +145,6 @@ export const History = ({ keyTab }: Props) => {
     }, [keyTab]);
 
     useEffect(() => {
-        getDailyActions();
-        getPaginationInfoDailyActivities();
-    }, [nameTab]);
-
-    useEffect(() => {
         if (
             selectedDailyActions.length === allActionsId.length &&
             allActionsId.length > 0
@@ -165,7 +158,7 @@ export const History = ({ keyTab }: Props) => {
     useEffect(() => {
         getDailyActions();
         getPaginationInfoDailyActivities();
-        getAllActionsId()
+        getAllActionsId();
     }, [sorters]);
 
     return (

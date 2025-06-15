@@ -32,6 +32,8 @@ export type newDailyAction = {
     researchName?: string;
     materialType?: string;
     identificationValue?: string;
+    oldType?: string;
+    newType?: string;
 };
 
 export interface IDailyAction {
@@ -56,6 +58,8 @@ export interface IDailyAction {
     materialType: string;
     collectionDate: string;
     collectedBy: string;
+    oldType: string;
+    newType: string;
 }
 
 export type IResponsePaginationInfoDailyActions = {
@@ -124,28 +128,28 @@ export const dailyActionsApi = api.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        createDailyActions: builder.mutation<any, newDailyAction[]>({
+        createDailyActions: builder.mutation<void, newDailyAction[]>({
             query: (data) => ({
                 url: 'DailyActions',
                 method: 'POST',
                 body: data,
             }),
         }),
-        createDailyActionsWithoutResetFilters: builder.mutation<any, newDailyAction[]>({
+        createDailyActionsWithoutResetFilters: builder.mutation<void, newDailyAction[]>({
             query: (data) => ({
                 url: 'DailyActions',
                 method: 'POST',
                 body: data,
             }),
         }),
-        deleteDailyActions: builder.mutation<any, string[]>({
+        deleteDailyActions: builder.mutation<void, string[]>({
             query: (data) => ({
                 url: 'DailyActions',
                 method: 'DELETE',
                 body: data,
             }),
         }),
-        deleteDailyActionsResearch: builder.mutation<any, string[]>({
+        deleteDailyActionsResearch: builder.mutation<void, string[]>({
             query: (data) => ({
                 url: 'DailyActions/researches',
                 method: 'DELETE',
