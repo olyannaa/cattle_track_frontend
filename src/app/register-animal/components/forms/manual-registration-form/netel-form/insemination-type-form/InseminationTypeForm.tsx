@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { SelectDataType } from '../../../../../../../utils/selectDataType';
 import { useGetBullsQuery } from '../../../../../../reproductive-accounting/services/reproductive';
 import { InputLabel } from '../../../../../../../global-components/custom-inputs/input-label/InputLabel';
+import styles from '../../ManualRegistration.module.css';
 
 export const InseminationTypeFormReg = () => {
     const inseminationType = Form.useWatch('InseminationType');
@@ -43,7 +44,7 @@ export const InseminationTypeFormReg = () => {
             )}
 
             {inseminationType === 'Естественное' && (
-                <div>
+                <div className={styles['manual-register__changed-input']}>
                     <InputLabel label='Выберите быка' />
                     <Form.Item name='BullId'>
                         <Select className='form-input_default' placeholder='Выберите быка' options={bulls}></Select>
