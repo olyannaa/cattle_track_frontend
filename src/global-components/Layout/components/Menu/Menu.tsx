@@ -85,7 +85,7 @@ export const AppMenu = ({ logout }: { logout: () => Promise<void> }) => {
         {
             key: '6',
             icon: <SafetyCertificateFilled />,
-            label: 'Учет кормления',
+            label: <Link to='/feeding-records'>Учет кормления</Link>,
             danger: true,
         },
         {
@@ -109,7 +109,7 @@ export const AppMenu = ({ logout }: { logout: () => Promise<void> }) => {
         {
             key: '10',
             icon: <SettingOutlined />,
-            label: 'Отчеты',
+            label: <Link to='/reports'>Отчеты</Link>,
             danger: true,
         },
         ...mobileItems,

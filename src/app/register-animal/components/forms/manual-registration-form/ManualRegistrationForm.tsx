@@ -6,7 +6,11 @@ import Dragger from 'antd/es/upload/Dragger';
 import { InputLabel } from '../../../../../global-components/custom-inputs/input-label/InputLabel';
 import styles from './ManualRegistration.module.css';
 import { AdditionalInfoForm } from './additional-info-form/AdditionalInfoForm';
-import { useGetAnimalGroupsQuery, useGetBreedQuery, useRegistrationAnimalMutation } from '../../../services/registration-animal';
+import {
+    useGetAnimalGroupsQuery,
+    useGetBreedQuery,
+    useRegistrationAnimalMutation,
+} from '../../../services/registration-animal';
 import { useEffect, useState } from 'react';
 import { IAlert } from '../../../../../utils/alertType';
 import { NetelFormRegister } from './netel-form/NetelForm';
@@ -49,9 +53,9 @@ export const ManualRegistrationForm = () => {
     useEffect(() => {
         if (data) {
             setAnimalGroups(formatDataForSelectInput(data));
-        } 
+        }
         if (breed) {
-            setBreeds([...formatDataForSelectInput(breed), {value: '0', label: 'Другая'}]);
+            setBreeds([...formatDataForSelectInput(breed), { value: '0', label: 'Другая' }]);
         }
     }, [data, breed]);
 
@@ -81,11 +85,11 @@ export const ManualRegistrationForm = () => {
                 formData.append(key, dayjs(value).format('YYYY-MM-DD'));
             } else if (key === 'Breed') {
                 const selectBreed = breeds.find((breed) => breed.value === value)?.label;
-    
+
                 if (selectBreed && selectBreed !== 'Другая') {
                     formData.append(key, selectBreed);
                 }
-            } else if(key === 'CustomBreed' && selectedBreed === '0') {
+            } else if (key === 'CustomBreed' && selectedBreed === '0') {
                 formData.append('Breed', value);
             } else {
                 formData.append(key, String(value ?? ''));
@@ -102,6 +106,7 @@ export const ManualRegistrationForm = () => {
             setVisibleAlert(true);
             setIsExchangeOrPurchase(false);
             registerAnimalForm.resetFields();
+            setSelectedAnimalType('');
         } catch (err: any) {
             if (err?.data?.errorText) {
                 setAlert({
@@ -135,15 +140,24 @@ export const ManualRegistrationForm = () => {
                         <div>
                             <InputLabel label='Порода' />
                             <Form.Item name='Breed'>
-                                <Select options={breeds} className={styles['manual-register__input']} placeholder='Укажите породу'></Select>
+                                <Select
+                                    options={breeds}
+                                    className={styles['manual-register__input']}
+                                    placeholder='Укажите породу'
+                                ></Select>
                             </Form.Item>
                         </div>
-                        {selectedBreed === '0' && <div>
-                            <InputLabel label='Укажите породу' />
-                            <Form.Item name='CustomBreed'>
-                                <Input className={styles['manual-register__input']} placeholder='Введите название породы'></Input>
-                            </Form.Item>
-                        </div> }
+                        {selectedBreed === '0' && (
+                            <div>
+                                <InputLabel label='Укажите породу' />
+                                <Form.Item name='CustomBreed'>
+                                    <Input
+                                        className={styles['manual-register__input']}
+                                        placeholder='Введите название породы'
+                                    ></Input>
+                                </Form.Item>
+                            </div>
+                        )}
                     </div>
                     <Form.Item
                         name='Type'

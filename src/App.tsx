@@ -11,6 +11,7 @@ import ruRU from 'antd/lib/locale/ru_RU';
 import { ReproductiveAccountingPage } from './app/reproductive-accounting/ReproductiveAccountingPage';
 import { AnimalCardPage } from './app/animal-card/AnimalCardPage';
 import { WeightControlPage } from './app/weight-control/WeightControlPage';
+import { InDevelopment } from './app/InDevelopment';
 
 function App() {
     const theme: ThemeConfig = {
@@ -148,6 +149,8 @@ function App() {
                         <Route path='/weight-control' element={<WeightControlPage />} />
                         <Route path='/animal-card' element={<AnimalCardPage />} />
                         <Route path='/animal-card/:id' element={<AnimalCardPage />} />
+                        <Route path='/reports' element={<InDevelopment />} />
+                        <Route path='/feeding-records' element={<InDevelopment />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
