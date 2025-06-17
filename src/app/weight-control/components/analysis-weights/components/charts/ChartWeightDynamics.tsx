@@ -6,6 +6,7 @@ import { useWindowSize } from '../../../../../../hooks/useWindowSize';
 import { useEffect, useState } from 'react';
 import { getCountItemsChart } from '../../../../functions/getCountItemsChart';
 import { chartStyles } from '../../../../../../styles/chart-styles';
+import { EmptyDataAlert } from '../../../../../../global-components/expty-data-alert/EmptyDataAlert';
 
 type Props = {
     byItem: 'date' | 'age';
@@ -58,24 +59,28 @@ export const ChartWeightDynamics = ({ byItem }: Props) => {
         },
         ...chartStyles,
     };
+
     return (
         <Flex gap={24} vertical>
             <div style={{ fontSize: '16px', fontWeight: '500' }}>
                 {byItem === 'age' ? 'Вес по возрасту (месяцам)' : 'Вес по датам'}
             </div>
-
-            <Line
-                {...config}
-                style={{ overflowX: 'auto' }}
-                data={
-                    byItem === 'age'
-                        ? statisticsAnimal.dataByAge.map((item) => ({
-                              age: `${item.age} мес`,
-                              weight: item.weight,
-                          }))
-                        : statisticsAnimal.dataByDate
-                }
-            />
+            {!statisticsAnimal.dataByAge.length ? (
+                <EmptyDataAlert />
+            ) : (
+                <Line
+                    {...config}
+                    style={{ overflowX: 'auto' }}
+                    data={
+                        byItem === 'age'
+                            ? statisticsAnimal.dataByAge.map((item) => ({
+                                  age: `${item.age} мес`,
+                                  weight: item.weight,
+                              }))
+                            : statisticsAnimal.dataByDate
+                    }
+                />
+            )}
         </Flex>
     );
 };
