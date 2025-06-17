@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useWindowSize } from '../../../../../../../hooks/useWindowSize';
 import { getCountItemsChart } from '../../../../../functions/getCountItemsChart';
 import { chartStyles } from '../../../../../../../styles/chart-styles';
+import { EmptyDataAlert } from '../../../../../../../global-components/expty-data-alert/EmptyDataAlert';
 
 export const ChartWeightGain = () => {
     const statisticsAnimal = useAppSelector(selectStatisticsAnimal);
@@ -47,7 +48,9 @@ export const ChartWeightGain = () => {
         },
         ...chartStyles,
     };
-    return (
+    return !statisticsAnimal.dataBySUP.length ? (
+        <EmptyDataAlert />
+    ) : (
         <Flex wrap={'wrap-reverse'} gap={24} align='flex-end'>
             <div
                 style={{

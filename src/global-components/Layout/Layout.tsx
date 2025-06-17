@@ -10,6 +10,7 @@ import { useWindowSize } from '../../hooks/useWindowSize';
 import styles from './Layout.module.css';
 import { getSiderStyle } from './helpers/siderStyle';
 import { LogoSection } from './components/logo-section/LogoSection';
+import { truncate } from '../../functions/truncate';
 
 const { Header, Sider, Content } = Layout;
 
@@ -20,7 +21,6 @@ export const LayoutPage: React.FC = () => {
     const [logout] = useLogoutMutation();
     const navigate = useNavigate();
     const windowWidth = useWindowSize();
-
     const handlerLogout = async () => {
         try {
             await logout().unwrap();
@@ -51,9 +51,23 @@ export const LayoutPage: React.FC = () => {
                         />
                     </div>
                     <Flex gap={'4px'}>
-                        <Button type={'text'}>
+                        <Button type={'text'} title={user.organizationName}>
                             <UserOutlined />
-                            {user.organizationName}
+                            {windowWidth >= 768
+                                ? user.organizationName
+                                : windowWidth > 650
+                                ? truncate(user.organizationName, 60)
+                                : windowWidth > 550
+                                ? truncate(user.organizationName, 44)
+                                : windowWidth > 500
+                                ? truncate(user.organizationName, 37)
+                                : windowWidth > 450
+                                ? truncate(user.organizationName, 30)
+                                : windowWidth > 400
+                                ? truncate(user.organizationName, 22)
+                                : windowWidth > 348
+                                ? truncate(user.organizationName, 15)
+                                : truncate(user.organizationName, 17)}
                         </Button>
                         {!isMobile && (
                             <Button onClick={handlerLogout} variant='link'>
@@ -74,7 +88,10 @@ export const LayoutPage: React.FC = () => {
                     <div className='demo-logo-vertical' />
                     <AppMenu logout={handlerLogout} />
                     {!isMobile && (
-                        <div onClick={() => setCollapsed(!collapsed)} className={styles['trapezoid-button']}>
+                        <div
+                            onClick={() => setCollapsed(!collapsed)}
+                            className={styles['trapezoid-button']}
+                        >
                             <div className={styles['trapezoid-button__icon']}>
                                 {collapsed ? <RightOutlined /> : <LeftOutlined />}
                             </div>
