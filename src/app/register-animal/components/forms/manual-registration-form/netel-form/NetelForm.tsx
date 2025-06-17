@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import styles from '../ManualRegistration.module.css';
 import netelStyles from './NetelForm.module.css';
 import useFormInstance from 'antd/es/form/hooks/useFormInstance';
+import { InseminationTypeFormReg } from './insemination-type-form/InseminationTypeForm';
 
 export const NetelFormRegister = () => {
     const requiredRule = [{ required: true, message: 'Обязательное поле' }];
@@ -32,56 +33,52 @@ export const NetelFormRegister = () => {
                         className={styles['manual-register__changed-input']}
                         initialValue={dayjs()}
                     >
-                         <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx' onChange={handleInseminationDateChange}></DatePicker>
+                        <DatePicker
+                            format='DD.MM.YYYY'
+                            type='date'
+                            className='form-input_default date'
+                            placeholder='xx.xx.xxxx'
+                            onChange={handleInseminationDateChange}
+                        ></DatePicker>
                     </Form.Item>
                 </div>
                 <div className={styles['manual-register__changed-input']}>
                     <InputLabel label='Ожидаемая дата отела' />
-                    <Form.Item className='form-input_default' rules={requiredRule} name='ExpectedCalvingDate' initialValue={dayjs().add(285, 'day')}>
-                         <DatePicker format='DD.MM.YYYY' type='date' className='form-input_default date' placeholder='xx.xx.xxxx'></DatePicker>
+                    <Form.Item
+                        className='form-input_default'
+                        rules={requiredRule}
+                        name='ExpectedCalvingDate'
+                        initialValue={dayjs().add(285, 'day')}
+                    >
+                        <DatePicker
+                            format='DD.MM.YYYY'
+                            type='date'
+                            className='form-input_default date'
+                            placeholder='xx.xx.xxxx'
+                        ></DatePicker>
                     </Form.Item>
                 </div>
             </div>
             <InputLabel label='Тип осеменения' />
             <Form.Item name='InseminationType' style={{ maxWidth: 412 }}>
                 <Radio.Group>
-                    <div
-                        className={styles['manual-register__origin']}
-                        style={{ maxWidth: 412 }}
-                    >
-                        <div
-                            className={`${netelStyles['netel-form__radio1']} radio-border`}
-                        >
+                    <div className={styles['manual-register__origin']} style={{ maxWidth: 412 }}>
+                        <div className={`${netelStyles['netel-form__radio1']} radio-border`}>
                             <Radio value='Искусственное'>Искусственное</Radio>
                         </div>
-                        <div
-                            className={`${netelStyles['netel-form__radio2']} radio-border`}
-                        >
+                        <div className={`${netelStyles['netel-form__radio2']} radio-border`}>
                             <Radio value='Естественное'>Естественное</Radio>
                         </div>
-                        <div
-                            className={`${netelStyles['netel-form__radio3']} radio-border`}
-                        >
+                        <div className={`${netelStyles['netel-form__radio3']} radio-border`}>
                             <Radio value='Эмбрион'>Эмбрион</Radio>
                         </div>
                     </div>
                 </Radio.Group>
             </Form.Item>
-            <InputLabel label='Номер партии спермы' />
-            <Form.Item
-                name='SpermBatch'
-                className={styles['manual-register__changed-input']}
-                rules={requiredRule}
-            >
-                <Input placeholder='xxxxxxxx'></Input>
-            </Form.Item>
+            <InseminationTypeFormReg />
             <InputLabel label='Техник осеменения' />
-            <Form.Item
-                name='Technician'
-                className={styles['manual-register__changed-input']}
-                rules={requiredRule}
-            >
-                <Input placeholder='xxxxxxxx'></Input>
+            <Form.Item name='Technician' className={styles['manual-register__changed-input']} rules={requiredRule}>
+                <Input placeholder='Введите ФИО'></Input>
             </Form.Item>
             <InputLabel label='Примечание к осеменению' />
             <Form.Item name='Notes' className={styles['manual-register__changed-input']}>
