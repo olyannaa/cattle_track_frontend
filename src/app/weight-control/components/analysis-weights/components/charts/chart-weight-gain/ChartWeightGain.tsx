@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useWindowSize } from '../../../../../../../hooks/useWindowSize';
 import { getCountItemsChart } from '../../../../../functions/getCountItemsChart';
 import { chartStyles } from '../../../../../../../styles/chart-styles';
+import { EmptyDataAlert } from '../../../../../../../global-components/expty-data-alert/EmptyDataAlert';
 
 export const ChartWeightGain = () => {
     const statisticsAnimal = useAppSelector(selectStatisticsAnimal);
@@ -49,32 +50,38 @@ export const ChartWeightGain = () => {
     };
     return (
         <Flex wrap={'wrap-reverse'} gap={24} align='flex-end'>
-            <div
-                style={{
-                    height: '300px',
-                    background: '#fff',
-                    borderRadius: 8,
-                    boxShadow: '0 1px 2px 0 rgba(0,0,0,0.03)',
-                }}
-                className={styles['wrapper-chart']}
-            >
-                <Line
-                    {...config}
-                    data={statisticsAnimal.dataBySUP}
-                    style={{ overflowX: 'auto' }}
-                />
-            </div>
-            <Flex wrap className={styles['statistics']} gap={16}>
-                <div className={styles['statistics-item']}>
-                    {`Средний СУП: ${statisticsAnimal.meanSUP} кг/сут`}
-                </div>
-                <div className={styles['statistics-item']}>
-                    {`Максимальный СУП: ${statisticsAnimal.maxSUP} кг/сут`}
-                </div>
-                <div className={styles['statistics-item']}>
-                    {`Минимальный СУП: ${statisticsAnimal.minSUP} кг/сут`}
-                </div>
-            </Flex>
+            {!statisticsAnimal.dataByAge.length ? (
+                <EmptyDataAlert />
+            ) : (
+                <>
+                    <div
+                        style={{
+                            height: '300px',
+                            background: '#fff',
+                            borderRadius: 8,
+                            boxShadow: '0 1px 2px 0 rgba(0,0,0,0.03)',
+                        }}
+                        className={styles['wrapper-chart']}
+                    >
+                        <Line
+                            {...config}
+                            data={statisticsAnimal.dataBySUP}
+                            style={{ overflowX: 'auto' }}
+                        />
+                    </div>
+                    <Flex wrap className={styles['statistics']} gap={16}>
+                        <div className={styles['statistics-item']}>
+                            {`Средний СУП: ${statisticsAnimal.meanSUP} кг/сут`}
+                        </div>
+                        <div className={styles['statistics-item']}>
+                            {`Максимальный СУП: ${statisticsAnimal.maxSUP} кг/сут`}
+                        </div>
+                        <div className={styles['statistics-item']}>
+                            {`Минимальный СУП: ${statisticsAnimal.minSUP} кг/сут`}
+                        </div>
+                    </Flex>{' '}
+                </>
+            )}
         </Flex>
     );
 };
